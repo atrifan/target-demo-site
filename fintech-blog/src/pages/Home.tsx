@@ -5,16 +5,16 @@ const Home: React.FC = () => {
     if (window.adobe && window.adobe.target) {
       window.adobe.target.triggerView('homepage');
     }
-    window.adobe.target.getOffers({
-      mbox: 'home-mbox', // Name of your mbox
-      success: (offers) => {
-        window.adobe.target.applyOffers({ offers });
-        console.log('Offers applied:', offers);
-      },
-      error: (error) => {
-        console.error('Error fetching Adobe Target offers:', error);
-      },
-    });
+    // window.adobe.target.getOffers({
+    //   mbox: 'home-mbox', // Name of your mbox
+    //   success: (offers) => {
+    //     window.adobe.target.applyOffers({ offers });
+    //     console.log('Offers applied:', offers);
+    //   },
+    //   error: (error) => {
+    //     console.error('Error fetching Adobe Target offers:', error);
+    //   },
+    // });
   }, []);
   return (
     <main>
