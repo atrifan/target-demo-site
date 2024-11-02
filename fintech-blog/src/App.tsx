@@ -5,13 +5,14 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import Stocks from './pages/Stocks';
 
 const App: React.FC = () => {
   useEffect(() => {
     // Check if the Adobe Target library is loaded
-    if (window.adobe && window.adobe.target) {
-      window.adobe.target.init();
-    }
+    // if (window.adobe && window.adobe.target) {
+    //   window.adobe.target.init();
+    // }
   }, []);
   return (
     <Router>
@@ -20,6 +21,7 @@ const App: React.FC = () => {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/stocks" element={<Stocks />} /> {/* Add the Stocks route */}
       </Routes>
       <Footer />
     </Router>

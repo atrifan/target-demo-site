@@ -106,3 +106,16 @@ footer {
     bottom: 0;
     width: 100%;
 }
+
+.stocks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.stock-card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+}
