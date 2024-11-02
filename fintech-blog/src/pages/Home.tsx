@@ -5,11 +5,21 @@ const Home: React.FC = () => {
     if (window.adobe && window.adobe.target) {
       window.adobe.target.triggerView('homepage');
     }
+    window.adobe.target.getOffers({
+      mbox: 'home-mbox', // Name of your mbox
+      success: (offers) => {
+        window.adobe.target.applyOffers({ offers });
+        console.log('Offers applied:', offers);
+      },
+      error: (error) => {
+        console.error('Error fetching Adobe Target offers:', error);
+      },
+    });
   }, []);
   return (
     <main>
       <h2>Welcome to FinTech Insights</h2>
-      <p>Your go-to source for the latest in fintech and stock market trends.</p>
+      <p data-mbox-name="home-mbox">Your go-to source for the latest in fintech and stock market trends.</p>
       <h3>Featured Articles</h3>
       <ul>
         <li><a href="#">Understanding Fintech: What It Means for Investors</a></li>
