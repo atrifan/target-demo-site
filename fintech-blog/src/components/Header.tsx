@@ -6,10 +6,10 @@ const Header: React.FC = () => {
     <header>
       <h1>FinTech Insights</h1>
       <nav>
-        <Link to="./home">Home</Link>
-        <Link to="./about">About</Link>
-        <Link to="./contact">Contact</Link>
-        <Link to="./stocks">Stocks</Link>
+        <Link to="/target-demo-site/home">Home</Link>
+        <Link to="/target-demo-site/about">About</Link>
+        <Link to="/target-demo-site/contact">Contact</Link>
+        <Link to="/target-demo-site/stocks">Stocks</Link>
       </nav>
     </header>
   );
