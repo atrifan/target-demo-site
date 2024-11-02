@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const About: React.FC = () => {
+  useEffect(() => {
+    if (window.adobe && window.adobe.target) {
+      window.adobe.target.triggerView('about');
+    }
+  }, []);
   return (
     <main>
       <h2>About FinTech Insights</h2>

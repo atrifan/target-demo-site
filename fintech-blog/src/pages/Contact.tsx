@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const Contact: React.FC = () => {
+  useEffect(() => {
+    if (window.adobe && window.adobe.target) {
+      window.adobe.target.triggerView('contact');
+    }
+  }, []);
   return (
     <main>
       <h2>Get in Touch</h2>
