@@ -2,7 +2,7 @@ import React from 'react';
 
 const Contact: React.FC = () => {
   return (
-    <div>
+    <main>
       <h2>Get in Touch</h2>
       <p>Have questions or suggestions? Feel free to reach out!</p>
       <form>
@@ -11,7 +11,7 @@ const Contact: React.FC = () => {
         <textarea placeholder="Your Message" required></textarea>
         <button type="submit">Send Message</button>
       </form>
-    </div>
+    </main>
   );
 };
 
