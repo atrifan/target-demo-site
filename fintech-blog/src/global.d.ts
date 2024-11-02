@@ -10,6 +10,7 @@ declare global {
         }) => void; // Method to get offers
         applyOffers: (options: { offers: any }) => void; // Apply offers
         init: () => void; // Initialize Adobe Target
+        delivery: (options: { prefetch: { views: any[] } }) => void; // Method to send data to Adobe Target
         // Add other methods and properties you might need from Adobe Target
       };
       // Add other Adobe properties if necessary
