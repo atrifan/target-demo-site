@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import { Link } from 'react-router-dom';
 import AtJs from '../lib/atJs';
 
@@ -12,12 +12,18 @@ interface XperienceProps {
   setExperienceIndex: (index: number) => void;
   setTrueAudienceId: (id: number) => void;
   setToken: (name: string) => void;
+  country: string;
+  hobby: string;
+  age: string;
+  refreshKey: number;
 }
 
-const PersonalizationAT: React.FC<XperienceProps> = ({ displayName, token, setToken, activityIndex, setActivityIndex, experienceIndex, setExperienceIndex, trueAudienceId, setTrueAudienceId}) => {
-  useEffect(() => {
+const PersonalizationAT: React.FC<XperienceProps> = ({ displayName, token, setToken, activityIndex, setActivityIndex, experienceIndex, setExperienceIndex, trueAudienceId, setTrueAudienceId, country, hobby, age, refreshKey}) => {
+  useLayoutEffect(() => {
+    console.log(refreshKey);
     AtJs().then(() => {
       if (window.adobe && window.adobe.target) {
+        const doc = document.getElementsByClassName('mbox-name-target-demo-site-at-mbox');
         window.adobe.target.getOffers({
           request: {
             experienceCloud: {
@@ -30,7 +36,10 @@ const PersonalizationAT: React.FC<XperienceProps> = ({ displayName, token, setTo
                 index: 0,
                 name: "target-demo-site-at-mbox",
                 profileParameters: {
-                  "user.422": displayName
+                  "user.422": displayName,
+                  "user.country": country,
+                  "user.hobby": hobby,
+                  "user.age": age
                 }
               }]
             }
@@ -45,7 +54,7 @@ const PersonalizationAT: React.FC<XperienceProps> = ({ displayName, token, setTo
               window.adobe.target?.applyOffers({
                 selector: `.mbox-name-${el.name}`,
                 response: {
-                  prefetch: {
+                  execute: {
                     mboxes: [el]
                   }
                 }
@@ -60,7 +69,9 @@ const PersonalizationAT: React.FC<XperienceProps> = ({ displayName, token, setTo
       }
     })
 
-  }, []);
+  }, [refreshKey, displayName, country, hobby, age]);
+
+
 
   const handleSetToken = (newToken: string, activityId: number, experienceId: number) => {
     setToken(newToken);

@@ -4,13 +4,24 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import PersonalizationAT from './pages/PersonalizationAT';
 import PersonalizationATXP from './pages/PersonalizedATXP';
+import { PersonaProvider, usePersona } from './components/Persona';
 
 const App: React.FC = () => {
-  const [displayName, setDisplayName] = useState('');
   const [token, setToken] = useState('');
   const [activityIndex, setActivityIndex] = useState(0);
   const [experienceIndex, setExperienceIndex] = useState(0);
   const [trueAudienceId, setTrueAudienceId] = useState(0);
+
+  const [displayName, setDisplayName] = useState('');
+  const [country, setCountry] = useState('');
+  const [hobby, setHobby] = useState('');
+  const [age, setAge] = useState('');
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const handlePersonaSave = () => {
+    // Increment the refresh key to trigger re-render
+    setRefreshKey(prevKey => prevKey + 1);
+  };
   useEffect(() => {
     // Check if the Adobe Target library is loaded
     // if (window.adobe && window.adobe.target) {
@@ -22,18 +33,65 @@ const App: React.FC = () => {
     }
   }, []);
   return (
-    <Router>
-      <Header displayName={displayName} setDisplayName={setDisplayName} />
-      <Routes>
-        <Route path="/target-demo-site/personalization/at" element={<PersonalizationAT displayName={displayName} token={token} setToken={setToken} activityIndex={activityIndex}
-                                                                                       setActivityIndex={setActivityIndex} experienceIndex={experienceIndex} setExperienceIndex={setExperienceIndex}
-                                                                                       trueAudienceId={trueAudienceId} setTrueAudienceId={setTrueAudienceId}/>} />
-        <Route path="/target-demo-site/personalization/at/xp" element={<PersonalizationATXP displayName={displayName} token={token} activityIndex={activityIndex}
-                                                                experienceIndex={experienceIndex} trueAudienceId={trueAudienceId}/>} />
-      </Routes>
-      <Footer />
-    </Router>
+    <PersonaProvider>
+      <Router>
+        <Header refreshOnSave={handlePersonaSave}/>
+        <Routes>
+          <Route
+            path="/target-demo-site/personalization/at"
+            element={
+              <PersonaConsumer>
+                {({ displayName, country, hobby, age }) => (
+                  <PersonalizationAT
+                    displayName={displayName}
+                    token={token}
+                    setToken={setToken}
+                    activityIndex={activityIndex}
+                    setActivityIndex={setActivityIndex}
+                    experienceIndex={experienceIndex}
+                    setExperienceIndex={setExperienceIndex}
+                    trueAudienceId={trueAudienceId}
+                    setTrueAudienceId={setTrueAudienceId}
+                    country={country}
+                    hobby={hobby}
+                    age={age}
+                    refreshKey={refreshKey}
+                  />
+                )}
+              </PersonaConsumer>
+            }
+          />
+          <Route
+            path="/target-demo-site/personalization/at/xp"
+            element={
+              <PersonaConsumer>
+                {({ displayName, country, hobby, age }) => (
+                  <PersonalizationATXP
+                    displayName={displayName}
+                    token={token}
+                    activityIndex={activityIndex}
+                    experienceIndex={experienceIndex}
+                    trueAudienceId={trueAudienceId}
+                    country={country}
+                    hobby={hobby}
+                    age={age}
+                    refreshKey={refreshKey}
+                  />
+                )}
+              </PersonaConsumer>
+            }
+          />
+        </Routes>
+        <Footer />
+      </Router>
+    </PersonaProvider>
   );
+
 }
+
+const PersonaConsumer: React.FC<{ children: (value: any) => React.ReactNode }> = ({ children }) => {
+  const persona = usePersona(); // Hook to access persona context
+  return <>{children(persona)}</>; // Pass persona context to children
+};
 
 export default App;

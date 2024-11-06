@@ -1,13 +1,10 @@
-import React, { useState, ReactNode, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { usePersona } from './Persona';  // Import the context hook
 
 interface DropdownMenuProps {
   title: string;
-  children: ReactNode;
-}
-interface HeaderProps {
-  displayName: string;
-  setDisplayName: (name: string) => void;
+  children: React.ReactNode;
 }
 
 const DropdownMenu: React.FC<DropdownMenuProps> = ({ title, children }) => {
@@ -25,18 +22,56 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ title, children }) => {
   );
 };
 
-const Header: React.FC<HeaderProps> = ({ displayName, setDisplayName }) => {
-  useEffect(() => {
-  }, []);
-  const [inputName, setInputName] = useState('');
+const Header: React.FC<{ refreshOnSave: () => void }> = ({ refreshOnSave }) => {
+  const { displayName, setDisplayName, country, setCountry, hobby, setHobby, age, setAge, refreshKey, setRefreshKey} = usePersona();  // Use the context here
 
-  const handleSetName = () => {
-    setDisplayName(inputName);
+  // List of possible values for each field
+  const nameOptions = ['Alice', 'Bob', 'Charlie', 'David'];
+  const countryOptions = ['USA', 'Canada', 'UK', 'Germany'];
+  const hobbyOptions = ['Reading', 'Sports', 'Cooking', 'Traveling'];
+  const ageOptions = ['25', '30', '35', '40'];
+
+  const getRandomValue = (options: string[]) => {
+    return options[Math.floor(Math.random() * options.length)];
+  };
+
+  const [inputName, setInputName] = useState(displayName || '');
+  const [inputCountry, setInputCountry] = useState(country || '');
+  const [inputHobby, setInputHobby] = useState(hobby || '');
+  const [inputAge, setInputAge] = useState(age || '');
+
+  // Populate fields on component load if they are empty
+  useEffect(() => {
+    const shouldSave = !displayName || !country || !hobby || !age;
+    if (!displayName) setInputName(getRandomValue(nameOptions));
+    if (!country) setInputCountry(getRandomValue(countryOptions));
+    if (!hobby) setInputHobby(getRandomValue(hobbyOptions));
+    if (!age) setInputAge(getRandomValue(ageOptions));
+    if (shouldSave) handleSave();
+  }, [displayName, country, hobby, age, refreshKey]);
+
+  const handleSave = (event?: any) => {
+    if (event) {
+      event.preventDefault();
+    }
+    // If input fields are empty, generate random values
+    const savedName = inputName || getRandomValue(nameOptions);
+    const savedCountry = inputCountry || getRandomValue(countryOptions);
+    const savedHobby = inputHobby || getRandomValue(hobbyOptions);
+    const savedAge = inputAge || getRandomValue(ageOptions);
+
+    // Save the updated persona information
+    setDisplayName(savedName);
+    setCountry(savedCountry);
+    setHobby(savedHobby);
+    setAge(savedAge);
+    // Increment the refresh key to trigger re-render
+    refreshOnSave();
   };
 
   return (
     <header>
-      {/* Input and Set Name button above the title */}
+      {/* Input fields for Name, Country, Hobby, and Age */}
       <div style={{ marginBottom: '20px' }}>
         <label htmlFor="name-input">Enter Name:</label>
         <input
@@ -47,10 +82,52 @@ const Header: React.FC<HeaderProps> = ({ displayName, setDisplayName }) => {
           placeholder="Enter your name"
           style={{ marginLeft: '10px' }}
         />
-        <button onClick={handleSetName} style={{ marginLeft: '10px' }}>Set Name</button>
       </div>
 
-      {displayName && <p>User.422 profile param set to: {displayName}</p>}
+      <div style={{ marginBottom: '20px' }}>
+        <label htmlFor="country-input">Enter Country:</label>
+        <input
+          id="country-input"
+          type="text"
+          value={inputCountry}
+          onChange={(e) => setInputCountry(e.target.value)}
+          placeholder="Enter your country"
+          style={{ marginLeft: '10px' }}
+        />
+      </div>
+
+      <div style={{ marginBottom: '20px' }}>
+        <label htmlFor="hobby-input">Enter Hobby:</label>
+        <input
+          id="hobby-input"
+          type="text"
+          value={inputHobby}
+          onChange={(e) => setInputHobby(e.target.value)}
+          placeholder="Enter your hobby"
+          style={{ marginLeft: '10px' }}
+        />
+      </div>
+
+      <div style={{ marginBottom: '20px' }}>
+        <label htmlFor="age-input">Enter Age:</label>
+        <input
+          id="age-input"
+          type="text"
+          value={inputAge}
+          onChange={(e) => setInputAge(e.target.value)}
+          placeholder="Enter your age"
+          style={{ marginLeft: '10px' }}
+        />
+      </div>
+
+      {/* Displaying profile details */}
+      {displayName && <p>User profile param set to: {displayName}</p>}
+      {country && <p>Country: {country}</p>}
+      {hobby && <p>Hobby: {hobby}</p>}
+      {age && <p>Age: {age}</p>}
+
+      {/* Save button that triggers the persona data saving */}
+      <button onClick={handleSave}>Save</button>
 
       <h1>Target demo site with at.js delivery</h1>
       <nav>
@@ -66,9 +143,9 @@ const Header: React.FC<HeaderProps> = ({ displayName, setDisplayName }) => {
 
         <Link to="/target-demo-site/personalization/ap">Personalization AP</Link>
         <Link to="/target-demo-site/experience-targeting">Experience Targeting</Link>
-
         <Link to="/target-demo-site/mvt">MVT</Link>
 
+        {/* Other Dropdown Menus */}
         <DropdownMenu title="Recs">
           <Link to="/target-demo-site/criteria_sequence">Criteria Sequence</Link>
           <DropdownMenu title="Cart">
@@ -90,12 +167,18 @@ const Header: React.FC<HeaderProps> = ({ displayName, setDisplayName }) => {
             <Link to="/target-demo-site/popularity/top-sellers-by-category">Top Sellers by Category</Link>
             <Link to="/target-demo-site/popularity/top-sellers-by-item-attribute">Top Sellers by Item Attribute</Link>
             <DropdownMenu title="Analytics">
-              <Link to="/target-demo-site/popularity/most-viewed-across-site-analytics">Most Viewed Across Site Analytics</Link>
-              <Link to="/target-demo-site/popularity/most-viewed-by-category-analytics">Most Viewed by Category Analytics</Link>
-              <Link to="/target-demo-site/popularity/most-viewed-by-attribute-analytics">Most Viewed by Attribute Analytics</Link>
-              <Link to="/target-demo-site/popularity/top-sellers-across-site-analytics">Top Sellers Across Site Analytics</Link>
-              <Link to="/target-demo-site/popularity/top-sellers-by-category-analytics">Top Sellers by Category Analytics</Link>
-              <Link to="/target-demo-site/popularity/top-sellers-by-item-attribute-analytics">Top Sellers by Item Attribute Analytics</Link>
+              <Link to="/target-demo-site/popularity/most-viewed-across-site-analytics">Most Viewed Across Site
+                Analytics</Link>
+              <Link to="/target-demo-site/popularity/most-viewed-by-category-analytics">Most Viewed by Category
+                Analytics</Link>
+              <Link to="/target-demo-site/popularity/most-viewed-by-attribute-analytics">Most Viewed by Attribute
+                Analytics</Link>
+              <Link to="/target-demo-site/popularity/top-sellers-across-site-analytics">Top Sellers Across Site
+                Analytics</Link>
+              <Link to="/target-demo-site/popularity/top-sellers-by-category-analytics">Top Sellers by Category
+                Analytics</Link>
+              <Link to="/target-demo-site/popularity/top-sellers-by-item-attribute-analytics">Top Sellers by Item
+                Attribute Analytics</Link>
             </DropdownMenu>
           </DropdownMenu>
 
@@ -105,9 +188,9 @@ const Header: React.FC<HeaderProps> = ({ displayName, setDisplayName }) => {
             <Link to="/target-demo-site/item/bought_bought">Bought Bought</Link>
             <Link to="/target-demo-site/item/content_similarity">Content Similarity</Link>
             <DropdownMenu title="Analytics">
-              <Link to="/target-demo-site/item//viewed_viewed_analytics">Viewed Viewed Analytics</Link>
-              <Link to="/target-demo-site/item//viewed_bought_analytics">Viewed Bought Analytics</Link>
-              <Link to="/target-demo-site/item//bought_bought_analytics">Bought Bought Analytics</Link>
+              <Link to="/target-demo-site/item/viewed_viewed_analytics">Viewed Viewed Analytics</Link>
+              <Link to="/target-demo-site/item/viewed_bought_analytics">Viewed Bought Analytics</Link>
+              <Link to="/target-demo-site/item/bought_bought_analytics">Bought Bought Analytics</Link>
             </DropdownMenu>
           </DropdownMenu>
 

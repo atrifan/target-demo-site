@@ -7,9 +7,13 @@ interface XperienceProps {
   activityIndex: number;
   experienceIndex: number;
   trueAudienceId: number;// Prop to receive the display name
+  country: string;
+  hobby: string;
+  age: string;
+  refreshKey: number;
 }
 
-const PersonalizationATXP: React.FC<XperienceProps> = ({ displayName, token, activityIndex, experienceIndex, trueAudienceId }) => {
+const PersonalizationATXP: React.FC<XperienceProps> = ({ displayName, token, activityIndex, experienceIndex, trueAudienceId, country, hobby, age, refreshKey}) => {
   useEffect(() => {
     AtJs().then(() => {
       if (window.adobe && window.adobe.target) {
@@ -25,7 +29,10 @@ const PersonalizationATXP: React.FC<XperienceProps> = ({ displayName, token, act
                 index: 0,
                 name: "target-demo-site-at-mbox",
                 profileParameters: {
-                  "user.422": displayName
+                  "user.422": displayName,
+                  "user.country": country,
+                  "user.hobby": hobby,
+                  "user.age": age
                 }
               }]
             }
@@ -55,7 +62,7 @@ const PersonalizationATXP: React.FC<XperienceProps> = ({ displayName, token, act
           });
       }
     })
-  }, []);
+  }, [refreshKey]);
   return (
     <main>
         <div data-mbox="target-demo-site-at-mbox" className="mbox-name-target-demo-site-at-mbox" data-at-mbox-name="target-demo-site-at-mbox">
