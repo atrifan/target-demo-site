@@ -47,7 +47,19 @@ const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, set
                                     "user.age": age
                                 },
                                 "parameters": {
-                                    "event10": 1234
+                                    /**
+                                     *   DETAILS_ONLY("detailsOnly"),
+                                     *   VIEW("view"),
+                                     *   CART_ADD("scAdd"),
+                                     *   CART_VIEW("scView"),
+                                     *   CART_REMOVE("scRemove"),
+                                     *   CART_OPEN("scOpen"),
+                                     *   CART_CHECKOUT("scCheckout"),
+                                     *   PURCHASE("purchase");
+                                     */
+                                    //"entity.event.purchase": "product.id"
+                                    //"orderTotal": 100
+                                    //you can send eve
                                 }
                             }]
                         }

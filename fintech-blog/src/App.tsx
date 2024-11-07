@@ -7,6 +7,8 @@ import PersonalizationATXP from './pages/PersonalizedATXP';
 import { PersonaProvider, usePersona } from './components/Persona';
 import PersonalizationAAA4T from './pages/PersonalizationAAA4T';
 import PersonalizationAAA4TXP from './pages/PersonalizationAAA4TXP';
+import PersonalizationAAXP from './pages/PersonalizationAAXP';
+import PersonalizationAA from './pages/PersonalizationAA';
 
 const App: React.FC = () => {
   const [token, setToken] = useState('');
@@ -81,6 +83,51 @@ const App: React.FC = () => {
                     age={age}
                     refreshKey={refreshKey}
                     reportingServer={reportingServer}
+                  />
+                )}
+              </PersonaConsumer>
+            }
+          />
+
+          <Route
+            path="/target-demo-site/personalization/aa"
+            element={
+              <PersonaConsumer>
+                {({ displayName, country, hobby, age }) => (
+                  <PersonalizationAA
+                    displayName={displayName}
+                    token={token}
+                    setToken={setToken}
+                    activityIndex={activityIndex}
+                    setActivityIndex={setActivityIndex}
+                    experienceIndex={experienceIndex}
+                    setExperienceIndex={setExperienceIndex}
+                    trueAudienceId={trueAudienceId}
+                    setTrueAudienceId={setTrueAudienceId}
+                    country={country}
+                    hobby={hobby}
+                    age={age}
+                    refreshKey={refreshKey}
+                  />
+                )}
+              </PersonaConsumer>
+            }
+          />
+          <Route
+            path="/target-demo-site/personalization/aa/xp"
+            element={
+              <PersonaConsumer>
+                {({ displayName, country, hobby, age }) => (
+                  <PersonalizationAAXP
+                    displayName={displayName}
+                    token={token}
+                    activityIndex={activityIndex}
+                    experienceIndex={experienceIndex}
+                    trueAudienceId={trueAudienceId}
+                    country={country}
+                    hobby={hobby}
+                    age={age}
+                    refreshKey={refreshKey}
                   />
                 )}
               </PersonaConsumer>
