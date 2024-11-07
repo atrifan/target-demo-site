@@ -5,12 +5,15 @@ import Footer from './components/Footer';
 import PersonalizationAT from './pages/PersonalizationAT';
 import PersonalizationATXP from './pages/PersonalizedATXP';
 import { PersonaProvider, usePersona } from './components/Persona';
+import PersonalizationAAA4T from './pages/PersonalizationAAA4T';
+import PersonalizationAAA4TXP from './pages/PersonalizationAAA4TXP';
 
 const App: React.FC = () => {
   const [token, setToken] = useState('');
   const [activityIndex, setActivityIndex] = useState(0);
   const [experienceIndex, setExperienceIndex] = useState(0);
   const [trueAudienceId, setTrueAudienceId] = useState(0);
+  const [reportingServer, setReportingServer] = useState('adobetargeteng.d1.sc.omtrdc.net');
 
   const [displayName, setDisplayName] = useState('');
   const [country, setCountry] = useState('');
@@ -37,6 +40,52 @@ const App: React.FC = () => {
       <Router>
         <Header refreshOnSave={handlePersonaSave}/>
         <Routes>
+          <Route
+            path="/target-demo-site/personalization/aa/a4t"
+            element={
+              <PersonaConsumer>
+                {({ displayName, country, hobby, age }) => (
+                  <PersonalizationAAA4T
+                    displayName={displayName}
+                    token={token}
+                    setToken={setToken}
+                    activityIndex={activityIndex}
+                    setActivityIndex={setActivityIndex}
+                    experienceIndex={experienceIndex}
+                    setExperienceIndex={setExperienceIndex}
+                    trueAudienceId={trueAudienceId}
+                    setTrueAudienceId={setTrueAudienceId}
+                    country={country}
+                    hobby={hobby}
+                    age={age}
+                    refreshKey={refreshKey}
+                    reportingServer={reportingServer}
+                  />
+                )}
+              </PersonaConsumer>
+            }
+          />
+          <Route
+            path="/target-demo-site/personalization/aa/a4t/xp"
+            element={
+              <PersonaConsumer>
+                {({ displayName, country, hobby, age }) => (
+                  <PersonalizationAAA4TXP
+                    displayName={displayName}
+                    token={token}
+                    activityIndex={activityIndex}
+                    experienceIndex={experienceIndex}
+                    trueAudienceId={trueAudienceId}
+                    country={country}
+                    hobby={hobby}
+                    age={age}
+                    refreshKey={refreshKey}
+                    reportingServer={reportingServer}
+                  />
+                )}
+              </PersonaConsumer>
+            }
+          />
           <Route
             path="/target-demo-site/personalization/at"
             element={

@@ -48,7 +48,7 @@ const PersonalizationATXP: React.FC<XperienceProps> = ({ displayName, token, act
               window.adobe.target?.applyOffers({
                 selector: `.mbox-name-${el.name}`,
                 response: {
-                  prefetch: {
+                  execute: {
                     mboxes: [el]
                   }
                 }

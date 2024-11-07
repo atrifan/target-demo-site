@@ -1,6 +1,16 @@
+const clearAllCookies = () => {
+  const cookies = document.cookie.split(";");
+
+  cookies.forEach((cookie) => {
+    console.log(cookie);
+    const cookieName = cookie.split("=")[0].trim();
+    document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  });
+};
 export default async function AtJs() {
   if (window.adobe && window.adobe.target) {
     window.adobe.target = undefined;
+    clearAllCookies();
   }
   return new Promise((resolve, reject) => {
     if (!window.adobe || !window.adobe.target) {

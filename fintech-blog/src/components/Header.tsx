@@ -133,8 +133,8 @@ const Header: React.FC<{ refreshOnSave: () => void }> = ({ refreshOnSave }) => {
       <nav>
         <DropdownMenu title="A/B">
           <Link to="/target-demo-site/manual-allocate">Manual Allocate</Link>
-          <Link to="/target-demo-site/auto-allocate">Auto Allocate</Link>
-          <Link to="/target-demo-site/auto-allocate-a4t">Auto Allocate A4T</Link>
+          <Link to="/target-demo-site/personalization/aa">Auto Allocate</Link>
+          <Link to="/target-demo-site/personalization/aa/a4t">Auto Allocate A4T</Link>
           <DropdownMenu title="Personalization">
             <Link to="/target-demo-site/personalization/at">Personalization AT</Link>
             <Link to="/target-demo-site/personalization/at-a4t">Personalization AT A4T</Link>

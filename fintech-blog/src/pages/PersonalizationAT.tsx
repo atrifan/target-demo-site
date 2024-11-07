@@ -39,7 +39,8 @@ const PersonalizationAT: React.FC<XperienceProps> = ({ displayName, token, setTo
                   "user.422": displayName,
                   "user.country": country,
                   "user.hobby": hobby,
-                  "user.age": age
+                  "user.age": age,
+                  "brand.bought": "offline"
                 }
               }]
             }
@@ -122,7 +123,7 @@ const PersonalizationAT: React.FC<XperienceProps> = ({ displayName, token, setTo
           marginTop: '20px'
         }}
         >
-          <h3>The winner served experience is:</h3>
+          <h3>The served experience is:</h3>
           <div data-mbox="target-demo-site-at-mbox" className="mbox-name-target-demo-site-at-mbox"
                data-at-mbox-name="target-demo-site-at-mbox">
 
