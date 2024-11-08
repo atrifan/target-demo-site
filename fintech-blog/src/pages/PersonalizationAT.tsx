@@ -28,7 +28,7 @@ const PersonalizationAT: React.FC<XperienceProps> = ({ displayName, token, setTo
           request: {
             experienceCloud: {
               analytics: {
-                logging: "client_side"
+                logging: "server_side"
               }
             },
             execute: {

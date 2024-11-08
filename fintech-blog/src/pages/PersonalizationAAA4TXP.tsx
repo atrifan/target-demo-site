@@ -97,6 +97,15 @@ const PersonalizationAAA4TXP: React.FC<XperienceProps> = ({ displayName, token, 
                   });
             }
         })
+        return () => {
+            Promise.all(cleanupEvents).then((cleanupEvents) => {
+                cleanupEvents.forEach((cleanup) => {
+                    if(cleanup) {
+                        cleanup();
+                    }
+                });
+            });
+        }
     }, [refreshKey]);
     return (
       <main>

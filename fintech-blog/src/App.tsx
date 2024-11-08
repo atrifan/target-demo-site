@@ -9,6 +9,8 @@ import PersonalizationAAA4T from './pages/PersonalizationAAA4T';
 import PersonalizationAAA4TXP from './pages/PersonalizationAAA4TXP';
 import PersonalizationAAXP from './pages/PersonalizationAAXP';
 import PersonalizationAA from './pages/PersonalizationAA';
+import PersonalizationATA4TXP from './pages/PersonalizedATA4TXP';
+import PersonalizationATA4T from './pages/PersonalizationATA4T';
 
 const App: React.FC = () => {
   const [token, setToken] = useState('');
@@ -73,6 +75,53 @@ const App: React.FC = () => {
               <PersonaConsumer>
                 {({ displayName, country, hobby, age }) => (
                   <PersonalizationAAA4TXP
+                    displayName={displayName}
+                    token={token}
+                    activityIndex={activityIndex}
+                    experienceIndex={experienceIndex}
+                    trueAudienceId={trueAudienceId}
+                    country={country}
+                    hobby={hobby}
+                    age={age}
+                    refreshKey={refreshKey}
+                    reportingServer={reportingServer}
+                  />
+                )}
+              </PersonaConsumer>
+            }
+          />
+
+          <Route
+            path="/target-demo-site/personalization/at/a4t"
+            element={
+              <PersonaConsumer>
+                {({ displayName, country, hobby, age }) => (
+                  <PersonalizationATA4T
+                    displayName={displayName}
+                    token={token}
+                    setToken={setToken}
+                    activityIndex={activityIndex}
+                    setActivityIndex={setActivityIndex}
+                    experienceIndex={experienceIndex}
+                    setExperienceIndex={setExperienceIndex}
+                    trueAudienceId={trueAudienceId}
+                    setTrueAudienceId={setTrueAudienceId}
+                    country={country}
+                    hobby={hobby}
+                    age={age}
+                    refreshKey={refreshKey}
+                    reportingServer={reportingServer}
+                  />
+                )}
+              </PersonaConsumer>
+            }
+          />
+          <Route
+            path="/target-demo-site/personalization/at/a4t/xp"
+            element={
+              <PersonaConsumer>
+                {({ displayName, country, hobby, age }) => (
+                  <PersonalizationATA4TXP
                     displayName={displayName}
                     token={token}
                     activityIndex={activityIndex}
