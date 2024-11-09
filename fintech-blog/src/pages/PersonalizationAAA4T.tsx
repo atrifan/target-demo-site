@@ -85,9 +85,11 @@ const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, set
                                       const events = el.analytics.payload.tnta.split(',');
                                       const revenueEvent = events[0].split('|');
                                       //I a sending on event10 :) the revenue
-                                      const tnta = `${el.analytics.payload.tnta},${revenueEvent[0]}|10}`;
+                                      const tnta = `${el.analytics.payload.tnta},${revenueEvent[0]}|10`;
+                                      console.log(el.analytics.payload)
+                                      const sessionId = el.analytics.payload["session-id"];
                                       console.log(tnta);
-                                      fetch(`https://${reportingServer}/b/ss/atetrifandemo/0/MOBILE-1.0?pe=tnt&tnta=${tnta}&mid=${mcId}`, {
+                                      fetch(`https://${reportingServer}/b/ss/atetrifandemo/0/MOBILE-1.0?pe=tnt&tnta=${tnta}&mid=${mcId}&sessionId=${sessionId}&session-id=${sessionId}`, {
                                           method: "GET",
                                           headers: {
                                               "Content-Type": "text/plain"
@@ -168,7 +170,7 @@ const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, set
 
               <div style={{ marginBottom: '20px' }}>
                   <Link
-                    to="/target-demo-site/personalization/aa/a4t/xp?at_preview_token=EO7Sp4vPtlZgWG9OFQvQOIsfdKGAJyg5DsJ3XxNj67A&at_preview_index=1_2&at_preview_listed_activities_only=true&at_preview_evaluate_as_true_audience_ids=3440621"
+                    to="/target-demo-site/personalization/aa/a4t/xp?at_preview_token=EO7Sp4vPtlZgWG9OFQvQOIsfdKGAJyg5DsJ3XxNj67A&at_preview_index=1_3&at_preview_listed_activities_only=true&at_preview_evaluate_as_true_audience_ids=3440621"
                     style={{ textDecoration: 'none', color: '#000', fontSize: '18px' }}
                     onClick={() => handleSetToken('ZkuLDeLZ6SdSR9RthgNI2osfdKGAJyg5DsJ3XxNj67A', 1, 3)}
                   >
