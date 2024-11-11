@@ -82,14 +82,22 @@ const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, set
                               }).then((e) => {
                                   resolve(Tracker('.conversion', () => {
                                       const mcId = getMcId();
+                                      var s_account = "atetrifandemo";
+//                                       let s: any = window.s_gi(s_account);
+//
+// // Make sure data is sent to the correct tracking server
+//                                       s.trackingServer = reportingServer;
+//                                       s.events="event10=1";
+//                                       console.log(s);
+//                                       s.t()
                                       const events = el.analytics.payload.tnta.split(',');
                                       const revenueEvent = events[0].split('|');
                                       //I a sending on event10 :) the revenue
-                                      const tnta = `${el.analytics.payload.tnta},${revenueEvent[0]}|10`;
+                                      const tnta = `${el.analytics.payload.tnta},${revenueEvent[0]}|32767`;
                                       console.log(el.analytics.payload)
                                       const sessionId = el.analytics.payload["session-id"];
                                       console.log(tnta);
-                                      fetch(`https://${reportingServer}/b/ss/atetrifandemo/0/MOBILE-1.0?pe=tnt&tnta=${tnta}&mid=${mcId}&sessionId=${sessionId}&session-id=${sessionId}`, {
+                                      fetch(`https://${reportingServer}/b/ss/atetrifandemo/0/TA-1.0?pe=tnt&tnta=${tnta}&mid=${mcId}&session-id=${sessionId}&events=event10=1`, {
                                           method: "GET",
                                           headers: {
                                               "Content-Type": "text/plain"

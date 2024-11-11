@@ -62,10 +62,10 @@ const PersonalizationATA4TXP: React.FC<XperienceProps> = ({ displayName, token, 
                     const events = el.analytics.payload.tnta.split(',');
                     const revenueEvent = events[0].split('|');
                     //I a sending on event10 :) the revenue
-                    const tnta = `${el.analytics.payload.tnta},${revenueEvent[0]}|32`;
+                    const tnta = `${el.analytics.payload.tnta},${revenueEvent[0]}|32767`;
                     const sessionId = el.analytics.payload["session-id"];
                     console.log(tnta);
-                    fetch(`https://${reportingServer}/b/ss/atetrifandemo/0/MOBILE-1.0?pe=tnt&tnta=${tnta}&mid=${mcId}&sessionId=${sessionId}&session-id=${sessionId}`, {
+                    fetch(`https://${reportingServer}/b/ss/atetrifandemo/0/TA-1.0?pe=tnt&tnta=${tnta}&mid=${mcId}&session-id=${sessionId}&events=event32=1`, {
                       method: "GET",
                       headers: {
                         "Content-Type": "text/plain"
