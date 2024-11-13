@@ -158,10 +158,21 @@ export const generateViewsWithConversions = (number: string, setModalVisible: an
             eventBreakDown[2] = '1';
             return eventBreakDown.join(':');
           }).join(',');
+
+
           const events = tntaData.split(',');
           const revenueEvent = events.filter((event: string) => {
             return event.split('|')[0].split(":").length === 4;
           })[0].split("|");
+
+          if (tntaData.indexOf("|1") == -1) {
+            tntaData = `${tntaData},${revenueEvent[0]}|1`;
+          }
+
+          //no unique
+          if (tntaData.indexOf("|0") == -1) {
+            tntaData = `${tntaData},${revenueEvent[0]}|0`;
+          }
 
           let viewsLink = `https://${reportingServer}/b/ss/atetrifandemo/0/TA-1.0?pe=tnt&tnta=${tntaData}&mid=${mcId}&session-id=${el.analytics.payload["session-id"]}`
           if(conversion) {
@@ -182,5 +193,5 @@ export const generateViewsWithConversions = (number: string, setModalVisible: an
       setModalVisible(false);
       clearInterval(interval);
     }
-  }, 100);
+  }, 200);
 }
