@@ -1,9 +1,10 @@
 //initialize AppMeasurement
-var s_account="toa.demo"
+var s_account="atetrifandemo"
 var s=s_gi(s_account)
 
 /******** VISITOR ID SERVICE CONFIG - REQUIRES VisitorAPI.js ********/
 s.visitor=Visitor.getInstance("011B56B451AE49A90A490D4D@AdobeOrg")
+
 
 /************************** CONFIG SECTION **************************/
 /* You may add or alter any code config here. */
