@@ -1,8 +1,9 @@
-import React, { useEffect, useLayoutEffect } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import AtJs from '../lib/atJs';
+import AtJs, { clearAllCookies, generateToken, generateViewsWithConversions, updateQueryParam } from '../lib/atJs';
 import Tracker from '../lib/tracker';
-import getMcId from '../lib/visitor';
+import getMcId, { getSdId, trackEvent } from '../lib/visitor';
+import LoadingModal from '../components/LoadingModal';
 
 interface XperienceProps {
   displayName: string;
@@ -14,26 +15,33 @@ interface XperienceProps {
   setExperienceIndex: (index: number) => void;
   setTrueAudienceId: (id: number) => void;
   setToken: (name: string) => void;
+  setTntA: (tntA: string) => void;
   country: string;
   hobby: string;
   age: string;
   refreshKey: number;
   reportingServer: string;
+  mcId: string;
+
 }
 
-const PersonalizationATA4T: React.FC<XperienceProps> = ({ displayName, token, setToken, activityIndex, setActivityIndex, experienceIndex, setExperienceIndex, trueAudienceId, setTrueAudienceId, country, hobby, age, refreshKey, reportingServer}) => {
+const PersonalizationATA4T: React.FC<XperienceProps> = ({ displayName, token, setToken, activityIndex, setActivityIndex, experienceIndex, setExperienceIndex, trueAudienceId, setTrueAudienceId, country, hobby, age, refreshKey, reportingServer, setTntA, mcId}) => {
+  const [isModalVisible, setModalVisible] = useState(false);
   useLayoutEffect(() => {
     let cleanupEvents: [Promise<any>?] = [];
     console.log(refreshKey);
+    const mcIdToUse = mcId.length > 0 ? mcId : getMcId();
     AtJs().then(() => {
       if (window.adobe && window.adobe.target) {
-        const doc = document.getElementsByClassName('mbox-name-target-demo-site-at-mbox');
         window.adobe.target.getOffers({
           request: {
+            id: {
+              marketingCloudVisitorId: mcIdToUse,
+            },
             experienceCloud: {
               analytics: {
                 trackingServer: reportingServer,
-                logging: "client_side"
+                logging: "server_side"
               }
             },
             execute: {
@@ -41,7 +49,7 @@ const PersonalizationATA4T: React.FC<XperienceProps> = ({ displayName, token, se
                 index: 0,
                 name: "target-demo-site-at-a4t-mbox",
                 profileParameters: {
-                  "user.422": displayName,
+                  "user.422": `${displayName}-${Date.now()}`,
                   "user.country": country,
                   "user.hobby": hobby,
                   "user.age": age,
@@ -51,11 +59,45 @@ const PersonalizationATA4T: React.FC<XperienceProps> = ({ displayName, token, se
             }
           }
         })
-          .then(response => {
+          .then(async (response) => {
             const mboxes: any[] = response.execute.mboxes;
             let count = 1;
+            //burn the first suplemental data id;
+            //need to get it after the first get offers because it will be reset afterwards
+            //burn the first one
+            window.s.visitor.getSupplementalDataID();
+            const sdid = window.s.visitor.getSupplementalDataID();
 
-            mboxes.forEach(el => {
+            const clientSideLogging = await window.adobe.target?.getOffers({
+              request: {
+                id: {
+                  marketingCloudVisitorId: mcIdToUse,
+                },
+                experienceCloud: {
+                  analytics: {
+                    trackingServer: reportingServer,
+                    supplementalDataId: sdid,
+                    logging: "client_side"
+                  }
+                },
+                execute: {
+                  mboxes: [{
+                    index: 0,
+                    name: "target-demo-site-at-a4t-mbox",
+                    profileParameters: {
+                      "user.422": `${displayName}-${Date.now()}`,
+                      "user.country": country,
+                      "user.hobby": hobby,
+                      "user.age": age,
+                      "brand.bought": "offline"
+                    }
+                  }]
+                }
+              }
+            })
+
+            setTntA(clientSideLogging.execute.mboxes[0].analytics.payload.tnta);
+            mboxes.forEach((el, idx) => {
               cleanupEvents.push(new Promise((resolve, reject) => {
                 window.adobe.target?.applyOffers({
                   selector: `.mbox-name-${el.name}`,
@@ -64,35 +106,58 @@ const PersonalizationATA4T: React.FC<XperienceProps> = ({ displayName, token, se
                       mboxes: [el]
                     }
                   }
-                }).then((e) => {
-                  resolve(Tracker('.conversion', () => {
-                    const mcId = getMcId();
-                    const events = el.analytics.payload.tnta.split(',');
-                    const revenueEvent = events[0].split('|');
-                    //I a sending on event10 :) the revenue
-                    const tnta = `${el.analytics.payload.tnta},${revenueEvent[0]}|32767`;
-                    console.log(tnta);
-                    fetch(`https://${reportingServer}/b/ss/atetrifandemo/0/TA-1.0?pe=tnt&tnta=${tnta}&mid=${mcId}&session-id=${el.analytics.payload["session-id"]}&events=event32=1`, {
-                      method: "GET",
-                      headers: {
-                        "Content-Type": "text/plain"
-                      },
-                      // Make sure to include credentials if needed, depending on Adobe's CORS policy
-                      credentials: "include" // or "same-origin" if running on the same domain
-                    })
-                      .then(response => {
-                        if (!response.ok) {
-                          throw new Error("Network response was not ok " + response.statusText);
-                        }
-                        return response.text(); // Assuming a plain text response
-                      })
-                      .then(data => {
-                        console.log("Response data:", data);
-                      })
-                      .catch(error => {
-                        console.error("There was a problem with the fetch operation:", error);
-                      });
+                }).then(async (e) => {
+                  //get the offers with client_side analytics
+                  // const response = await window.adobe.target?.getOffers({
+                  //   request: {
+                  //     experienceCloud: {
+                  //       analytics: {
+                  //         trackingServer: reportingServer,
+                  //         logging: "client_side"
+                  //       }
+                  //     },
+                  //     execute: {
+                  //       mboxes: [{
+                  //         index: 0,
+                  //         name: "target-demo-site-at-a4t-mbox",
+                  //         profileParameters: {
+                  //           "user.422": displayName,
+                  //           "user.country": country,
+                  //           "user.hobby": hobby,
+                  //           "user.age": age,
+                  //           "brand.bought": "offline"
+                  //         }
+                  //       }]
+                  //     }
+                  //   }
+                  // });
 
+                  // console.log(response, idx);
+                  // el = response.execute.mboxes[idx];
+                  // console.log(el);
+                  // const mcId = getMcId();
+                  // setTntA(el.analytics.payload.tnta);
+                  // const events = el.analytics.payload.tnta.split(',');
+                  // const revenueEvent = events.filter((event: string) => {
+                  //   return event.split('|')[0].split(":").length === 4;
+                  // })[0].split("|");
+                  // const uniqueViews = events.filter((event: string) => {
+                  //   //remove visits and unique visits and not conversion
+                  //   return !(event.indexOf('|1') !== -1) && !(event.indexOf('|0') !== -1) && !(event.indexOf('|32767') !== -1);
+                  // });
+                  // console.log(uniqueViews);
+                  //
+                  // const viewsLink = `https://${reportingServer}/b/ss/atetrifandemo/0/TA-1.0?pe=tnt&tnta=${el.analytics.payload.tnta}&mid=${mcId}&session-id=${el.analytics.payload["session-id"]}`
+                  // //I a sending on event10 :) the revenue
+                  //
+                  // resolveViewsLink(viewsLink);
+                  // const conversionLink = `https://${reportingServer}/b/ss/atetrifandemo/0/TA-1.0?pe=tnt&tnta=${el.analytics.payload.tnta},${revenueEvent[0]}|32767&mid=${mcId}&session-id=${el.analytics.payload["session-id"]}&events=event32=1`;
+                  // resolveConversionLink(conversionLink);
+
+                  //make the view call
+                  resolve(Tracker('.conversion', () => {
+                    // const conversionLink = `https://${reportingServer}/b/ss/atetrifandemo/0/TA-1.0?pe=tnt&tnta=${revenueEvent[0]}|32767&mid=${mcId}&sdid=${sdId}&events=event32=1`;
+                    trackEvent("event32=1", mcIdToUse, sdid);
                   }));
                 });
               }));
@@ -126,6 +191,14 @@ const PersonalizationATA4T: React.FC<XperienceProps> = ({ displayName, token, se
     setActivityIndex(activityId);
   };
 
+  const generateViews = (number: string) => {
+    generateViewsWithConversions(number, setModalVisible, reportingServer, { displayName, country, hobby, age }, "target-demo-site-at-a4t-mbox");
+  }
+
+  const generateConversions = (number: string) => {
+    generateViewsWithConversions(number, setModalVisible, reportingServer, { displayName, country, hobby, age }, "target-demo-site-at-a4t-mbox", undefined, true, "event32", 1);
+  }
+
   return (
     <main>
       <div style={{ padding: '20px' }}>
@@ -135,7 +208,7 @@ const PersonalizationATA4T: React.FC<XperienceProps> = ({ displayName, token, se
           <Link
             to="/target-demo-site/personalization/at/a4t/xp?at_preview_token=60yEAjPMxQu2AktnKmj0tYsfdKGAJyg5DsJ3XxNj67A&at_preview_index=1_1&at_preview_listed_activities_only=true&at_preview_evaluate_as_true_audience_ids=3440621"
             style={{ textDecoration: 'none', color: '#000', fontSize: '18px' }}
-            onClick={() => handleSetToken('ZkuLDeLZ6SdSR9RthgNI2osfdKGAJyg5DsJ3XxNj67A', 1, 1)}
+            onClick={() => handleSetToken('ZkuLDeLZ6SdSR9RthgNI2osfdKGAJyg5DsJ3XxNj67A', 1, 0)}
           >
             Go to Experience 1
           </Link>
@@ -145,7 +218,7 @@ const PersonalizationATA4T: React.FC<XperienceProps> = ({ displayName, token, se
           <Link
             to="/target-demo-site/personalization/at/a4t/xp?at_preview_token=60yEAjPMxQu2AktnKmj0tYsfdKGAJyg5DsJ3XxNj67A&at_preview_index=1_2&at_preview_listed_activities_only=true&at_preview_evaluate_as_true_audience_ids=3440621"
             style={{ textDecoration: 'none', color: '#000', fontSize: '18px' }}
-            onClick={() => handleSetToken('ZkuLDeLZ6SdSR9RthgNI2osfdKGAJyg5DsJ3XxNj67A', 1, 2)}
+            onClick={() => handleSetToken('ZkuLDeLZ6SdSR9RthgNI2osfdKGAJyg5DsJ3XxNj67A', 1, 1)}
           >
             Go to Experience 2
           </Link>
@@ -155,7 +228,7 @@ const PersonalizationATA4T: React.FC<XperienceProps> = ({ displayName, token, se
           <Link
             to="/target-demo-site/personalization/at/a4t/xp?at_preview_token=60yEAjPMxQu2AktnKmj0tYsfdKGAJyg5DsJ3XxNj67A&at_preview_index=1_3&at_preview_listed_activities_only=true&at_preview_evaluate_as_true_audience_ids=3440621"
             style={{ textDecoration: 'none', color: '#000', fontSize: '18px' }}
-            onClick={() => handleSetToken('ZkuLDeLZ6SdSR9RthgNI2osfdKGAJyg5DsJ3XxNj67A', 1, 3)}
+            onClick={() => handleSetToken('ZkuLDeLZ6SdSR9RthgNI2osfdKGAJyg5DsJ3XxNj67A', 1, 2)}
           >
             Go to Experience 3
           </Link>
@@ -172,10 +245,51 @@ const PersonalizationATA4T: React.FC<XperienceProps> = ({ displayName, token, se
           <h3>The served experience is:</h3>
           <div data-mbox="target-demo-site-at-a4t-mbox" className="mbox-name-target-demo-site-at-a4t-mbox"
                data-at-mbox-name="target-demo-site-at-a4t-mbox">
-
           </div>
+
+          {/* Generate Views without Conversions Section */}
+          <div style={{ marginTop: '20px' }}>
+            <h4>Generate Views without Conversions</h4>
+            <input
+              type="number"
+              placeholder="Enter number of views"
+              id="viewsWithoutConversions"
+              style={{ marginRight: '10px', padding: '5px', width: '100px' }}
+            />
+            <button
+              onClick={() => {
+                const number = (document.getElementById('viewsWithoutConversions') as HTMLInputElement)?.value;
+                generateViews(number);
+              }}
+              style={{ padding: '5px 10px' }}
+            >
+              Generate Views
+            </button>
+          </div>
+
+          {/* Generate Views with Conversions Section */}
+          <div style={{ marginTop: '20px' }}>
+            <h4>Generate Views with Conversions</h4>
+            <input
+              type="number"
+              placeholder="Enter number of views"
+              id="viewsWithConversions"
+              style={{ marginRight: '10px', padding: '5px', width: '100px' }}
+            />
+            <button
+              onClick={() => {
+                const number = (document.getElementById('viewsWithConversions') as HTMLInputElement)?.value;
+                generateConversions(number);
+              }}
+              style={{ padding: '5px 10px' }}
+            >
+              Generate Views with Conversions
+            </button>
+          </div>
+
         </div>
       </div>
+      <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)} />
     </main>
   )
     ;

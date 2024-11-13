@@ -1,8 +1,10 @@
 declare global {
   interface Window {
     targetPageParams: any,
+    targetPageParamsAll: any,
     targetGlobalSettings: any;
     s: any;
+    AppMeasurement: any;
     s_gi: (any) => void;
     adobe: {
       target?: {
@@ -16,7 +18,7 @@ declare global {
       };
       // Add other Adobe properties if necessary
     };
-    Visitor: {
+    Visitor?: {
       getInstance: (imsOrgId: string, config: any) => any;
     }
   }

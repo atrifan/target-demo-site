@@ -11,22 +11,29 @@ import PersonalizationAAXP from './pages/PersonalizationAAXP';
 import PersonalizationAA from './pages/PersonalizationAA';
 import PersonalizationATA4TXP from './pages/PersonalizedATA4TXP';
 import PersonalizationATA4T from './pages/PersonalizationATA4T';
+import { generateToken, getNewCookiePCValue, updateQueryParam } from './lib/atJs';
 
 const App: React.FC = () => {
   const [token, setToken] = useState('');
+  const [tntA, setTntA] = useState('');
   const [activityIndex, setActivityIndex] = useState(0);
   const [experienceIndex, setExperienceIndex] = useState(0);
   const [trueAudienceId, setTrueAudienceId] = useState(0);
   const [reportingServer, setReportingServer] = useState('adobetargeteng.d1.sc.omtrdc.net');
-
   const [displayName, setDisplayName] = useState('');
   const [country, setCountry] = useState('');
   const [hobby, setHobby] = useState('');
   const [age, setAge] = useState('');
+  const [mcId, setMcId] = useState('');
   const [refreshKey, setRefreshKey] = useState(0);
 
   const handlePersonaSave = () => {
     // Increment the refresh key to trigger re-render
+    updateQueryParam('mboxSession', generateToken());
+    //new tntId
+    updateQueryParam("PC", getNewCookiePCValue(generateToken()));
+    //new mcid
+    setMcId(generateToken());
     setRefreshKey(prevKey => prevKey + 1);
   };
   useEffect(() => {
@@ -111,6 +118,8 @@ const App: React.FC = () => {
                     age={age}
                     refreshKey={refreshKey}
                     reportingServer={reportingServer}
+                    setTntA={setTntA}
+                    mcId={mcId}
                   />
                 )}
               </PersonaConsumer>
@@ -132,6 +141,9 @@ const App: React.FC = () => {
                     age={age}
                     refreshKey={refreshKey}
                     reportingServer={reportingServer}
+                    tntA={tntA}
+                    setTntA={setTntA}
+                    mcId={mcId}
                   />
                 )}
               </PersonaConsumer>
