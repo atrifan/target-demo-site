@@ -71,6 +71,7 @@ const App: React.FC = () => {
                     age={age}
                     refreshKey={refreshKey}
                     reportingServer={reportingServer}
+                    mcId={mcId}
                   />
                 )}
               </PersonaConsumer>
@@ -92,6 +93,7 @@ const App: React.FC = () => {
                     age={age}
                     refreshKey={refreshKey}
                     reportingServer={reportingServer}
+                    mcId={mcId}
                   />
                 )}
               </PersonaConsumer>

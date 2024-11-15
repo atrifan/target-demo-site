@@ -27,6 +27,7 @@ interface XperienceProps {
 
 const PersonalizationATA4T: React.FC<XperienceProps> = ({ displayName, token, setToken, activityIndex, setActivityIndex, experienceIndex, setExperienceIndex, trueAudienceId, setTrueAudienceId, country, hobby, age, refreshKey, reportingServer, setTntA, mcId}) => {
   const [isModalVisible, setModalVisible] = useState(false);
+  const [algorithmId, setAlgorithmId] = useState(-1000);
   useLayoutEffect(() => {
     let cleanupEvents: [Promise<any>?] = [];
     console.log(refreshKey);
@@ -192,11 +193,18 @@ const PersonalizationATA4T: React.FC<XperienceProps> = ({ displayName, token, se
   };
 
   const generateViews = (number: string) => {
-    generateViewsWithConversions(number, setModalVisible, reportingServer, { displayName, country, hobby, age }, "target-demo-site-at-a4t-mbox");
+    generateViewsWithConversions(number, setModalVisible, reportingServer, { displayName, country, hobby, age }, "target-demo-site-at-a4t-mbox", undefined, false, undefined, undefined, algorithmId);
   }
 
   const generateConversions = (number: string) => {
-    generateViewsWithConversions(number, setModalVisible, reportingServer, { displayName, country, hobby, age }, "target-demo-site-at-a4t-mbox", undefined, true, "event32", 1);
+    generateViewsWithConversions(number, setModalVisible, reportingServer, { displayName, country, hobby, age }, "target-demo-site-at-a4t-mbox", undefined, true, "event32", 1, algorithmId);
+  }
+
+  const changeAlgorithmId = (number: string) => {
+    if (number.length === 0) {
+      return;
+    }
+    setAlgorithmId(parseInt(number));
   }
 
   return (
@@ -287,9 +295,28 @@ const PersonalizationATA4T: React.FC<XperienceProps> = ({ displayName, token, se
             </button>
           </div>
 
+          <div style={{ marginTop: '20px' }}>
+            <h4>Chang Algorithm Id</h4>
+            <input
+              type="number"
+              placeholder="Change alogrithmId"
+              id="algorithmId"
+              style={{ marginRight: '10px', padding: '5px', width: '100px' }}
+            />
+            <button
+              onClick={() => {
+                const number = (document.getElementById('algorithmId') as HTMLInputElement)?.value;
+                changeAlgorithmId(number);
+              }}
+              style={{ padding: '5px 10px' }}
+            >
+              Save Algorithm ID
+            </button>
+          </div>
+
         </div>
       </div>
-      <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)} />
+      <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)}/>
     </main>
   )
     ;

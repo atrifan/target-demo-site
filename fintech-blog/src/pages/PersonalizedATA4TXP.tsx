@@ -23,6 +23,7 @@ interface XperienceProps {
 
 const PersonalizationATA4TXP: React.FC<XperienceProps> = ({ displayName, token, activityIndex, experienceIndex, trueAudienceId, country, hobby, age, refreshKey, reportingServer, tntA, setTntA, mcId}) => {
   const [isModalVisible, setModalVisible] = useState(false);
+  const [algorithmId, setAlgorithmId] = useState(-1000);
   useEffect(() => {
     let cleanupEvents: [Promise<any>?] = [];
     const mcIdToUse = mcId.length > 0 ? mcId : getMcId();
@@ -85,19 +86,19 @@ const PersonalizationATA4TXP: React.FC<XperienceProps> = ({ displayName, token, 
 
                   //no visits
                   if (newTntA.indexOf("|1") == -1) {
-                    newTntA = `${newTntA},${revenueEvent[0]}|1`;
+                    newTntA = `${revenueEvent[0]}|1,${newTntA}`;
                   }
 
                   //no unique
                   if (newTntA.indexOf("|0") == -1) {
-                    newTntA = `${newTntA},${revenueEvent[0]}|0`;
+                    newTntA = `${revenueEvent[0]}|0,${newTntA}`;
                   }
 
                   setTntA(newTntA);
                   //make the view call
                   resolve(Tracker('.conversion', () => {
                     const sdId = getSdId();
-                    const conversionLink = `https://${reportingServer}/b/ss/atetrifandemo/0/TA-1.0?pe=tnt&tnta=${revenueEvent[0]}|32767&mid=${mcIdToUse}&session-id=${el.analytics.payload["session-id"]}&events=event32=1`;
+                    const conversionLink = `https://${reportingServer}/b/ss/atetrifandemo/0/TA-1.0?pe=tnt&tnta=${revenueEvent[0]}|32767,${revenueEvent[0]}|32|1&mid=${mcIdToUse}&c.a.target.session-id=${el.analytics.payload["session-id"]}&events=event32=1`;
                     fetch(conversionLink, {
                       method: "GET",
                       headers: {
@@ -144,17 +145,26 @@ const PersonalizationATA4TXP: React.FC<XperienceProps> = ({ displayName, token, 
   }, [refreshKey]);
 
   const generateViews = (number: string) => {
-    generateViewsWithConversions(number, setModalVisible, reportingServer, {displayName, country, hobby, age}, 'target-demo-site-at-a4t-mbox', tntA);
+    generateViewsWithConversions(number, setModalVisible, reportingServer, {displayName, country, hobby, age}, 'target-demo-site-at-a4t-mbox', tntA, false, undefined, undefined, algorithmId);
   }
 
   const generateConversions = (number: string) => {
-    generateViewsWithConversions(number, setModalVisible, reportingServer, {displayName, country, hobby, age}, 'target-demo-site-at-a4t-mbox', tntA, true, 'event32', 1);
+    generateViewsWithConversions(number, setModalVisible, reportingServer, {displayName, country, hobby, age}, 'target-demo-site-at-a4t-mbox', tntA, true, 'event32', 1, algorithmId);
   }
+
+  const changeAlgorithmId = (number: string) => {
+    if (number.length === 0) {
+      return;
+    }
+    setAlgorithmId(parseInt(number));
+  }
+
   return (
     <main>
-        <div data-mbox="target-demo-site-at-a4t-mbox" className="mbox-name-target-demo-site-at-a4t-mbox" data-at-mbox-name="target-demo-site-at-a4t-mbox">
+      <div data-mbox="target-demo-site-at-a4t-mbox" className="mbox-name-target-demo-site-at-a4t-mbox"
+           data-at-mbox-name="target-demo-site-at-a4t-mbox">
 
-        </div>
+      </div>
 
       {/* Generate Views without Conversions Section */}
       <div style={{ marginTop: '20px' }}>
@@ -167,7 +177,7 @@ const PersonalizationATA4TXP: React.FC<XperienceProps> = ({ displayName, token, 
         />
         <button
           onClick={() => {
-            const number = (document.getElementById('viewsWithoutConversions')  as HTMLInputElement)?.value;
+            const number = (document.getElementById('viewsWithoutConversions') as HTMLInputElement)?.value;
             generateViews(number);
           }}
           style={{ padding: '5px 10px' }}
@@ -195,7 +205,26 @@ const PersonalizationATA4TXP: React.FC<XperienceProps> = ({ displayName, token, 
           Generate Views with Conversions
         </button>
       </div>
-      <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)} />
+
+      <div style={{ marginTop: '20px' }}>
+        <h4>Chang Algorithm Id</h4>
+        <input
+          type="number"
+          placeholder="Change alogrithmId"
+          id="algorithmId"
+          style={{ marginRight: '10px', padding: '5px', width: '100px' }}
+        />
+        <button
+          onClick={() => {
+            const number = (document.getElementById('algorithmId') as HTMLInputElement)?.value;
+            changeAlgorithmId(number);
+          }}
+          style={{ padding: '5px 10px' }}
+        >
+          Save Algorithm ID
+        </button>
+      </div>
+      <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)}/>
     </main>
   )
     ;

@@ -1,8 +1,9 @@
-import React, { useEffect, useLayoutEffect } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import AtJs from '../lib/atJs';
+import AtJs, { generateViewsWithConversions } from '../lib/atJs';
 import Tracker from '../lib/tracker';
-import getMcId from '../lib/visitor';
+import getMcId, { trackEvent } from '../lib/visitor';
+import LoadingModal from '../components/LoadingModal';
 
 interface XperienceProps {
     displayName: string;
@@ -19,11 +20,14 @@ interface XperienceProps {
     age: string;
     refreshKey: number;
     reportingServer: string;
+    mcId: string;
 }
 
-const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, setToken, activityIndex, setActivityIndex, experienceIndex, setExperienceIndex, trueAudienceId, setTrueAudienceId, country, hobby, age, refreshKey, reportingServer}) => {
+const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, setToken, activityIndex, setActivityIndex, experienceIndex, setExperienceIndex, trueAudienceId, setTrueAudienceId, country, hobby, age, refreshKey, reportingServer, mcId}) => {
+    const [isModalVisible, setModalVisible] = useState(false);
     useLayoutEffect(() => {
         console.log(refreshKey);
+        const mcIdToUse = mcId.length > 0 ? mcId : getMcId();
         let cleanupEvents: [Promise<any>?] = [];
         AtJs().then(() => {
             if (window.adobe && window.adobe.target) {
@@ -33,7 +37,7 @@ const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, set
                             analytics: {
                                 //"supplementalDataId" : "23423498732598234",
                                 trackingServer: reportingServer,
-                                logging: "client_side"
+                                logging: "server_side"
                             }
                         },
                         execute: {
@@ -41,7 +45,7 @@ const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, set
                                 index: 0,
                                 name: "target-demo-site-aa-a4t-mbox",
                                 profileParameters: {
-                                    "user.422": displayName,
+                                    "user.422": `${displayName}-${Date.now()}`,
                                     "user.country": country,
                                     "user.hobby": hobby,
                                     "user.age": age
@@ -65,10 +69,15 @@ const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, set
                         }
                     }
                 })
-                  .then(response => {
+                  .then(async response => {
                       console.log(response);
                       const mboxes: any[] = response.execute.mboxes;
                       let count = 1;
+                      //burn the first suplemental data id;
+                      //need to get it after the first get offers because it will be reset afterwards
+                      //burn the first one
+                      window.s.visitor.getSupplementalDataID();
+                      const sdid = window.s.visitor.getSupplementalDataID();
 
                       mboxes.forEach(el => {
                           cleanupEvents.push(new Promise((resolve, reject) => {
@@ -81,43 +90,8 @@ const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, set
                                   }
                               }).then((e) => {
                                   resolve(Tracker('.conversion', () => {
-                                      const mcId = getMcId();
-                                      var s_account = "atetrifandemo";
-//                                       let s: any = window.s_gi(s_account);
-//
-// // Make sure data is sent to the correct tracking server
-//                                       s.trackingServer = reportingServer;
-//                                       s.events="event10=1";
-//                                       console.log(s);
-//                                       s.t()
-                                      const events = el.analytics.payload.tnta.split(',');
-                                      const revenueEvent = events[0].split('|');
-                                      //I a sending on event10 :) the revenue
-                                      const tnta = `${el.analytics.payload.tnta},${revenueEvent[0]}|32767`;
-                                      console.log(el.analytics.payload)
-                                      const sessionId = el.analytics.payload["session-id"];
-                                      console.log(tnta);
-                                      fetch(`https://${reportingServer}/b/ss/atetrifandemo/0/TA-1.0?pe=tnt&tnta=${tnta}&mid=${mcId}&session-id=${sessionId}&events=event10=1`, {
-                                          method: "GET",
-                                          headers: {
-                                              "Content-Type": "text/plain"
-                                          },
-                                          // Make sure to include credentials if needed, depending on Adobe's CORS policy
-                                          credentials: "include" // or "same-origin" if running on the same domain
-                                      })
-                                        .then(response => {
-                                            if (!response.ok) {
-                                                throw new Error("Network response was not ok " + response.statusText);
-                                            }
-                                            return response.text(); // Assuming a plain text response
-                                        })
-                                        .then(data => {
-                                            console.log("Response data:", data);
-                                        })
-                                        .catch(error => {
-                                            console.error("There was a problem with the fetch operation:", error);
-                                        });
-
+                                      // const conversionLink = `https://${reportingServer}/b/ss/atetrifandemo/0/TA-1.0?pe=tnt&tnta=${revenueEvent[0]}|32767&mid=${mcId}&sdid=${sdId}&events=event32=1`;
+                                      trackEvent("event10=1", mcIdToUse, sdid);
                                   }));
                               });
                           }));
@@ -143,6 +117,13 @@ const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, set
 
     }, [refreshKey, displayName, country, hobby, age]);
 
+    const generateViews = (number: string) => {
+        generateViewsWithConversions(number, setModalVisible, reportingServer, { displayName, country, hobby, age }, "target-demo-site-aa-a4t-mbox", undefined, false, undefined, undefined, undefined);
+    }
+
+    const generateConversions = (number: string) => {
+        generateViewsWithConversions(number, setModalVisible, reportingServer, { displayName, country, hobby, age }, "target-demo-site-aa-a4t-mbox", undefined, true, "event10", 1, undefined);
+    }
 
 
     const handleSetToken = (newToken: string, activityId: number, experienceId: number) => {
@@ -200,7 +181,48 @@ const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, set
 
                   </div>
               </div>
+
+              {/* Generate Views without Conversions Section */}
+              <div style={{ marginTop: '20px' }}>
+                  <h4>Generate Views without Conversions</h4>
+                  <input
+                    type="number"
+                    placeholder="Enter number of views"
+                    id="viewsWithoutConversions"
+                    style={{ marginRight: '10px', padding: '5px', width: '100px' }}
+                  />
+                  <button
+                    onClick={() => {
+                        const number = (document.getElementById('viewsWithoutConversions') as HTMLInputElement)?.value;
+                        generateViews(number);
+                    }}
+                    style={{ padding: '5px 10px' }}
+                  >
+                      Generate Views
+                  </button>
+              </div>
+
+              {/* Generate Views with Conversions Section */}
+              <div style={{ marginTop: '20px' }}>
+                  <h4>Generate Views with Conversions</h4>
+                  <input
+                    type="number"
+                    placeholder="Enter number of views"
+                    id="viewsWithConversions"
+                    style={{ marginRight: '10px', padding: '5px', width: '100px' }}
+                  />
+                  <button
+                    onClick={() => {
+                        const number = (document.getElementById('viewsWithConversions') as HTMLInputElement)?.value;
+                        generateConversions(number);
+                    }}
+                    style={{ padding: '5px 10px' }}
+                  >
+                      Generate Views with Conversions
+                  </button>
+              </div>
           </div>
+          <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)}/>
       </main>
     )
       ;

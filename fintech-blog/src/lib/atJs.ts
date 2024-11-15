@@ -29,8 +29,8 @@ export function updateQueryParam(key: string, value?: string) {
   window.history.pushState({}, '', `${url.pathname}?${params.toString()}`);
 }
 
-export function generateToken() {
-    const array = new Uint32Array(4);  // Adjust size as needed
+export function generateToken(size: number=4) {
+    const array = new Uint32Array(size);  // Adjust size as needed
     window.crypto.getRandomValues(array);
     return Array.from(array, dec => dec.toString(16)).join('');
 }
@@ -109,13 +109,16 @@ export function getNewCookiePCValue(newPCValue: string): string | undefined {
 }
 
 export const generateViewsWithConversions = (number: string, setModalVisible: any, reportingServer: string, profileData: ProfileData, mboxName: string, tntA?: string, conversion: boolean = false,
-                                             conversionEvent?: string, conversionValue: number = 1) => {
+                                             conversionEvent?: string, conversionValue: number = 1, algorithmId: number=-1000) => {
+  if (number.length === 0) {
+    return;
+  }
   let numberOfViews = parseInt(number);
   setModalVisible(true);
   const interval = setInterval(() => {
     //mboxSession generates a new user unique entry // TODO: set profile attributes
     //update visitorid
-    const mcId = generateToken();
+    const mcId = `${generateToken(2)}-${generateToken(2)}`;
     updateQueryParam("PC", getNewCookiePCValue(generateToken()));
     updateQueryParam('mboxSession', generateToken());
     window.adobe.target?.getOffers({
@@ -150,12 +153,19 @@ export const generateViewsWithConversions = (number: string, setModalVisible: an
         mboxes.forEach((el) => {
           // const mcId = getMcId();
           let tntaData = tntA? tntA : el.analytics.payload.tnta;
+          console.log(tntA)
           //make targeted events
           tntaData = tntaData.split(',').map((event: string) => {
             //remove visits and unique visits and not conversion
             const eventBreakDown = event.split(':');
             //traffic type - targeted
             eventBreakDown[2] = '1';
+            //algorithm id change
+            if (algorithmId !== -1000) {
+              let [algoId, event] = eventBreakDown[3].split('|');
+              algoId = `${algorithmId}`;
+              eventBreakDown[3] = `${algoId}|${event}`;
+            }
             return eventBreakDown.join(':');
           }).join(',');
 
@@ -166,18 +176,15 @@ export const generateViewsWithConversions = (number: string, setModalVisible: an
           })[0].split("|");
 
           if (tntaData.indexOf("|1") == -1) {
-            tntaData = `${tntaData},${revenueEvent[0]}|1`;
+            tntaData = `${revenueEvent[0]}|1,${tntaData}`;
           }
 
           //no unique
           if (tntaData.indexOf("|0") == -1) {
-            tntaData = `${tntaData},${revenueEvent[0]}|0`;
+            tntaData = `${revenueEvent[0]}|0,${tntaData}`;
           }
 
-          let viewsLink = `https://${reportingServer}/b/ss/atetrifandemo/0/TA-1.0?pe=tnt&tnta=${tntaData}&mid=${mcId}&session-id=${el.analytics.payload["session-id"]}`
-          if(conversion) {
-            viewsLink = `https://${reportingServer}/b/ss/atetrifandemo/0/TA-1.0?pe=tnt&tnta=${tntaData},${revenueEvent[0]}|32767&mid=${mcId}&session-id=${el.analytics.payload["session-id"]}&events=${conversionEvent}=${conversionValue}`
-          }
+          let viewsLink = `https://${reportingServer}/b/ss/atetrifandemo/0/TA-1.0?pe=tnt&tnta=${tntaData}&mid=${mcId}&c.a.target.sessionid=${el.analytics.payload["session-id"]}`
           fetch(viewsLink, {
             method: "GET",
             headers: {
@@ -186,6 +193,19 @@ export const generateViewsWithConversions = (number: string, setModalVisible: an
             // Make sure to include credentials if needed, depending on Adobe's CORS policy
             credentials: "include" // or "same-origin" if running on the same domain
           })
+          if(conversion) {
+            viewsLink = `https://${reportingServer}/b/ss/atetrifandemo/0/TA-1.0?pe=tnt&tnta=${revenueEvent[0]}|32767,${revenueEvent[0]}|${conversionEvent?.replace("event","")}|${conversionValue}&mid=${mcId}&c.a.target.sessionid=${el.analytics.payload["session-id"]}&events=${conversionEvent}=${conversionValue}`
+            setTimeout(()=>{
+              fetch(viewsLink, {
+                method: "GET",
+                headers: {
+                  "Content-Type": "text/plain"
+                },
+                // Make sure to include credentials if needed, depending on Adobe's CORS policy
+                credentials: "include" // or "same-origin" if running on the same domain
+              })
+            }, 200);
+          }
         })
       });
     numberOfViews -= 1;
