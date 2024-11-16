@@ -14,6 +14,8 @@ import PersonalizationATA4T from './pages/PersonalizationATA4T';
 import { generateToken, getNewCookiePCValue, updateQueryParam } from './lib/atJs';
 import ABManual from './pages/ABManual';
 import ABManualXP from './pages/ABManualXP';
+import PersonalizationAP from './pages/PersonalizationAP';
+import PersonalizationAPXP from './pages/PersonalizationAPXP';
 
 const App: React.FC = () => {
   const [token, setToken] = useState('');
@@ -200,6 +202,55 @@ const App: React.FC = () => {
               </PersonaConsumer>
             }
           />
+
+          <Route
+            path="/target-demo-site/personalization/ap"
+            element={
+              <PersonaConsumer>
+                {({ displayName, country, hobby, age }) => (
+                  <PersonalizationAP
+                    displayName={displayName}
+                    token={token}
+                    setToken={setToken}
+                    activityIndex={activityIndex}
+                    setActivityIndex={setActivityIndex}
+                    experienceIndex={experienceIndex}
+                    setExperienceIndex={setExperienceIndex}
+                    trueAudienceId={trueAudienceId}
+                    setTrueAudienceId={setTrueAudienceId}
+                    country={country}
+                    hobby={hobby}
+                    age={age}
+                    refreshKey={refreshKey}
+                    mcId={mcId}
+                  />
+                )}
+              </PersonaConsumer>
+            }
+          />
+          <Route
+            path="/target-demo-site/personalization/ap/xp"
+            element={
+              <PersonaConsumer>
+                {({ displayName, country, hobby, age }) => (
+                  <PersonalizationAPXP
+                    displayName={displayName}
+                    token={token}
+                    activityIndex={activityIndex}
+                    experienceIndex={experienceIndex}
+                    trueAudienceId={trueAudienceId}
+                    country={country}
+                    hobby={hobby}
+                    age={age}
+                    refreshKey={refreshKey}
+                    mcId={mcId}
+                  />
+                )}
+              </PersonaConsumer>
+            }
+          />
+
+
           <Route
             path="/target-demo-site/personalization/at"
             element={

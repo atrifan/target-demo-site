@@ -40,6 +40,11 @@ export default async function AtJs() {
     window.adobe.target = undefined;
     clearAllCookies();
   }
+  //clear all handlers setup by atjs - all the elements in the page need to have data-mbox attribute
+  document.querySelectorAll('[data-mbox]').forEach(element => {
+    const clone = element.cloneNode(true); // Clone the element
+    element.parentNode?.replaceChild(clone, element); // Replace the original with the clone
+  });
   return new Promise((resolve, reject) => {
     if (!window.adobe || !window.adobe.target) {
       //get script element from head with id at-js
