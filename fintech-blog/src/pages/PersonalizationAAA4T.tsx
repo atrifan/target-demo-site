@@ -40,6 +40,9 @@ const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, set
                                 logging: "server_side"
                             }
                         },
+                        id: {
+                            marketingCloudVisitorId: mcIdToUse,
+                        },
                         execute: {
                             mboxes: [{
                                 index: 0,

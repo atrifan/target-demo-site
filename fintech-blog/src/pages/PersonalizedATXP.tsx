@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import AtJs from '../lib/atJs';
+import getMcId from '../lib/visitor';
 
 interface XperienceProps {
   displayName: string;
@@ -11,10 +12,12 @@ interface XperienceProps {
   hobby: string;
   age: string;
   refreshKey: number;
+  mcId: string;
 }
 
-const PersonalizationATXP: React.FC<XperienceProps> = ({ displayName, token, activityIndex, experienceIndex, trueAudienceId, country, hobby, age, refreshKey}) => {
+const PersonalizationATXP: React.FC<XperienceProps> = ({ displayName, token, activityIndex, experienceIndex, trueAudienceId, country, hobby, age, refreshKey, mcId}) => {
   useEffect(() => {
+    const mcIdToUse = mcId.length > 0 ? mcId : getMcId();
     AtJs().then(() => {
       if (window.adobe && window.adobe.target) {
         window.adobe.target.getOffers({
@@ -23,6 +26,9 @@ const PersonalizationATXP: React.FC<XperienceProps> = ({ displayName, token, act
               analytics: {
                 logging: "server_side"
               }
+            },
+            id: {
+              marketingCloudVisitorId: mcIdToUse,
             },
             execute: {
               mboxes: [{

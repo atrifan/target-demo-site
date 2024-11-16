@@ -1,6 +1,7 @@
 import React, { useEffect, useLayoutEffect } from 'react';
 import { Link } from 'react-router-dom';
 import AtJs from '../lib/atJs';
+import getMcId from '../lib/visitor';
 
 interface XperienceProps {
   displayName: string;
@@ -16,11 +17,13 @@ interface XperienceProps {
   hobby: string;
   age: string;
   refreshKey: number;
+  mcId: string;
 }
 
-const PersonalizationAT: React.FC<XperienceProps> = ({ displayName, token, setToken, activityIndex, setActivityIndex, experienceIndex, setExperienceIndex, trueAudienceId, setTrueAudienceId, country, hobby, age, refreshKey}) => {
+const PersonalizationAT: React.FC<XperienceProps> = ({ displayName, token, setToken, activityIndex, setActivityIndex, experienceIndex, setExperienceIndex, trueAudienceId, setTrueAudienceId, country, hobby, age, refreshKey, mcId}) => {
   useLayoutEffect(() => {
     console.log(refreshKey);
+    const mcIdToUse = mcId.length > 0 ? mcId : getMcId();
     AtJs().then(() => {
       if (window.adobe && window.adobe.target) {
         const doc = document.getElementsByClassName('mbox-name-target-demo-site-at-mbox');
@@ -30,6 +33,9 @@ const PersonalizationAT: React.FC<XperienceProps> = ({ displayName, token, setTo
               analytics: {
                 logging: "server_side"
               }
+            },
+            id: {
+              marketingCloudVisitorId: mcIdToUse,
             },
             execute: {
               mboxes: [{

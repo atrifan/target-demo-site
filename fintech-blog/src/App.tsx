@@ -12,6 +12,8 @@ import PersonalizationAA from './pages/PersonalizationAA';
 import PersonalizationATA4TXP from './pages/PersonalizedATA4TXP';
 import PersonalizationATA4T from './pages/PersonalizationATA4T';
 import { generateToken, getNewCookiePCValue, updateQueryParam } from './lib/atJs';
+import ABManual from './pages/ABManual';
+import ABManualXP from './pages/ABManualXP';
 
 const App: React.FC = () => {
   const [token, setToken] = useState('');
@@ -48,7 +50,7 @@ const App: React.FC = () => {
   }, []);
   return (
     <PersonaProvider>
-      <Router>
+      <Router basename="/target-demo-site">
         <Header refreshOnSave={handlePersonaSave}/>
         <Routes>
           <Route
@@ -171,6 +173,7 @@ const App: React.FC = () => {
                     hobby={hobby}
                     age={age}
                     refreshKey={refreshKey}
+                    mcId={mcId}
                   />
                 )}
               </PersonaConsumer>
@@ -191,6 +194,7 @@ const App: React.FC = () => {
                     hobby={hobby}
                     age={age}
                     refreshKey={refreshKey}
+                    mcId={mcId}
                   />
                 )}
               </PersonaConsumer>
@@ -215,6 +219,7 @@ const App: React.FC = () => {
                     hobby={hobby}
                     age={age}
                     refreshKey={refreshKey}
+                    mcId={mcId}
                   />
                 )}
               </PersonaConsumer>
@@ -235,6 +240,58 @@ const App: React.FC = () => {
                     hobby={hobby}
                     age={age}
                     refreshKey={refreshKey}
+                    mcId={mcId}
+                  />
+                )}
+              </PersonaConsumer>
+            }
+          />
+
+          <Route
+            path="/target-demo-site/ab"
+            element={
+              <PersonaConsumer>
+                {({ displayName, country, hobby, age }) => (
+                  <ABManual
+                    displayName={displayName}
+                    token={token}
+                    setToken={setToken}
+                    activityIndex={activityIndex}
+                    setActivityIndex={setActivityIndex}
+                    experienceIndex={experienceIndex}
+                    setExperienceIndex={setExperienceIndex}
+                    trueAudienceId={trueAudienceId}
+                    setTrueAudienceId={setTrueAudienceId}
+                    country={country}
+                    hobby={hobby}
+                    age={age}
+                    refreshKey={refreshKey}
+                    mcId={mcId}
+                  />
+                )}
+              </PersonaConsumer>
+            }
+          />
+          <Route
+            path="/target-demo-site/ab/xp"
+            element={
+              <PersonaConsumer>
+                {({ displayName, country, hobby, age }) => (
+                  <ABManualXP
+                    displayName={displayName}
+                    token={token}
+                    setToken={setToken}
+                    activityIndex={activityIndex}
+                    setActivityIndex={setActivityIndex}
+                    experienceIndex={experienceIndex}
+                    setExperienceIndex={setExperienceIndex}
+                    trueAudienceId={trueAudienceId}
+                    setTrueAudienceId={setTrueAudienceId}
+                    country={country}
+                    hobby={hobby}
+                    age={age}
+                    refreshKey={refreshKey}
+                    mcId={mcId}
                   />
                 )}
               </PersonaConsumer>

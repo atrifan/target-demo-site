@@ -21,7 +21,7 @@ interface XperienceProps {
     mcId: string;
 }
 
-const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, setToken, activityIndex, setActivityIndex, experienceIndex, setExperienceIndex, trueAudienceId, setTrueAudienceId, country, hobby, age, refreshKey, mcId}) => {
+const ABManual: React.FC<XperienceProps> = ({ displayName, token, setToken, activityIndex, setActivityIndex, experienceIndex, setExperienceIndex, trueAudienceId, setTrueAudienceId, country, hobby, age, refreshKey, mcId}) => {
     useLayoutEffect(() => {
         console.log(refreshKey);
         let cleanupEvents: [Promise<any>?] = [];
@@ -36,7 +36,7 @@ const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, set
                         execute: {
                             mboxes: [{
                                 index: 0,
-                                name: "target-demo-site-aa-mbox",
+                                name: "target-demo-site-ab-mbox",
                                 profileParameters: {
                                     "user.422": displayName,
                                     "user.country": country,
@@ -99,7 +99,7 @@ const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, set
 
               <div style={{ marginBottom: '15px' }}>
                   <Link
-                    to="/target-demo-site/personalization/aa/xp?at_preview_token=e73XhadLHKh4wmj8RrfeBYsfdKGAJyg5DsJ3XxNj67A&at_preview_index=1_1&at_preview_listed_activities_only=true&at_preview_evaluate_as_true_audience_ids=3440621"
+                    to="/target-demo-site/ab/xp?at_preview_token=LmE_RN_gXztn_dkkFsgWwIsfdKGAJyg5DsJ3XxNj67A&at_preview_index=1_1&at_preview_listed_activities_only=true"
                     style={{ textDecoration: 'none', color: '#000', fontSize: '18px' }}
                     onClick={() => handleSetToken('ZkuLDeLZ6SdSR9RthgNI2osfdKGAJyg5DsJ3XxNj67A', 1, 1)}
                   >
@@ -109,7 +109,7 @@ const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, set
 
               <div style={{ marginBottom: '20px' }}>
                   <Link
-                    to="/target-demo-site/personalization/aa/xp?at_preview_token=e73XhadLHKh4wmj8RrfeBYsfdKGAJyg5DsJ3XxNj67A&at_preview_index=1_2&at_preview_listed_activities_only=true&at_preview_evaluate_as_true_audience_ids=3440621"
+                    to="/target-demo-site/ab/xp?at_preview_token=LmE_RN_gXztn_dkkFsgWwIsfdKGAJyg5DsJ3XxNj67A&at_preview_index=1_2&at_preview_listed_activities_only=true"
                     style={{ textDecoration: 'none', color: '#000', fontSize: '18px' }}
                     onClick={() => handleSetToken('ZkuLDeLZ6SdSR9RthgNI2osfdKGAJyg5DsJ3XxNj67A', 1, 2)}
                   >
@@ -119,7 +119,7 @@ const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, set
 
               <div style={{ marginBottom: '20px' }}>
                   <Link
-                    to="/target-demo-site/personalization/aa/xp?at_preview_token=e73XhadLHKh4wmj8RrfeBYsfdKGAJyg5DsJ3XxNj67A&at_preview_index=1_3&at_preview_listed_activities_only=true&at_preview_evaluate_as_true_audience_ids=3440621"
+                    to="/target-demo-site/ab/xp?at_preview_token=LmE_RN_gXztn_dkkFsgWwIsfdKGAJyg5DsJ3XxNj67A&at_preview_index=1_3&at_preview_listed_activities_only=true"
                     style={{ textDecoration: 'none', color: '#000', fontSize: '18px' }}
                     onClick={() => handleSetToken('ZkuLDeLZ6SdSR9RthgNI2osfdKGAJyg5DsJ3XxNj67A', 1, 3)}
                   >
@@ -136,8 +136,8 @@ const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, set
               }}
               >
                   <h3>The served experience is:</h3>
-                  <div data-mbox="target-demo-site-aa-mbox" className="mbox-name-target-demo-site-aa-mbox"
-                       data-at-mbox-name="target-demo-site-aa-mbox">
+                  <div data-mbox="target-demo-site-ab-mbox" className="mbox-name-target-demo-site-ab-mbox"
+                       data-at-mbox-name="target-demo-site-ab-mbox">
 
                   </div>
               </div>
@@ -147,4 +147,4 @@ const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, set
       ;
 };
 
-export default PersonalizationAA4T;
+export default ABManual;

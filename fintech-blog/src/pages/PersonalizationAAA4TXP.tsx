@@ -32,6 +32,9 @@ const PersonalizationAAA4TXP: React.FC<XperienceProps> = ({ displayName, token, 
                                 logging: "client_side"
                             }
                         },
+                        id: {
+                            marketingCloudVisitorId: mcIdToUse,
+                        },
                         execute: {
                             mboxes: [{
                                 index: 0,
