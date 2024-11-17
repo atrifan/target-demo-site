@@ -195,11 +195,11 @@ const PersonalizationATA4T: React.FC<XperienceProps> = ({ displayName, token, se
   };
 
   const generateViews = (number: string) => {
-    generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, reportingServer, { displayName, country, hobby, age }, ["target-demo-site-at-a4t-mbox"], undefined, false, undefined, undefined, algorithmId);
+    generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, reportingServer, { displayName, country, hobby, age }, ["target-demo-site-at-a4t-mbox"], undefined, false, undefined, undefined, algorithmId, false, experienceIndex);
   }
 
   const generateConversions = (number: string) => {
-    generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, reportingServer, { displayName, country, hobby, age }, ["target-demo-site-at-a4t-mbox"], undefined, true, "event32", 1, algorithmId);
+    generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, reportingServer, { displayName, country, hobby, age }, ["target-demo-site-at-a4t-mbox"], undefined, true, "event32", 1, algorithmId, false, experienceIndex);
   }
 
   const changeAlgorithmId = (number: string) => {
@@ -207,6 +207,14 @@ const PersonalizationATA4T: React.FC<XperienceProps> = ({ displayName, token, se
       return;
     }
     setAlgorithmId(parseInt(number));
+  }
+
+  const changeExperienceId = (number: string) => {
+    if (number.length === 0) {
+      setExperienceIndex(-100);
+      return;
+    }
+    setExperienceIndex(parseInt(number) - 1);
   }
 
   return (
@@ -295,10 +303,30 @@ const PersonalizationATA4T: React.FC<XperienceProps> = ({ displayName, token, se
             >
               Generate Views with Conversions
             </button>
+            for experience { experienceIndex == -100 ? 'All' : experienceIndex + 1 }
           </div>
 
           <div style={{ marginTop: '20px' }}>
-            <h4>Chang Algorithm Id</h4>
+            <h4>Target Experience conversions</h4>
+            <input
+              type="number"
+              placeholder="Target experienceId"
+              id="experienceId"
+              style={{ marginRight: '10px', padding: '5px', width: '100px' }}
+            />
+            <button
+              onClick={() => {
+                const number = (document.getElementById('experienceId') as HTMLInputElement)?.value;
+                changeExperienceId(number);
+              }}
+              style={{ padding: '5px 10px' }}
+            >
+              Save Targeted Experience
+            </button>
+          </div>
+
+          <div style={{ marginTop: '20px' }}>
+            <h4>Change Algorithm Id</h4>
             <input
               type="number"
               placeholder="Change alogrithmId"

@@ -21,7 +21,7 @@ const App: React.FC = () => {
   const [token, setToken] = useState('');
   const [tntA, setTntA] = useState('');
   const [activityIndex, setActivityIndex] = useState(0);
-  const [experienceIndex, setExperienceIndex] = useState(0);
+  const [experienceIndex, setExperienceIndex] = useState(-100);
   const [trueAudienceId, setTrueAudienceId] = useState(0);
   const [reportingServer, setReportingServer] = useState('adobetargeteng.d1.sc.omtrdc.net');
   const [displayName, setDisplayName] = useState('');

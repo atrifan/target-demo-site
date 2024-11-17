@@ -45,6 +45,10 @@ export default async function AtJs() {
     const clone = element.cloneNode(true); // Clone the element
     element.parentNode?.replaceChild(clone, element); // Replace the original with the clone
   });
+  document.querySelectorAll('[data-mbox]').forEach(element => {
+    //reset it to the default
+    element.innerHTML = "";
+  });
   return new Promise((resolve, reject) => {
     if (!window.adobe || !window.adobe.target) {
       //get script element from head with id at-js
@@ -114,7 +118,7 @@ export function getNewCookiePCValue(newPCValue: string): string | undefined {
 }
 
 export const generateViewsWithConversions = (number: string, setTotal: any, setCurrent: any, setModalVisible: any, reportingServer: string, profileData: ProfileData, mboxes: string[], tntA?: string, conversion: boolean = false,
-                                             conversionEvent?: string, conversionValue: number = 1, algorithmId: number=-1000, isTarget = false) => {
+                                             conversionEvent?: string, conversionValue: number = 1, algorithmId: number=-1000, isTarget = false, experienceIndex?: number) => {
   if (number.length === 0) {
     return;
   }
@@ -168,6 +172,7 @@ export const generateViewsWithConversions = (number: string, setTotal: any, setC
           //reset it to the default
           element.innerHTML = "";
         });
+        let okTargeted = false;
         mboxes.forEach((el) => {
           window.adobe.target?.applyOffers({
             selector: `.mbox-name-${el.name}`,
@@ -177,11 +182,17 @@ export const generateViewsWithConversions = (number: string, setTotal: any, setC
               }
             }
           });
-          isTarget? sendNotificationTarget(el, conversionEvent, conversion, profileData) : sendNotificationAnalytics(tntA, el, algorithmId, reportingServer, mcId, conversion, conversionEvent, conversionValue);
+          okTargeted = isTarget? sendNotificationTarget(el, conversionEvent, conversion, profileData, experienceIndex) : sendNotificationAnalytics(tntA, el, algorithmId, reportingServer, mcId, conversion, conversionEvent, conversionValue);
         })
+        if (experienceIndex != undefined && experienceIndex != -100 && okTargeted) {
+          numberOfViews -= 1;
+          setCurrent(numberOfViews);
+        }
       });
-    numberOfViews -= 1;
-    setCurrent(numberOfViews);
+    if(experienceIndex == undefined || experienceIndex == -100) {
+      numberOfViews -= 1;
+      setCurrent(numberOfViews);
+    }
     if (numberOfViews === 0) {
       setModalVisible(false);
       clearInterval(interval);
@@ -190,7 +201,7 @@ export const generateViewsWithConversions = (number: string, setTotal: any, setC
 }
 
 function generateNotificationRequest(el: any, type: string, profileData: ProfileData) {
-  return {
+  const result = {
     id: generateToken(4),
     type: type,
     timestamp: Date.now(),
@@ -198,7 +209,7 @@ function generateNotificationRequest(el: any, type: string, profileData: Profile
       name: el.name,
       state: el.state
     },
-    tokens: el.metrics.filter((e:any) => e.type === type).map((e:any) => e.eventToken),
+    tokens: el.metrics?.filter((e:any) => e.type === type).map((e:any) => e.eventToken),
     parameters: el.parameters,
     profileParameters: {
       ...el.profileParameters,
@@ -211,25 +222,40 @@ function generateNotificationRequest(el: any, type: string, profileData: Profile
     order: el.order,
     product: el.product
   }
+
+  if (result.tokens == undefined) {
+    return undefined;
+  }
+  return result;
 }
-export function sendNotificationTarget(el: any, event: string|undefined, conversion: boolean, profileData: ProfileData) {
+export function sendNotificationTarget(el: any, event: string|undefined, conversion: boolean, profileData: ProfileData, experienceIndex?: number) {
   // window.adobe.target?.sendNotifications({
   //     request: { notifications: [generateNotificationRequest(el, 'display', profileData)] }
   //   }
   // );
 
-  if(conversion && event) {
+  if(conversion && event && (el.options[0].responseTokens["experience.id"] == experienceIndex ||
+    (experienceIndex == -100 && experienceIndex == undefined))) {
     setTimeout(() => {
-      window.adobe.target?.sendNotifications({
-          request: { notifications: [generateNotificationRequest(el, event, profileData)] }
-        }
-      );
+      const notifications = generateNotificationRequest(el, event, profileData);
+      if (notifications) {
+        window.adobe.target?.sendNotifications({
+            request: { notifications: [notifications] }
+          }
+        );
+      }
+
     }, 200);
+    return true;
   }
+
+  return false;
 }
+
 
 export function sendNotificationAnalytics(tntA :string|undefined, el: any, algorithmId: number, reportingServer: string, mcId: string, conversion: boolean, conversionEvent: string|undefined, conversionValue: number) {
   // const mcId = getMcId();
+  //don't use experienceindex for analytics not sure if it's needed
   let tntaData = tntA? tntA : el.analytics.payload.tnta;
   console.log(tntA)
   //make targeted events
@@ -244,6 +270,7 @@ export function sendNotificationAnalytics(tntA :string|undefined, el: any, algor
       algoId = `${algorithmId}`;
       eventBreakDown[3] = `${algoId}|${event}`;
     }
+
     return eventBreakDown.join(':');
   }).join(',');
 
@@ -284,4 +311,5 @@ export function sendNotificationAnalytics(tntA :string|undefined, el: any, algor
       })
     }, 200);
   }
+  return true;
 }

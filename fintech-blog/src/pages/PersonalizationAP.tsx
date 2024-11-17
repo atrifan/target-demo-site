@@ -118,11 +118,19 @@ const PersonalizationAP: React.FC<XperienceProps> = ({ displayName, token, setTo
     };
 
     const generateViews = (number: string) => {
-        generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, '', { displayName, country, hobby, age }, ["target-demo-site-ap-mbox-1", "target-demo-site-ap-mbox-2", "target-demo-site-ap-mbox-3"], undefined, false, undefined, undefined, undefined, true);
+        generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, '', { displayName, country, hobby, age }, ["target-demo-site-ap-mbox-1", "target-demo-site-ap-mbox-2", "target-demo-site-ap-mbox-3"], undefined, false, undefined, undefined, undefined, true, experienceIndex);
     }
 
     const generateConversions = (number: string) => {
-        generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, '', { displayName, country, hobby, age }, ["target-demo-site-ap-mbox-1", "target-demo-site-ap-mbox-2", "target-demo-site-ap-mbox-3"], undefined, true, "click", 1, undefined, true);
+        generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, '', { displayName, country, hobby, age }, ["target-demo-site-ap-mbox-1", "target-demo-site-ap-mbox-2", "target-demo-site-ap-mbox-3"], undefined, true, "click", 1, undefined, true, experienceIndex);
+    }
+
+    const changeExperienceId = (number: string) => {
+        if (number.length === 0) {
+            setExperienceIndex(-100);
+            return;
+        }
+        setExperienceIndex(parseInt(number) - 1);
     }
 
     return (
@@ -130,7 +138,7 @@ const PersonalizationAP: React.FC<XperienceProps> = ({ displayName, token, setTo
           <div style={{ padding: '20px' }}>
               <h2>Navigate to Experiences</h2>
 
-              <VariationsGrid handleSetToken={handleSetToken} />
+              <VariationsGrid handleSetToken={handleSetToken}/>
 
               <div style={{
                   border: '1px solid #ddd',
@@ -222,9 +230,29 @@ const PersonalizationAP: React.FC<XperienceProps> = ({ displayName, token, setTo
                   >
                       Generate Views with Conversions
                   </button>
+                  for experience { experienceIndex == -100 ? 'All' : experienceIndex + 1 }
+              </div>
+              <div style={{ marginTop: '20px' }}>
+                  <h4>Target Experience conversions</h4>
+                  <input
+                    type="number"
+                    placeholder="Target experienceId"
+                    id="experienceId"
+                    style={{ marginRight: '10px', padding: '5px', width: '100px' }}
+                  />
+                  <button
+                    onClick={() => {
+                        const number = (document.getElementById('experienceId') as HTMLInputElement)?.value;
+                        changeExperienceId(number);
+                    }}
+                    style={{ padding: '5px 10px' }}
+                  >
+                      Save Targeted Experience
+                  </button>
               </div>
           </div>
-          <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)} current={current} total={total}/>
+          <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)} current={current}
+                        total={total}/>
       </main>
     )
       ;
