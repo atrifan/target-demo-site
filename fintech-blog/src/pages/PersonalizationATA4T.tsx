@@ -193,11 +193,11 @@ const PersonalizationATA4T: React.FC<XperienceProps> = ({ displayName, token, se
   };
 
   const generateViews = (number: string) => {
-    generateViewsWithConversions(number, setModalVisible, reportingServer, { displayName, country, hobby, age }, "target-demo-site-at-a4t-mbox", undefined, false, undefined, undefined, algorithmId);
+    generateViewsWithConversions(number, setModalVisible, reportingServer, { displayName, country, hobby, age }, ["target-demo-site-at-a4t-mbox"], undefined, false, undefined, undefined, algorithmId);
   }
 
   const generateConversions = (number: string) => {
-    generateViewsWithConversions(number, setModalVisible, reportingServer, { displayName, country, hobby, age }, "target-demo-site-at-a4t-mbox", undefined, true, "event32", 1, algorithmId);
+    generateViewsWithConversions(number, setModalVisible, reportingServer, { displayName, country, hobby, age }, ["target-demo-site-at-a4t-mbox"], undefined, true, "event32", 1, algorithmId);
   }
 
   const changeAlgorithmId = (number: string) => {

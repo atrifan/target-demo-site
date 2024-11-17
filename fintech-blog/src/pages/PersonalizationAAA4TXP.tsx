@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import AtJs, { generateViewsWithConversions } from '../lib/atJs';
 import Tracker from '../lib/tracker';
 import getMcId, { trackEvent } from '../lib/visitor';
@@ -20,7 +20,7 @@ interface XperienceProps {
 
 const PersonalizationAAA4TXP: React.FC<XperienceProps> = ({ displayName, token, activityIndex, experienceIndex, trueAudienceId, country, hobby, age, refreshKey, reportingServer, mcId}) => {
     const [isModalVisible, setModalVisible] = useState(false);
-    useEffect(() => {
+    useLayoutEffect(() => {
         const mcIdToUse = mcId.length > 0 ? mcId : getMcId();
         let cleanupEvents: [Promise<any>?] = [];
         AtJs().then(() => {
@@ -96,11 +96,11 @@ const PersonalizationAAA4TXP: React.FC<XperienceProps> = ({ displayName, token, 
     }, [refreshKey]);
 
     const generateViews = (number: string) => {
-        generateViewsWithConversions(number, setModalVisible, reportingServer, { displayName, country, hobby, age }, "target-demo-site-aa-a4t-mbox", undefined, false, undefined, undefined, undefined);
+        generateViewsWithConversions(number, setModalVisible, reportingServer, { displayName, country, hobby, age }, ["target-demo-site-aa-a4t-mbox"], undefined, false, undefined, undefined, undefined);
     }
 
     const generateConversions = (number: string) => {
-        generateViewsWithConversions(number, setModalVisible, reportingServer, { displayName, country, hobby, age }, "target-demo-site-aa-a4t-mbox", undefined, true, "event10", 1, undefined);
+        generateViewsWithConversions(number, setModalVisible, reportingServer, { displayName, country, hobby, age }, ["target-demo-site-aa-a4t-mbox"], undefined, true, "event10", 1, undefined);
     }
 
     return (

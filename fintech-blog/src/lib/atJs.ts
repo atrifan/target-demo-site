@@ -113,8 +113,8 @@ export function getNewCookiePCValue(newPCValue: string): string | undefined {
   return undefined;
 }
 
-export const generateViewsWithConversions = (number: string, setModalVisible: any, reportingServer: string, profileData: ProfileData, mboxName: string, tntA?: string, conversion: boolean = false,
-                                             conversionEvent?: string, conversionValue: number = 1, algorithmId: number=-1000) => {
+export const generateViewsWithConversions = (number: string, setModalVisible: any, reportingServer: string, profileData: ProfileData, mboxes: string[], tntA?: string, conversion: boolean = false,
+                                             conversionEvent?: string, conversionValue: number = 1, algorithmId: number=-1000, isTarget = false) => {
   if (number.length === 0) {
     return;
   }
@@ -134,83 +134,43 @@ export const generateViewsWithConversions = (number: string, setModalVisible: an
         experienceCloud: {
           analytics: {
             trackingServer: reportingServer,
-            logging: "client_side"
+            logging: !isTarget ? "client_side" : "server_side"
           }
         },
         execute: {
-          mboxes: [{
-            index: 0,
-            name: mboxName,
-            profileParameters: {
-              "user.422": `${profileData.displayName}-${Date.now()}`,
-              "user.country": profileData.country,
-              "user.hobby": profileData.hobby,
-              "user.age": profileData.age,
-              "brand.bought": "offline"
-            }
-          }]
+          mboxes: mboxes.map((mboxName) => {
+              return {
+                index: 0,
+                  name: mboxName,
+                profileParameters: {
+                "user.422": `${profileData.displayName}-${Date.now()}`,
+                  "user.country": profileData.country,
+                  "user.hobby": profileData.hobby,
+                  "user.age": profileData.age,
+                  "brand.bought": "offline"
+              }
+              }
+            })
         }
       }
     })
       .then(response => {
         console.log(response);
         const mboxes: any[] = response.execute.mboxes;
+        document.querySelectorAll('[data-mbox]').forEach(element => {
+          const clone = element.cloneNode(true); // Clone the element
+          element.parentNode?.replaceChild(clone, element); // Replace the original with the clone
+        });
         mboxes.forEach((el) => {
-          // const mcId = getMcId();
-          let tntaData = tntA? tntA : el.analytics.payload.tnta;
-          console.log(tntA)
-          //make targeted events
-          tntaData = tntaData.split(',').map((event: string) => {
-            //remove visits and unique visits and not conversion
-            const eventBreakDown = event.split(':');
-            //traffic type - targeted
-            eventBreakDown[2] = '1';
-            //algorithm id change
-            if (algorithmId !== -1000) {
-              let [algoId, event] = eventBreakDown[3].split('|');
-              algoId = `${algorithmId}`;
-              eventBreakDown[3] = `${algoId}|${event}`;
+          window.adobe.target?.applyOffers({
+            selector: `.mbox-name-${el.name}`,
+            response: {
+              execute: {
+                mboxes: [el]
+              }
             }
-            return eventBreakDown.join(':');
-          }).join(',');
-
-
-          const events = tntaData.split(',');
-          const revenueEvent = events.filter((event: string) => {
-            return event.split('|')[0].split(":").length === 4;
-          })[0].split("|");
-
-          if (tntaData.indexOf("|1") == -1) {
-            tntaData = `${revenueEvent[0]}|1,${tntaData}`;
-          }
-
-          //no unique
-          if (tntaData.indexOf("|0") == -1) {
-            tntaData = `${revenueEvent[0]}|0,${tntaData}`;
-          }
-
-          let viewsLink = `https://${reportingServer}/b/ss/atetrifandemo/0/TA-1.0?pe=tnt&tnta=${tntaData}&mid=${mcId}&c.a.target.sessionid=${el.analytics.payload["session-id"]}`
-          fetch(viewsLink, {
-            method: "GET",
-            headers: {
-              "Content-Type": "text/plain"
-            },
-            // Make sure to include credentials if needed, depending on Adobe's CORS policy
-            credentials: "include" // or "same-origin" if running on the same domain
-          })
-          if(conversion) {
-            viewsLink = `https://${reportingServer}/b/ss/atetrifandemo/0/TA-1.0?pe=tnt&tnta=${revenueEvent[0]}|32767,${revenueEvent[0]}|${conversionEvent?.replace("event","")}|${conversionValue}&mid=${mcId}&c.a.target.sessionid=${el.analytics.payload["session-id"]}&events=${conversionEvent}=${conversionValue}`
-            setTimeout(()=>{
-              fetch(viewsLink, {
-                method: "GET",
-                headers: {
-                  "Content-Type": "text/plain"
-                },
-                // Make sure to include credentials if needed, depending on Adobe's CORS policy
-                credentials: "include" // or "same-origin" if running on the same domain
-              })
-            }, 200);
-          }
+          });
+          isTarget? sendNotificationTarget(el, conversionEvent, conversion, profileData) : sendNotificationAnalytics(tntA, el, algorithmId, reportingServer, mcId, conversion, conversionEvent, conversionValue);
         })
       });
     numberOfViews -= 1;
@@ -219,4 +179,101 @@ export const generateViewsWithConversions = (number: string, setModalVisible: an
       clearInterval(interval);
     }
   }, 200);
+}
+
+function generateNotificationRequest(el: any, type: string, profileData: ProfileData) {
+  return {
+    id: generateToken(4),
+    type: type,
+    timestamp: Date.now(),
+    mbox: {
+      name: el.name,
+      state: el.state
+    },
+    tokens: el.metrics.filter((e:any) => e.type === type).map((e:any) => e.eventToken),
+    parameters: el.parameters,
+    profileParameters: {
+      ...el.profileParameters,
+      "user.422": `${profileData.displayName}-${Date.now()}`,
+      "user.country": profileData.country,
+      "user.hobby": profileData.hobby,
+      "user.age": profileData.age,
+      "brand.bought": "offline"
+    },
+    order: el.order,
+    product: el.product
+  }
+}
+export function sendNotificationTarget(el: any, event: string|undefined, conversion: boolean, profileData: ProfileData) {
+  // window.adobe.target?.sendNotifications({
+  //     request: { notifications: [generateNotificationRequest(el, 'display', profileData)] }
+  //   }
+  // );
+
+  if(conversion && event) {
+    setTimeout(() => {
+      window.adobe.target?.sendNotifications({
+          request: { notifications: [generateNotificationRequest(el, event, profileData)] }
+        }
+      );
+    }, 200);
+  }
+}
+
+export function sendNotificationAnalytics(tntA :string|undefined, el: any, algorithmId: number, reportingServer: string, mcId: string, conversion: boolean, conversionEvent: string|undefined, conversionValue: number) {
+  // const mcId = getMcId();
+  let tntaData = tntA? tntA : el.analytics.payload.tnta;
+  console.log(tntA)
+  //make targeted events
+  tntaData = tntaData.split(',').map((event: string) => {
+    //remove visits and unique visits and not conversion
+    const eventBreakDown = event.split(':');
+    //traffic type - targeted
+    eventBreakDown[2] = '1';
+    //algorithm id change
+    if (algorithmId !== -1000) {
+      let [algoId, event] = eventBreakDown[3].split('|');
+      algoId = `${algorithmId}`;
+      eventBreakDown[3] = `${algoId}|${event}`;
+    }
+    return eventBreakDown.join(':');
+  }).join(',');
+
+
+  const events = tntaData.split(',');
+  const revenueEvent = events.filter((event: string) => {
+    return event.split('|')[0].split(":").length === 4;
+  })[0].split("|");
+
+  if (tntaData.indexOf("|1") == -1) {
+    tntaData = `${revenueEvent[0]}|1,${tntaData}`;
+  }
+
+  //no unique
+  if (tntaData.indexOf("|0") == -1) {
+    tntaData = `${revenueEvent[0]}|0,${tntaData}`;
+  }
+
+  let viewsLink = `https://${reportingServer}/b/ss/atetrifandemo/0/TA-1.0?pe=tnt&tnta=${tntaData}&mid=${mcId}&c.a.target.sessionid=${el.analytics.payload["session-id"]}`
+  fetch(viewsLink, {
+    method: "GET",
+    headers: {
+      "Content-Type": "text/plain"
+    },
+    // Make sure to include credentials if needed, depending on Adobe's CORS policy
+    credentials: "include" // or "same-origin" if running on the same domain
+  })
+  if(conversion) {
+    viewsLink = `https://${reportingServer}/b/ss/atetrifandemo/0/TA-1.0?pe=tnt&tnta=${revenueEvent[0]}|32767,${revenueEvent[0]}|${conversionEvent?.replace("event","")}|${conversionValue}&mid=${mcId}&c.a.target.sessionid=${el.analytics.payload["session-id"]}&events=${conversionEvent}=${conversionValue}`
+    setTimeout(()=>{
+      fetch(viewsLink, {
+        method: "GET",
+        headers: {
+          "Content-Type": "text/plain"
+        },
+        // Make sure to include credentials if needed, depending on Adobe's CORS policy
+        credentials: "include" // or "same-origin" if running on the same domain
+      })
+    }, 200);
+  }
 }

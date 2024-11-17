@@ -1,8 +1,9 @@
-import React, { useEffect, useLayoutEffect } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import AtJs from '../lib/atJs';
+import AtJs, { generateViewsWithConversions } from '../lib/atJs';
 import Tracker from '../lib/tracker';
 import getMcId from '../lib/visitor';
+import LoadingModal from '../components/LoadingModal';
 
 interface XperienceProps {
     displayName: string;
@@ -22,6 +23,7 @@ interface XperienceProps {
 }
 
 const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, setToken, activityIndex, setActivityIndex, experienceIndex, setExperienceIndex, trueAudienceId, setTrueAudienceId, country, hobby, age, refreshKey, mcId}) => {
+    const [isModalVisible, setModalVisible] = useState(false);
     useLayoutEffect(() => {
         console.log(refreshKey);
         let cleanupEvents: [Promise<any>?] = [];
@@ -85,6 +87,13 @@ const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, set
     }, [refreshKey, displayName, country, hobby, age]);
 
 
+    const generateViews = (number: string) => {
+        generateViewsWithConversions(number, setModalVisible, '', { displayName, country, hobby, age }, ["target-demo-site-aa-mbox"], undefined, false, undefined, undefined, undefined, true);
+    }
+
+    const generateConversions = (number: string) => {
+        generateViewsWithConversions(number, setModalVisible, '', { displayName, country, hobby, age }, ["target-demo-site-aa-mbox"], undefined, true, "click", 1, undefined, true);
+    }
 
     const handleSetToken = (newToken: string, activityId: number, experienceId: number) => {
         setToken(newToken);
@@ -141,7 +150,47 @@ const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, set
 
                   </div>
               </div>
+              {/* Generate Views without Conversions Section */}
+              <div style={{ marginTop: '20px' }}>
+                  <h4>Generate Views without Conversions</h4>
+                  <input
+                    type="number"
+                    placeholder="Enter number of views"
+                    id="viewsWithoutConversions"
+                    style={{ marginRight: '10px', padding: '5px', width: '100px' }}
+                  />
+                  <button
+                    onClick={() => {
+                        const number = (document.getElementById('viewsWithoutConversions') as HTMLInputElement)?.value;
+                        generateViews(number);
+                    }}
+                    style={{ padding: '5px 10px' }}
+                  >
+                      Generate Views
+                  </button>
+              </div>
+
+              {/* Generate Views with Conversions Section */}
+              <div style={{ marginTop: '20px' }}>
+                  <h4>Generate Views with Conversions</h4>
+                  <input
+                    type="number"
+                    placeholder="Enter number of views"
+                    id="viewsWithConversions"
+                    style={{ marginRight: '10px', padding: '5px', width: '100px' }}
+                  />
+                  <button
+                    onClick={() => {
+                        const number = (document.getElementById('viewsWithConversions') as HTMLInputElement)?.value;
+                        generateConversions(number);
+                    }}
+                    style={{ padding: '5px 10px' }}
+                  >
+                      Generate Views with Conversions
+                  </button>
+              </div>
           </div>
+          <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)}/>
       </main>
     )
       ;

@@ -13,6 +13,7 @@ declare global {
         applyOffers: (any) => Promise<any>; // Apply offers
         trackEvent: (any) => void; // Track events
         init: () => void; // Initialize Adobe Target
+        sendNotifications: (any) => void; // Send notifications
         delivery: (options: { prefetch: { views: any[] } }) => void; // Method to send data to Adobe Target
         // Add other methods and properties you might need from Adobe Target
       };
