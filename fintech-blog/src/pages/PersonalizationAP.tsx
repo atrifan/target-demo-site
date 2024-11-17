@@ -28,6 +28,8 @@ const PersonalizationAP: React.FC<XperienceProps> = ({ displayName, token, setTo
     const [total, setTotal] = useState(0);
     const [current, setCurrent] = useState(0);
     useLayoutEffect(() => {
+        //reset experience-index on main page
+        setExperienceIndex(-100);
         console.log(refreshKey);
         let cleanupEvents: [Promise<any>?] = [];
         const mcIdToUse = mcId.length > 0 ? mcId : getMcId();

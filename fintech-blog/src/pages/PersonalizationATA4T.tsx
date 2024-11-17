@@ -31,6 +31,8 @@ const PersonalizationATA4T: React.FC<XperienceProps> = ({ displayName, token, se
   const [total, setTotal] = useState(0);
   const [current, setCurrent] = useState(0);
   useLayoutEffect(() => {
+    //reset experience-index on main page
+    setExperienceIndex(-100);
     let cleanupEvents: [Promise<any>?] = [];
     console.log(refreshKey);
     const mcIdToUse = mcId.length > 0 ? mcId : getMcId();
