@@ -25,6 +25,8 @@ interface XperienceProps {
 
 const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, setToken, activityIndex, setActivityIndex, experienceIndex, setExperienceIndex, trueAudienceId, setTrueAudienceId, country, hobby, age, refreshKey, reportingServer, mcId}) => {
     const [isModalVisible, setModalVisible] = useState(false);
+    const [total, setTotal] = useState(0);
+    const [current, setCurrent] = useState(0);
     useLayoutEffect(() => {
         console.log(refreshKey);
         const mcIdToUse = mcId.length > 0 ? mcId : getMcId();
@@ -121,11 +123,11 @@ const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, set
     }, [refreshKey, displayName, country, hobby, age]);
 
     const generateViews = (number: string) => {
-        generateViewsWithConversions(number, setModalVisible, reportingServer, { displayName, country, hobby, age }, ["target-demo-site-aa-a4t-mbox"], undefined, false, undefined, undefined, undefined);
+        generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, reportingServer, { displayName, country, hobby, age }, ["target-demo-site-aa-a4t-mbox"], undefined, false, undefined, undefined, undefined);
     }
 
     const generateConversions = (number: string) => {
-        generateViewsWithConversions(number, setModalVisible, reportingServer, { displayName, country, hobby, age }, ["target-demo-site-aa-a4t-mbox"], undefined, true, "event10", 1, undefined);
+        generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, reportingServer, { displayName, country, hobby, age }, ["target-demo-site-aa-a4t-mbox"], undefined, true, "event10", 1, undefined);
     }
 
 
@@ -225,7 +227,7 @@ const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, set
                   </button>
               </div>
           </div>
-          <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)}/>
+          <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)} total={total} current={current}/>
       </main>
     )
       ;

@@ -113,12 +113,14 @@ export function getNewCookiePCValue(newPCValue: string): string | undefined {
   return undefined;
 }
 
-export const generateViewsWithConversions = (number: string, setModalVisible: any, reportingServer: string, profileData: ProfileData, mboxes: string[], tntA?: string, conversion: boolean = false,
+export const generateViewsWithConversions = (number: string, setTotal: any, setCurrent: any, setModalVisible: any, reportingServer: string, profileData: ProfileData, mboxes: string[], tntA?: string, conversion: boolean = false,
                                              conversionEvent?: string, conversionValue: number = 1, algorithmId: number=-1000, isTarget = false) => {
   if (number.length === 0) {
     return;
   }
   let numberOfViews = parseInt(number);
+  setTotal(numberOfViews);
+  setCurrent(numberOfViews)
   setModalVisible(true);
   const interval = setInterval(() => {
     //mboxSession generates a new user unique entry // TODO: set profile attributes
@@ -174,6 +176,7 @@ export const generateViewsWithConversions = (number: string, setModalVisible: an
         })
       });
     numberOfViews -= 1;
+    setCurrent(numberOfViews);
     if (numberOfViews === 0) {
       setModalVisible(false);
       clearInterval(interval);

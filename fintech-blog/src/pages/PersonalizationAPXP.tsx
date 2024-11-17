@@ -20,6 +20,8 @@ interface XperienceProps {
 
 const PersonalizationAPXP: React.FC<XperienceProps> = ({ displayName, token, activityIndex, experienceIndex, trueAudienceId, country, hobby, age, refreshKey, mcId}) => {
     const [isModalVisible, setModalVisible] = useState(false);
+    const [total, setTotal] = useState(0);
+    const [current, setCurrent] = useState(0);
     useLayoutEffect(() => {
         console.log(refreshKey);
         let cleanupEvents: [Promise<any>?] = [];
@@ -102,11 +104,11 @@ const PersonalizationAPXP: React.FC<XperienceProps> = ({ displayName, token, act
 
     }, [refreshKey, displayName, country, hobby, age]);
     const generateViews = (number: string) => {
-        generateViewsWithConversions(number, setModalVisible, '', { displayName, country, hobby, age }, ["target-demo-site-ap-mbox-1, target-demo-site-ap-mbox-2, target-demo-site-ap-mbox-3"], undefined, false, undefined, undefined, undefined, true);
+        generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, '', { displayName, country, hobby, age }, ["target-demo-site-ap-mbox-1, target-demo-site-ap-mbox-2, target-demo-site-ap-mbox-3"], undefined, false, undefined, undefined, undefined, true);
     }
 
     const generateConversions = (number: string) => {
-        generateViewsWithConversions(number, setModalVisible, '', { displayName, country, hobby, age }, ["target-demo-site-ap-mbox-1, target-demo-site-ap-mbox-2, target-demo-site-ap-mbox-3"], undefined, true, "click", 1, undefined, true);
+        generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, '', { displayName, country, hobby, age }, ["target-demo-site-ap-mbox-1, target-demo-site-ap-mbox-2, target-demo-site-ap-mbox-3"], undefined, true, "click", 1, undefined, true);
     }
 
     return (
@@ -186,7 +188,7 @@ const PersonalizationAPXP: React.FC<XperienceProps> = ({ displayName, token, act
                   Generate Views with Conversions
               </button>
           </div>
-          <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)}/>
+          <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)} current={current} total={total}/>
       </main>
     )
       ;

@@ -24,6 +24,8 @@ interface XperienceProps {
 const PersonalizationATA4TXP: React.FC<XperienceProps> = ({ displayName, token, activityIndex, experienceIndex, trueAudienceId, country, hobby, age, refreshKey, reportingServer, tntA, setTntA, mcId}) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [algorithmId, setAlgorithmId] = useState(-1000);
+  const [total, setTotal] = useState(0);
+  const [current, setCurrent] = useState(0);
   useLayoutEffect(() => {
     let cleanupEvents: [Promise<any>?] = [];
     const mcIdToUse = mcId.length > 0 ? mcId : getMcId();
@@ -145,11 +147,11 @@ const PersonalizationATA4TXP: React.FC<XperienceProps> = ({ displayName, token, 
   }, [refreshKey]);
 
   const generateViews = (number: string) => {
-    generateViewsWithConversions(number, setModalVisible, reportingServer, {displayName, country, hobby, age}, ['target-demo-site-at-a4t-mbox'], tntA, false, undefined, undefined, algorithmId);
+    generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, reportingServer, {displayName, country, hobby, age}, ['target-demo-site-at-a4t-mbox'], tntA, false, undefined, undefined, algorithmId);
   }
 
   const generateConversions = (number: string) => {
-    generateViewsWithConversions(number, setModalVisible, reportingServer, {displayName, country, hobby, age}, ['target-demo-site-at-a4t-mbox'], tntA, true, 'event32', 1, algorithmId);
+    generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, reportingServer, {displayName, country, hobby, age}, ['target-demo-site-at-a4t-mbox'], tntA, true, 'event32', 1, algorithmId);
   }
 
   const changeAlgorithmId = (number: string) => {
@@ -224,7 +226,7 @@ const PersonalizationATA4TXP: React.FC<XperienceProps> = ({ displayName, token, 
           Save Algorithm ID
         </button>
       </div>
-      <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)}/>
+      <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)} current={current} total={total}/>
     </main>
   )
     ;

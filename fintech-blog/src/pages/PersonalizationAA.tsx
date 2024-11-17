@@ -24,6 +24,8 @@ interface XperienceProps {
 
 const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, setToken, activityIndex, setActivityIndex, experienceIndex, setExperienceIndex, trueAudienceId, setTrueAudienceId, country, hobby, age, refreshKey, mcId}) => {
     const [isModalVisible, setModalVisible] = useState(false);
+    const [total, setTotal] = useState(0);
+    const [current, setCurrent] = useState(0);
     useLayoutEffect(() => {
         console.log(refreshKey);
         let cleanupEvents: [Promise<any>?] = [];
@@ -88,11 +90,11 @@ const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, set
 
 
     const generateViews = (number: string) => {
-        generateViewsWithConversions(number, setModalVisible, '', { displayName, country, hobby, age }, ["target-demo-site-aa-mbox"], undefined, false, undefined, undefined, undefined, true);
+        generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, '', { displayName, country, hobby, age }, ["target-demo-site-aa-mbox"], undefined, false, undefined, undefined, undefined, true);
     }
 
     const generateConversions = (number: string) => {
-        generateViewsWithConversions(number, setModalVisible, '', { displayName, country, hobby, age }, ["target-demo-site-aa-mbox"], undefined, true, "click", 1, undefined, true);
+        generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, '', { displayName, country, hobby, age }, ["target-demo-site-aa-mbox"], undefined, true, "click", 1, undefined, true);
     }
 
     const handleSetToken = (newToken: string, activityId: number, experienceId: number) => {
@@ -190,7 +192,7 @@ const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, set
                   </button>
               </div>
           </div>
-          <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)}/>
+          <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)} total={total} current={current}/>
       </main>
     )
       ;

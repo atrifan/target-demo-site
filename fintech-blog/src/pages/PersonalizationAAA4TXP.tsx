@@ -20,6 +20,8 @@ interface XperienceProps {
 
 const PersonalizationAAA4TXP: React.FC<XperienceProps> = ({ displayName, token, activityIndex, experienceIndex, trueAudienceId, country, hobby, age, refreshKey, reportingServer, mcId}) => {
     const [isModalVisible, setModalVisible] = useState(false);
+    const [total, setTotal] = useState(0);
+    const [current, setCurrent] = useState(0);
     useLayoutEffect(() => {
         const mcIdToUse = mcId.length > 0 ? mcId : getMcId();
         let cleanupEvents: [Promise<any>?] = [];
@@ -96,11 +98,11 @@ const PersonalizationAAA4TXP: React.FC<XperienceProps> = ({ displayName, token, 
     }, [refreshKey]);
 
     const generateViews = (number: string) => {
-        generateViewsWithConversions(number, setModalVisible, reportingServer, { displayName, country, hobby, age }, ["target-demo-site-aa-a4t-mbox"], undefined, false, undefined, undefined, undefined);
+        generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, reportingServer, { displayName, country, hobby, age }, ["target-demo-site-aa-a4t-mbox"], undefined, false, undefined, undefined, undefined);
     }
 
     const generateConversions = (number: string) => {
-        generateViewsWithConversions(number, setModalVisible, reportingServer, { displayName, country, hobby, age }, ["target-demo-site-aa-a4t-mbox"], undefined, true, "event10", 1, undefined);
+        generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, reportingServer, { displayName, country, hobby, age }, ["target-demo-site-aa-a4t-mbox"], undefined, true, "event10", 1, undefined);
     }
 
     return (
@@ -147,7 +149,7 @@ const PersonalizationAAA4TXP: React.FC<XperienceProps> = ({ displayName, token, 
                   Generate Views with Conversions
               </button>
           </div>
-          <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)}/>
+          <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)} current={current} total={total}/>
       </main>
     )
       ;

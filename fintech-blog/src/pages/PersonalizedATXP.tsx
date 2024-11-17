@@ -18,6 +18,8 @@ interface XperienceProps {
 
 const PersonalizationATXP: React.FC<XperienceProps> = ({ displayName, token, activityIndex, experienceIndex, trueAudienceId, country, hobby, age, refreshKey, mcId}) => {
   const [isModalVisible, setModalVisible] = useState(false);
+  const [total, setTotal] = useState(0);
+  const [current, setCurrent] = useState(0);
   useLayoutEffect(() => {
     const mcIdToUse = mcId.length > 0 ? mcId : getMcId();
     AtJs().then(() => {
@@ -73,11 +75,11 @@ const PersonalizationATXP: React.FC<XperienceProps> = ({ displayName, token, act
   }, [refreshKey]);
 
   const generateViews = (number: string) => {
-    generateViewsWithConversions(number, setModalVisible, '', { displayName, country, hobby, age }, ["target-demo-site-at-mbox"], undefined, false, undefined, undefined, undefined, true);
+    generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, '', { displayName, country, hobby, age }, ["target-demo-site-at-mbox"], undefined, false, undefined, undefined, undefined, true);
   }
 
   const generateConversions = (number: string) => {
-    generateViewsWithConversions(number, setModalVisible, '', { displayName, country, hobby, age }, ["target-demo-site-at-mbox"], undefined, true, "click", 1, undefined, true);
+    generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, '', { displayName, country, hobby, age }, ["target-demo-site-at-mbox"], undefined, true, "click", 1, undefined, true);
   }
 
   return (
@@ -124,7 +126,7 @@ const PersonalizationATXP: React.FC<XperienceProps> = ({ displayName, token, act
           Generate Views with Conversions
         </button>
       </div>
-      <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)}/>
+      <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)} current={current} total={total}/>
     </main>
   )
     ;

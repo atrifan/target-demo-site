@@ -28,6 +28,8 @@ interface XperienceProps {
 const PersonalizationATA4T: React.FC<XperienceProps> = ({ displayName, token, setToken, activityIndex, setActivityIndex, experienceIndex, setExperienceIndex, trueAudienceId, setTrueAudienceId, country, hobby, age, refreshKey, reportingServer, setTntA, mcId}) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [algorithmId, setAlgorithmId] = useState(-1000);
+  const [total, setTotal] = useState(0);
+  const [current, setCurrent] = useState(0);
   useLayoutEffect(() => {
     let cleanupEvents: [Promise<any>?] = [];
     console.log(refreshKey);
@@ -193,11 +195,11 @@ const PersonalizationATA4T: React.FC<XperienceProps> = ({ displayName, token, se
   };
 
   const generateViews = (number: string) => {
-    generateViewsWithConversions(number, setModalVisible, reportingServer, { displayName, country, hobby, age }, ["target-demo-site-at-a4t-mbox"], undefined, false, undefined, undefined, algorithmId);
+    generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, reportingServer, { displayName, country, hobby, age }, ["target-demo-site-at-a4t-mbox"], undefined, false, undefined, undefined, algorithmId);
   }
 
   const generateConversions = (number: string) => {
-    generateViewsWithConversions(number, setModalVisible, reportingServer, { displayName, country, hobby, age }, ["target-demo-site-at-a4t-mbox"], undefined, true, "event32", 1, algorithmId);
+    generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, reportingServer, { displayName, country, hobby, age }, ["target-demo-site-at-a4t-mbox"], undefined, true, "event32", 1, algorithmId);
   }
 
   const changeAlgorithmId = (number: string) => {
@@ -316,7 +318,7 @@ const PersonalizationATA4T: React.FC<XperienceProps> = ({ displayName, token, se
 
         </div>
       </div>
-      <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)}/>
+      <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)} current={current} total={total}/>
     </main>
   )
     ;

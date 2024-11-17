@@ -23,6 +23,8 @@ interface XperienceProps {
 
 const PersonalizationAT: React.FC<XperienceProps> = ({ displayName, token, setToken, activityIndex, setActivityIndex, experienceIndex, setExperienceIndex, trueAudienceId, setTrueAudienceId, country, hobby, age, refreshKey, mcId}) => {
   const [isModalVisible, setModalVisible] = useState(false);
+  const [total, setTotal] = useState(0);
+  const [current, setCurrent] = useState(0);
   useLayoutEffect(() => {
     console.log(refreshKey);
     const mcIdToUse = mcId.length > 0 ? mcId : getMcId();
@@ -81,11 +83,11 @@ const PersonalizationAT: React.FC<XperienceProps> = ({ displayName, token, setTo
   }, [refreshKey, displayName, country, hobby, age]);
 
   const generateViews = (number: string) => {
-    generateViewsWithConversions(number, setModalVisible, '', { displayName, country, hobby, age }, ["target-demo-site-at-mbox"], undefined, false, undefined, undefined, undefined, true);
+    generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, '', { displayName, country, hobby, age }, ["target-demo-site-at-mbox"], undefined, false, undefined, undefined, undefined, true);
   }
 
   const generateConversions = (number: string) => {
-    generateViewsWithConversions(number, setModalVisible, '', { displayName, country, hobby, age }, ["target-demo-site-at-mbox"], undefined, true, "click", 1, undefined, true);
+    generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, '', { displayName, country, hobby, age }, ["target-demo-site-at-mbox"], undefined, true, "click", 1, undefined, true);
   }
 
   const handleSetToken = (newToken: string, activityId: number, experienceId: number) => {
@@ -182,7 +184,7 @@ const PersonalizationAT: React.FC<XperienceProps> = ({ displayName, token, setTo
           </button>
         </div>
       </div>
-      <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)}/>
+      <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)} total={total} current={current}/>
     </main>
   )
     ;
