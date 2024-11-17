@@ -113,82 +113,105 @@ const PersonalizationAPXP: React.FC<XperienceProps> = ({ displayName, token, act
 
     return (
       <main>
-          <h3>Mbox1</h3>
-          <div data-mbox="target-demo-site-ap-mbox-1" className="mbox-name-target-demo-site-ap-mbox-1"
-               data-at-mbox-name="target-demo-site-ap-mbox-1">
-
-          </div>
-          <h3>Mbox2</h3>
-          <div data-mbox="target-demo-site-ap-mbox-2" className="mbox-name-target-demo-site-ap-mbox-2"
-               data-at-mbox-name="target-demo-site-ap-mbox-2">
-
-          </div>
-          <h3>Mbox3</h3>
-          <div data-mbox="target-demo-site-ap-mbox-3" className="mbox-name-target-demo-site-ap-mbox-3"
-               data-at-mbox-name="target-demo-site-ap-mbox-3">
-
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', marginBottom: '20px' }}>
+          {/* Mbox1 and its Title */}
+          <div style={{ flex: '1 1 48%', marginRight: '4%' }}>
+            <h4>Mbox1</h4>
+            <div
+              data-mbox="target-demo-site-ap-mbox-1"
+              className="mbox-name-target-demo-site-ap-mbox-1"
+              data-at-mbox-name="target-demo-site-ap-mbox-1"
+            >
+              {/* Content for Mbox1 */}
+            </div>
           </div>
 
-          {/* Generate Views without Conversions Section */}
-          <div style={{ marginTop: '20px' }}>
-              <h4>Generate Views without Conversions</h4>
-              <input
-                type="number"
-                placeholder="Enter number of views"
-                id="viewsWithoutConversions"
-                style={{ marginRight: '10px', padding: '5px', width: '100px' }}
-              />
-              <button
-                onClick={() => {
-                    const number = (document.getElementById('viewsWithoutConversions') as HTMLInputElement)?.value;
-                    generateViews(number);
-                }}
-                style={{ padding: '5px 10px' }}
-              >
-                  Generate Views
-              </button>
+          {/* Mbox2 and its Title */}
+          <div style={{ flex: '1 1 48%' }}>
+            <h4>Mbox2</h4>
+            <div
+              data-mbox="target-demo-site-ap-mbox-2"
+              className="mbox-name-target-demo-site-ap-mbox-2"
+              data-at-mbox-name="target-demo-site-ap-mbox-2"
+            >
+              {/* Content for Mbox2 */}
+            </div>
           </div>
+        </div>
 
-          {/* Generate Views without Conversions Section */}
-          <div style={{ marginTop: '20px' }}>
-              <h4>Generate Views without Conversions</h4>
-              <input
-                type="number"
-                placeholder="Enter number of views"
-                id="viewsWithoutConversions"
-                style={{ marginRight: '10px', padding: '5px', width: '100px' }}
-              />
-              <button
-                onClick={() => {
-                    const number = (document.getElementById('viewsWithoutConversions') as HTMLInputElement)?.value;
-                    generateViews(number);
-                }}
-                style={{ padding: '5px 10px' }}
-              >
-                  Generate Views
-              </button>
+        {/* Mbox3 and its Title, which should take up the full row */}
+        <div style={{ flex: '1 1 100%' }}>
+          <h4>Mbox3</h4>
+          <div
+            data-mbox="target-demo-site-ap-mbox-3"
+            className="mbox-name-target-demo-site-ap-mbox-3"
+            data-at-mbox-name="target-demo-site-ap-mbox-3"
+          >
+            {/* Content for Mbox3 */}
           </div>
+        </div>
 
-          {/* Generate Views with Conversions Section */}
-          <div style={{ marginTop: '20px' }}>
-              <h4>Generate Views with Conversions</h4>
-              <input
-                type="number"
-                placeholder="Enter number of views"
-                id="viewsWithConversions"
-                style={{ marginRight: '10px', padding: '5px', width: '100px' }}
-              />
-              <button
-                onClick={() => {
-                    const number = (document.getElementById('viewsWithConversions') as HTMLInputElement)?.value;
-                    generateConversions(number);
-                }}
-                style={{ padding: '5px 10px' }}
-              >
-                  Generate Views with Conversions
-              </button>
-          </div>
-          <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)} current={current} total={total}/>
+        {/* Generate Views without Conversions Section */}
+        <div style={{ marginTop: '20px' }}>
+          <h4>Generate Views without Conversions</h4>
+          <input
+            type="number"
+            placeholder="Enter number of views"
+            id="viewsWithoutConversions"
+            style={{ marginRight: '10px', padding: '5px', width: '100px' }}
+          />
+          <button
+            onClick={() => {
+              const number = (document.getElementById('viewsWithoutConversions') as HTMLInputElement)?.value;
+              generateViews(number);
+            }}
+            style={{ padding: '5px 10px' }}
+          >
+            Generate Views
+          </button>
+        </div>
+
+        {/* Generate Views without Conversions Section */}
+        <div style={{ marginTop: '20px' }}>
+          <h4>Generate Views without Conversions</h4>
+          <input
+            type="number"
+            placeholder="Enter number of views"
+            id="viewsWithoutConversions"
+            style={{ marginRight: '10px', padding: '5px', width: '100px' }}
+          />
+          <button
+            onClick={() => {
+              const number = (document.getElementById('viewsWithoutConversions') as HTMLInputElement)?.value;
+              generateViews(number);
+            }}
+            style={{ padding: '5px 10px' }}
+          >
+            Generate Views
+          </button>
+        </div>
+
+        {/* Generate Views with Conversions Section */}
+        <div style={{ marginTop: '20px' }}>
+          <h4>Generate Views with Conversions</h4>
+          <input
+            type="number"
+            placeholder="Enter number of views"
+            id="viewsWithConversions"
+            style={{ marginRight: '10px', padding: '5px', width: '100px' }}
+          />
+          <button
+            onClick={() => {
+              const number = (document.getElementById('viewsWithConversions') as HTMLInputElement)?.value;
+              generateConversions(number);
+            }}
+            style={{ padding: '5px 10px' }}
+          >
+            Generate Views with Conversions
+          </button>
+        </div>
+        <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)} current={current}
+                      total={total}/>
       </main>
     )
       ;

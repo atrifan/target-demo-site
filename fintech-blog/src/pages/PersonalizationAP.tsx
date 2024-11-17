@@ -4,6 +4,7 @@ import AtJs, { generateViewsWithConversions } from '../lib/atJs';
 import Tracker from '../lib/tracker';
 import getMcId from '../lib/visitor';
 import LoadingModal from '../components/LoadingModal';
+import VariationsGrid from '../components/VariationGrid';
 
 interface XperienceProps {
     displayName: string;
@@ -117,11 +118,11 @@ const PersonalizationAP: React.FC<XperienceProps> = ({ displayName, token, setTo
     };
 
     const generateViews = (number: string) => {
-        generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, '', { displayName, country, hobby, age }, ["target-demo-site-ap-mbox-1, target-demo-site-ap-mbox-2, target-demo-site-ap-mbox-3"], undefined, false, undefined, undefined, undefined, true);
+        generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, '', { displayName, country, hobby, age }, ["target-demo-site-ap-mbox-1", "target-demo-site-ap-mbox-2", "target-demo-site-ap-mbox-3"], undefined, false, undefined, undefined, undefined, true);
     }
 
     const generateConversions = (number: string) => {
-        generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, '', { displayName, country, hobby, age }, ["target-demo-site-ap-mbox-1, target-demo-site-ap-mbox-2, target-demo-site-ap-mbox-3"], undefined, true, "click", 1, undefined, true);
+        generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, '', { displayName, country, hobby, age }, ["target-demo-site-ap-mbox-1", "target-demo-site-ap-mbox-2", "target-demo-site-ap-mbox-3"], undefined, true, "click", 1, undefined, true);
     }
 
     return (
@@ -129,85 +130,7 @@ const PersonalizationAP: React.FC<XperienceProps> = ({ displayName, token, setTo
           <div style={{ padding: '20px' }}>
               <h2>Navigate to Experiences</h2>
 
-              <div style={{ marginBottom: '15px' }}>
-                  <Link
-                    to="/target-demo-site/personalization/ap/xp?at_preview_token=dczqkm4C5P9S8L6ExR8KTYsfdKGAJyg5DsJ3XxNj67A&at_preview_index=1_1&at_preview_listed_activities_only=true&at_preview_evaluate_as_true_audience_ids=3440621"
-                    style={{ textDecoration: 'none', color: '#000', fontSize: '18px' }}
-                    onClick={() => handleSetToken('ZkuLDeLZ6SdSR9RthgNI2osfdKGAJyg5DsJ3XxNj67A', 1, 1)}
-                  >
-                      Go to Variation 1
-                  </Link>
-              </div>
-
-              <div style={{ marginBottom: '20px' }}>
-                  <Link
-                    to="/target-demo-site/personalization/ap/xp?at_preview_token=dczqkm4C5P9S8L6ExR8KTYsfdKGAJyg5DsJ3XxNj67A&at_preview_index=1_2&at_preview_listed_activities_only=true&at_preview_evaluate_as_true_audience_ids=3440621"
-                    style={{ textDecoration: 'none', color: '#000', fontSize: '18px' }}
-                    onClick={() => handleSetToken('ZkuLDeLZ6SdSR9RthgNI2osfdKGAJyg5DsJ3XxNj67A', 1, 2)}
-                  >
-                      Go to Variation 2
-                  </Link>
-              </div>
-
-              <div style={{ marginBottom: '20px' }}>
-                  <Link
-                    to="/target-demo-site/personalization/ap/xp?at_preview_token=dczqkm4C5P9S8L6ExR8KTYsfdKGAJyg5DsJ3XxNj67A&at_preview_index=1_3&at_preview_listed_activities_only=true&at_preview_evaluate_as_true_audience_ids=3440621"
-                    style={{ textDecoration: 'none', color: '#000', fontSize: '18px' }}
-                    onClick={() => handleSetToken('ZkuLDeLZ6SdSR9RthgNI2osfdKGAJyg5DsJ3XxNj67A', 1, 3)}
-                  >
-                      Go to Variation 3
-                  </Link>
-              </div>
-
-              <div style={{ marginBottom: '20px' }}>
-                  <Link
-                    to="/target-demo-site/personalization/ap/xp?at_preview_token=dczqkm4C5P9S8L6ExR8KTYsfdKGAJyg5DsJ3XxNj67A&at_preview_index=1_4&at_preview_listed_activities_only=true&at_preview_evaluate_as_true_audience_ids=3440621"
-                    style={{ textDecoration: 'none', color: '#000', fontSize: '18px' }}
-                    onClick={() => handleSetToken('ZkuLDeLZ6SdSR9RthgNI2osfdKGAJyg5DsJ3XxNj67A', 1, 4)}
-                  >
-                      Go to Variation 4
-                  </Link>
-              </div>
-
-              <div style={{ marginBottom: '20px' }}>
-                  <Link
-                    to="/target-demo-site/personalization/ap/xp?at_preview_token=dczqkm4C5P9S8L6ExR8KTYsfdKGAJyg5DsJ3XxNj67A&at_preview_index=1_5&at_preview_listed_activities_only=true&at_preview_evaluate_as_true_audience_ids=3440621"
-                    style={{ textDecoration: 'none', color: '#000', fontSize: '18px' }}
-                    onClick={() => handleSetToken('ZkuLDeLZ6SdSR9RthgNI2osfdKGAJyg5DsJ3XxNj67A', 1, 5)}
-                  >
-                      Go to Variation 5
-                  </Link>
-              </div>
-
-              <div style={{ marginBottom: '20px' }}>
-                  <Link
-                    to="/target-demo-site/personalization/ap/xp?at_preview_token=dczqkm4C5P9S8L6ExR8KTYsfdKGAJyg5DsJ3XxNj67A&at_preview_index=1_6&at_preview_listed_activities_only=true&at_preview_evaluate_as_true_audience_ids=3440621"
-                    style={{ textDecoration: 'none', color: '#000', fontSize: '18px' }}
-                    onClick={() => handleSetToken('ZkuLDeLZ6SdSR9RthgNI2osfdKGAJyg5DsJ3XxNj67A', 1, 6)}
-                  >
-                      Go to Variation 6
-                  </Link>
-              </div>
-
-              <div style={{ marginBottom: '20px' }}>
-                  <Link
-                    to="/target-demo-site/personalization/ap/xp?at_preview_token=dczqkm4C5P9S8L6ExR8KTYsfdKGAJyg5DsJ3XxNj67A&at_preview_index=1_7&at_preview_listed_activities_only=true&at_preview_evaluate_as_true_audience_ids=3440621"
-                    style={{ textDecoration: 'none', color: '#000', fontSize: '18px' }}
-                    onClick={() => handleSetToken('ZkuLDeLZ6SdSR9RthgNI2osfdKGAJyg5DsJ3XxNj67A', 1, 7)}
-                  >
-                      Go to Variation 7
-                  </Link>
-              </div>
-
-              <div style={{ marginBottom: '20px' }}>
-                  <Link
-                    to="/target-demo-site/personalization/ap/xp?at_preview_token=dczqkm4C5P9S8L6ExR8KTYsfdKGAJyg5DsJ3XxNj67A&at_preview_index=1_8&at_preview_listed_activities_only=true&at_preview_evaluate_as_true_audience_ids=3440621"
-                    style={{ textDecoration: 'none', color: '#000', fontSize: '18px' }}
-                    onClick={() => handleSetToken('ZkuLDeLZ6SdSR9RthgNI2osfdKGAJyg5DsJ3XxNj67A', 1, 8)}
-                  >
-                      Go to Variation 8
-                  </Link>
-              </div>
+              <VariationsGrid handleSetToken={handleSetToken} />
 
               <div style={{
                   border: '1px solid #ddd',
@@ -217,21 +140,47 @@ const PersonalizationAP: React.FC<XperienceProps> = ({ displayName, token, setTo
                   marginTop: '20px'
               }}
               >
-                  <h3>The served experience is:</h3>
-                  <h4>Mbox1</h4>
-                  <div data-mbox="target-demo-site-ap-mbox-1" className="mbox-name-target-demo-site-ap-mbox-1"
-                       data-at-mbox-name="target-demo-site-ap-mbox-1">
+                  <div style={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      justifyContent: 'space-between',
+                      marginBottom: '20px'
+                  }}>
+                      {/* Mbox1 and its Title */}
+                      <div style={{ flex: '1 1 48%', marginRight: '4%' }}>
+                          <h4>Mbox1</h4>
+                          <div
+                            data-mbox="target-demo-site-ap-mbox-1"
+                            className="mbox-name-target-demo-site-ap-mbox-1"
+                            data-at-mbox-name="target-demo-site-ap-mbox-1"
+                          >
+                              {/* Content for Mbox1 */}
+                          </div>
+                      </div>
 
+                      {/* Mbox2 and its Title */}
+                      <div style={{ flex: '1 1 48%' }}>
+                          <h4>Mbox2</h4>
+                          <div
+                            data-mbox="target-demo-site-ap-mbox-2"
+                            className="mbox-name-target-demo-site-ap-mbox-2"
+                            data-at-mbox-name="target-demo-site-ap-mbox-2"
+                          >
+                              {/* Content for Mbox2 */}
+                          </div>
+                      </div>
                   </div>
-                  <h4>Mbox2</h4>
-                  <div data-mbox="target-demo-site-ap-mbox-2" className="mbox-name-target-demo-site-ap-mbox-2"
-                       data-at-mbox-name="target-demo-site-ap-mbox-2">
 
-                  </div>
-                  <h4>Mbox3</h4>
-                  <div data-mbox="target-demo-site-ap-mbox-3" className="mbox-name-target-demo-site-ap-mbox-3"
-                       data-at-mbox-name="target-demo-site-ap-mbox-3">
-
+                  {/* Mbox3 and its Title, which should take up the full row */}
+                  <div style={{ flex: '1 1 100%' }}>
+                      <h4>Mbox3</h4>
+                      <div
+                        data-mbox="target-demo-site-ap-mbox-3"
+                        className="mbox-name-target-demo-site-ap-mbox-3"
+                        data-at-mbox-name="target-demo-site-ap-mbox-3"
+                      >
+                          {/* Content for Mbox3 */}
+                      </div>
                   </div>
               </div>
 

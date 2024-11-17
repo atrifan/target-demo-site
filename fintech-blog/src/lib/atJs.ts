@@ -140,10 +140,10 @@ export const generateViewsWithConversions = (number: string, setTotal: any, setC
           }
         },
         execute: {
-          mboxes: mboxes.map((mboxName) => {
+          mboxes: mboxes.map((mboxName, idx) => {
               return {
-                index: 0,
-                  name: mboxName,
+                index: idx,
+                name: mboxName,
                 profileParameters: {
                 "user.422": `${profileData.displayName}-${Date.now()}`,
                   "user.country": profileData.country,
@@ -159,9 +159,14 @@ export const generateViewsWithConversions = (number: string, setTotal: any, setC
       .then(response => {
         console.log(response);
         const mboxes: any[] = response.execute.mboxes;
+        //content is not removed in place if it's gone missing so than
         document.querySelectorAll('[data-mbox]').forEach(element => {
           const clone = element.cloneNode(true); // Clone the element
           element.parentNode?.replaceChild(clone, element); // Replace the original with the clone
+        });
+        document.querySelectorAll('[data-mbox]').forEach(element => {
+          //reset it to the default
+          element.innerHTML = "";
         });
         mboxes.forEach((el) => {
           window.adobe.target?.applyOffers({
