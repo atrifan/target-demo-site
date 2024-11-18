@@ -182,7 +182,7 @@ export const generateViewsWithConversions = (number: string, setTotal: any, setC
               }
             }
           });
-          okTargeted = isTarget? sendNotificationTarget(el, conversionEvent, conversion, profileData, experienceIndex) : sendNotificationAnalytics(tntA, el, algorithmId, reportingServer, mcId, conversion, conversionEvent, conversionValue);
+          okTargeted = isTarget? sendNotificationTarget(el, conversionEvent, conversion, profileData, experienceIndex) : sendNotificationAnalytics(tntA, el, algorithmId, reportingServer, mcId, conversion, conversionEvent, conversionValue, experienceIndex);
         })
         if (experienceIndex != undefined && experienceIndex != -100 && okTargeted) {
           numberOfViews -= 1;
@@ -197,7 +197,7 @@ export const generateViewsWithConversions = (number: string, setTotal: any, setC
       setModalVisible(false);
       clearInterval(interval);
     }
-  }, 300);
+  }, 200);
 }
 
 function generateNotificationRequest(el: any, type: string, profileData: ProfileData) {
@@ -253,7 +253,7 @@ export function sendNotificationTarget(el: any, event: string|undefined, convers
 }
 
 
-export function sendNotificationAnalytics(tntA :string|undefined, el: any, algorithmId: number, reportingServer: string, mcId: string, conversion: boolean, conversionEvent: string|undefined, conversionValue: number) {
+export function sendNotificationAnalytics(tntA :string|undefined, el: any, algorithmId: number, reportingServer: string, mcId: string, conversion: boolean, conversionEvent: string|undefined, conversionValue: number, experienceIndex: number|undefined) {
   // const mcId = getMcId();
   //don't use experienceindex for analytics not sure if it's needed
   let tntaData = tntA? tntA : el.analytics.payload.tnta;
@@ -298,7 +298,12 @@ export function sendNotificationAnalytics(tntA :string|undefined, el: any, algor
     // Make sure to include credentials if needed, depending on Adobe's CORS policy
     credentials: "include" // or "same-origin" if running on the same domain
   })
-  if(conversion) {
+  if (!conversion) {
+    return true;
+  }
+
+  if(conversion && conversionEvent && (el.options[0].responseTokens["experience.id"] == experienceIndex ||
+    (experienceIndex == -100 && experienceIndex == undefined))) {
     viewsLink = `https://${reportingServer}/b/ss/atetrifandemo/0/TA-1.0?pe=tnt&tnta=${revenueEvent[0]}|32767,${revenueEvent[0]}|${conversionEvent?.replace("event","")}|${conversionValue}&mid=${mcId}&c.a.target.sessionid=${el.analytics.payload["session-id"]}&events=${conversionEvent}=${conversionValue}`
     setTimeout(()=>{
       fetch(viewsLink, {
@@ -310,6 +315,8 @@ export function sendNotificationAnalytics(tntA :string|undefined, el: any, algor
         credentials: "include" // or "same-origin" if running on the same domain
       })
     }, 50);
+    return true;
   }
-  return true;
+
+  return false;
 }
