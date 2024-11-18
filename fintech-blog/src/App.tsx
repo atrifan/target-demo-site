@@ -16,8 +16,19 @@ import ABManual from './pages/ABManual';
 import ABManualXP from './pages/ABManualXP';
 import PersonalizationAP from './pages/PersonalizationAP';
 import PersonalizationAPXP from './pages/PersonalizationAPXP';
+import RecentlyViewed from './pages/recs/RecentlyViewed';
+import Products from './pages/recs/products/Products';
+import Product from './pages/recs/products/Product';
 
 const App: React.FC = () => {
+  interface Product {
+    entityId: string;
+    name: string;
+    message: string;
+    value: string;
+    thumbnailUrl: string;
+  }
+
   const [token, setToken] = useState('');
   const [tntA, setTntA] = useState('');
   const [activityIndex, setActivityIndex] = useState(0);
@@ -30,6 +41,7 @@ const App: React.FC = () => {
   const [age, setAge] = useState('');
   const [mcId, setMcId] = useState('');
   const [refreshKey, setRefreshKey] = useState(0);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   const handlePersonaSave = () => {
     // Increment the refresh key to trigger re-render
@@ -347,6 +359,42 @@ const App: React.FC = () => {
                 )}
               </PersonaConsumer>
             }
+          />
+
+
+          <Route
+            path="/target-demo-site/userbased/recently_viewed"
+            element={
+              <PersonaConsumer>
+                {({ displayName, country, hobby, age }) => (
+                  <RecentlyViewed
+                    displayName={displayName}
+                    token={token}
+                    setToken={setToken}
+                    activityIndex={activityIndex}
+                    setActivityIndex={setActivityIndex}
+                    experienceIndex={experienceIndex}
+                    setExperienceIndex={setExperienceIndex}
+                    trueAudienceId={trueAudienceId}
+                    setTrueAudienceId={setTrueAudienceId}
+                    country={country}
+                    hobby={hobby}
+                    age={age}
+                    refreshKey={refreshKey}
+                    mcId={mcId}
+                  />
+                )}
+              </PersonaConsumer>
+            }
+          />
+
+          <Route
+            path="/target-demo-site/util/products"
+            element={<Products onSelectProduct={setSelectedProduct}/>}
+          />
+          <Route
+            path="/target-demo-site/util/products/:entityId"
+            element={<Product product={selectedProduct}/>}
           />
         </Routes>
         <Footer />
