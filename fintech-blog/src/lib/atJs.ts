@@ -197,7 +197,7 @@ export const generateViewsWithConversions = (number: string, setTotal: any, setC
       setModalVisible(false);
       clearInterval(interval);
     }
-  }, 200);
+  }, 300);
 }
 
 function generateNotificationRequest(el: any, type: string, profileData: ProfileData) {
@@ -245,7 +245,7 @@ export function sendNotificationTarget(el: any, event: string|undefined, convers
         );
       }
 
-    }, 200);
+    }, 50);
     return true;
   }
 
@@ -263,7 +263,7 @@ export function sendNotificationAnalytics(tntA :string|undefined, el: any, algor
     //remove visits and unique visits and not conversion
     const eventBreakDown = event.split(':');
     //traffic type - targeted
-    eventBreakDown[2] = '1';
+    eventBreakDown[2] = conversionEvent == 'event10' ? '0' : '1';
     //algorithm id change
     if (algorithmId !== -1000) {
       let [algoId, event] = eventBreakDown[3].split('|');
@@ -309,7 +309,7 @@ export function sendNotificationAnalytics(tntA :string|undefined, el: any, algor
         // Make sure to include credentials if needed, depending on Adobe's CORS policy
         credentials: "include" // or "same-origin" if running on the same domain
       })
-    }, 200);
+    }, 50);
   }
   return true;
 }

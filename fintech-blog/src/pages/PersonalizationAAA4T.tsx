@@ -125,7 +125,7 @@ const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, set
     }, [refreshKey, displayName, country, hobby, age]);
 
     const generateViews = (number: string) => {
-        generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, reportingServer, { displayName, country, hobby, age }, ["target-demo-site-aa-a4t-mbox"], undefined, false, undefined, undefined, undefined, false, experienceIndex);
+        generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, reportingServer, { displayName, country, hobby, age }, ["target-demo-site-aa-a4t-mbox"], undefined, false, 'event10', undefined, undefined, false, experienceIndex);
     }
 
     const generateConversions = (number: string) => {
