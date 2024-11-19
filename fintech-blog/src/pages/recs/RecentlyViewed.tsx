@@ -1,6 +1,7 @@
 import React, { useLayoutEffect } from 'react';
 import "./RecentlyViewed.css";
 import AtJs from '../../lib/atJs';
+import getMcId from '../../lib/visitor';
 
 interface XperienceProps {
   displayName: string;
@@ -21,9 +22,13 @@ interface XperienceProps {
 
 const RecentlyViewed: React.FC<XperienceProps> = ({ displayName, token, setToken, activityIndex, setActivityIndex, experienceIndex, setExperienceIndex, trueAudienceId, setTrueAudienceId, country, hobby, age, refreshKey, mcId}) => {
   useLayoutEffect(() => {
+    const mcIdToUse = mcId.length > 0 ? mcId : getMcId();
     AtJs().then(() => {
       window.adobe.target?.getOffers({
         'request': {
+          id: {
+            marketingCloudVisitorId: mcIdToUse,
+          },
           'execute': {
             'pageLoad': [{
               "parameters": {

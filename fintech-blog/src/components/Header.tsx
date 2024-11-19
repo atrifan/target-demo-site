@@ -205,10 +205,6 @@ const Header: React.FC<{ refreshOnSave: () => void }> = ({ refreshOnSave }) => {
             <Link to="/target-demo-site/custom/custom_algo_analytics">Custom Algo Analytics</Link>
           </DropdownMenu>
 
-          <DropdownMenu title="Custom">
-            <Link to="/target-demo-site/custom/custom_algo">Custom Algo</Link>
-            <Link to="/target-demo-site/custom/custom_algo_analytics">Custom Algo Analytics</Link>
-          </DropdownMenu>
 
         </DropdownMenu>
         <DropdownMenu title="Util">
