@@ -37,7 +37,12 @@ export function generateToken(size: number=4) {
     return Array.from(array, dec => dec.toString(16)).join('');
 }
 
-export default async function AtJs() {
+export default async function AtJs(targetPageParams?: any) {
+  //reset targetPageParams
+  window.targetPageParams = () => {};
+  if (targetPageParams) {
+    window.targetPageParams = targetPageParams;
+  }
   if (window.adobe && window.adobe.target) {
     window.adobe.target = undefined;
     clearAllCookies();
@@ -100,7 +105,7 @@ export function getNewCookiePCValue(newPCValue: string): string | undefined {
 
   if (!mboxCookie) {
     console.error('mbox cookie not found.');
-    return;
+    return `${newPCValue}.37_0`;
   }
 
   // Extract the mbox cookie value and split by '|'
@@ -115,7 +120,7 @@ export function getNewCookiePCValue(newPCValue: string): string | undefined {
     }
   }
 
-  return undefined;
+  return `${newPCValue}.37_0`;
 }
 
 export const generateViewsWithConversions = (number: string, setTotal: any, setCurrent: any, setModalVisible: any, reportingServer: string, profileData: ProfileData, mboxes: string[], tntA?: string, conversion: boolean = false,

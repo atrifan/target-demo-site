@@ -16,13 +16,12 @@ interface ProductProps {
 const Product: React.FC<ProductProps> = ({ product }) => {
   const { entityId } = useParams();
   useLayoutEffect(() => {
-    window.targetPageParams = () => {
+    AtJs(() => {
       return {
         "entity.id": entityId,
-        }
+      }
 
-    }
-    AtJs().then(() => {
+    }).then(() => {
       window.adobe.target?.triggerView('product');
     });
   },[]);

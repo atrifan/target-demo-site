@@ -31,9 +31,6 @@ const RecentlyViewed: React.FC<XperienceProps> = ({ displayName, token, setToken
           },
           execute: {
             pageLoad: {
-              "parameters": {
-                "entity.id": ""
-              },
               'profileParameters': {
                 'user.422': `${displayName}-${Date.now()}`,
                 'user.country': country,
@@ -41,19 +38,6 @@ const RecentlyViewed: React.FC<XperienceProps> = ({ displayName, token, setToken
                 'user.age': age
               }
             }
-          },
-          'prefetch': {
-            'views': [{
-              "parameters": {
-                "entity.id": ""
-              },
-              'profileParameters': {
-                'user.422': `${displayName}-${Date.now()}`,
-                'user.country': country,
-                'user.hobby': hobby,
-                'user.age': age
-              }
-            }]
           }
         }
       }).then(function(response) {

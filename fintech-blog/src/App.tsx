@@ -53,12 +53,14 @@ const App: React.FC = () => {
     const pcToken = getNewCookiePCValue(generateToken());
     // updateQueryParams("PC", `${pcToken}`);
 
+    const mcId = generateToken();
+    setMcId(mcId);
     const newParams = new URLSearchParams(searchParams);
     newParams.set('mboxSession', `${token}`);
     newParams.set('PC', `${pcToken}`);
+    newParams.set('MCID', `${mcId}`);
     setSearchParams(newParams);
     //new mcid
-    setMcId(generateToken());
     setRefreshKey(prevKey => prevKey + 1);
   };
   useEffect(() => {

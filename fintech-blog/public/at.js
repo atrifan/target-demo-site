@@ -933,6 +933,7 @@ window.adobe.target = (function () {
   const URL_SIZE_LIMIT = "urlSizeLimit";
   const SESSION_ID_PARAM = "mboxSession";
   const DEVICE_ID_COOKIE = "PC";
+  const MID = "MCID";
   const EDGE_CLUSTER_COOKIE = "mboxEdgeCluster";
   const SESSION_ID_COOKIE = "session";
   const TRACES_SUFFIX = "Traces";
@@ -4760,6 +4761,10 @@ window.adobe.target = (function () {
     if (isNotBlank(id.marketingCloudVisitorId)) {
       result.marketingCloudVisitorId = id.marketingCloudVisitorId;
     }
+    if (isNotBlank(getQueryParameter(MID))) {
+      result.marketingCloudVisitorId = getQueryParameter(MID);
+    }
+    if (isNotBlank())
     if (!isEmpty(id.customerIds)) {
       result.customerIds = id.customerIds;
       return result;
