@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams, useNavigate} from 'react-router-dom';
 import { usePersona } from './Persona';  // Import the context hook
 
 interface DropdownMenuProps {
@@ -25,6 +25,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ title, children }) => {
 const Header: React.FC<{ refreshOnSave: () => void }> = ({ refreshOnSave }) => {
   const { displayName, setDisplayName, country, setCountry, hobby, setHobby, age, setAge, refreshKey, setRefreshKey} = usePersona();  // Use the context here
 
+  const navigate = useNavigate();
   // List of possible values for each field
   const nameOptions = ['Alice', 'Bob', 'Charlie', 'David'];
   const countryOptions = ['USA', 'Canada', 'UK', 'Germany'];
@@ -39,7 +40,7 @@ const Header: React.FC<{ refreshOnSave: () => void }> = ({ refreshOnSave }) => {
   const [inputCountry, setInputCountry] = useState(country || '');
   const [inputHobby, setInputHobby] = useState(hobby || '');
   const [inputAge, setInputAge] = useState(age || '');
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   // Populate fields on component load if they are empty
   useEffect(() => {
@@ -50,6 +51,28 @@ const Header: React.FC<{ refreshOnSave: () => void }> = ({ refreshOnSave }) => {
     if (!age) setInputAge(getRandomValue(ageOptions));
     if (shouldSave) handleSave();
   }, [displayName, country, hobby, age, refreshKey]);
+
+  const handleLinkClick = (e: React.MouseEvent, to: string) => {
+    e.preventDefault(); // Prevent the default navigation behavior
+
+    // Create a new instance of URLSearchParams to modify the search params
+    const updatedSearchParams = new URLSearchParams(searchParams);
+
+    // Iterate through all search params and delete those starting with 'at_preview'
+    Array.from(updatedSearchParams.entries()).forEach(([key]) => {
+      if (key.startsWith("at_preview")) {
+        updatedSearchParams.delete(key);
+      }
+    });
+
+    // Update the searchParams with the modified URLSearchParams
+    setSearchParams(updatedSearchParams);
+
+    navigate({
+      pathname: to,
+      search: updatedSearchParams.toString() // Pass updated search params with other params retained
+    });
+  };
 
   const handleSave = (event?: any) => {
     if (event) {
@@ -136,15 +159,15 @@ const Header: React.FC<{ refreshOnSave: () => void }> = ({ refreshOnSave }) => {
           <Link to={{
             pathname: "/target-demo-site/ab",
             search: searchParams.toString()
-          }}>A/B Manual Allocate</Link>
+          }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/ab')}}>A/B Manual Allocate</Link>
           <Link to={{
             pathname: "/target-demo-site/personalization/aa",
             search: searchParams.toString()
-          }}>Auto Allocate</Link>
+          }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/personalization/aa')}}>Auto Allocate</Link>
           <Link to={{
             pathname: "/target-demo-site/personalization/aa/a4t",
             search: searchParams.toString()
-          }}>Auto Allocate A4T</Link>
+          }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/personalization/aa/a4t')}}>Auto Allocate A4T</Link>
           <DropdownMenu title="Personalization">
             <Link to={{
               pathname: "/target-demo-site/personalization/at",
@@ -153,55 +176,55 @@ const Header: React.FC<{ refreshOnSave: () => void }> = ({ refreshOnSave }) => {
             <Link to={{
               pathname: "/target-demo-site/personalization/at/a4t",
               search: searchParams.toString()
-            }}>Personalization AT A4T</Link>
+            }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/personalization/at/a4t')}}>Personalization AT A4T</Link>
           </DropdownMenu>
         </DropdownMenu>
 
         <Link to={{
           pathname: "/target-demo-site/personalization/ap",
           search: searchParams.toString()
-        }}>Personalization AP</Link>
+        }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/personalization/ap')}}>Personalization AP</Link>
         <Link to={{
           pathname: "/target-demo-site/experience-targeting",
           search: searchParams.toString()
-        }}>Experience Targeting</Link>
+        }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/experience-targeting')}}>Experience Targeting</Link>
         <Link to={{
           pathname: "/target-demo-site/mvt",
           search: searchParams.toString()
-        }}>MVT</Link>
+        }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/mvt')}}>MVT</Link>
 
         {/* Other Dropdown Menus */}
         <DropdownMenu title="Recs">
           <Link to={{
             pathname: "/target-demo-site/criteria_sequence",
             search: searchParams.toString()
-          }}>Criteria Sequence</Link>
+          }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/criteria_sequence')}}>Criteria Sequence</Link>
           <DropdownMenu title="Cart">
             <Link to={{
               pathname: "/target-demo-site/cart/target-demo-site/bought_bought",
               search: searchParams.toString()
-            }}>Bought Bought</Link>
+            }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/cart/bought_bought')}}>Bought Bought</Link>
             <Link to={{
               pathname: "/target-demo-site/cart/viewed_bought",
               search: searchParams.toString()
-            }}>Viewed Bought</Link>
+            }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/cart/viewed_bought')}}>Viewed Bought</Link>
             <Link to={{
               pathname: "/target-demo-site/cart/viewed_viewed",
               search: searchParams.toString()
-            }}>Viewed Viewed</Link>
+            }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/cart/viewed_viewed')}}>Viewed Viewed</Link>
             <DropdownMenu title="Analytics">
               <Link to={{
                 pathname: "/target-demo-site/cart/bought_bought_analytics",
                 search: searchParams.toString()
-              }}>Bought Bought Analytics</Link>
+              }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/cart/bought_bought_analytics')}}>Bought Bought Analytics</Link>
               <Link to={{
                 pathname: "/target-demo-site/cart/viewed_bought_analytics",
                 search: searchParams.toString()
-              }}>Viewed Bought Analytics</Link>
+              }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/cart/viewed_ought_analytics')}}>Viewed Bought Analytics</Link>
               <Link to={{
                 pathname: "/target-demo-site/cart/viewed_viewed_analytics",
                 search: searchParams.toString()
-              }}>Viewed Viewed Analytics</Link>
+              }}onClick={(e) => {handleLinkClick(e, '/target-demo-site/cart/viewed_viewed_analytics')}}>Viewed Viewed Analytics</Link>
             </DropdownMenu>
           </DropdownMenu>
 
@@ -209,127 +232,204 @@ const Header: React.FC<{ refreshOnSave: () => void }> = ({ refreshOnSave }) => {
             <Link to={{
               pathname: "/target-demo-site/popularity/most-viewed-across-site",
               search: searchParams.toString()
-            }}>Most Viewed Across Site</Link>
+            }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/popularity/most-viewed-across-site')}}>Most Viewed Across Site</Link>
             <Link to={{
               pathname: "/target-demo-site/popularity/most-viewed-by-category",
               search: searchParams.toString()
-            }}>Most Viewed by Category</Link>
+            }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/popularity/most-viewed-by-category')}}>Most Viewed by Category</Link>
             <Link to={{
               pathname: "/target-demo-site/popularity/most-viewed-by-attribute",
               search: searchParams.toString()
-            }}>Most Viewed by Attribute</Link>
+            }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/popularity/most-viewed-by-attribute')}}>Most Viewed by Attribute</Link>
             <Link to={{
               pathname: "/target-demo-site/popularity/top-sellers-across-site",
               search: searchParams.toString()
-            }}>Top Sellers Across Site</Link>
+            }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/popularity/top-sellers-across-site')}}>Top Sellers Across Site</Link>
             <Link to={{
               pathname: "/target-demo-site/popularity/top-sellers-by-category",
               search: searchParams.toString()
-            }}>Top Sellers by Category</Link>
+            }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/popularity/top-sellers-by-category')}}>Top Sellers by Category</Link>
             <Link to={{
               pathname: "/target-demo-site/popularity/top-sellers-by-item-attribute",
               search: searchParams.toString()
-            }}>Top Sellers by Item Attribute</Link>
+            }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/popularity/top-sellers-by-item-attribute')}}>Top Sellers by Item Attribute</Link>
             <DropdownMenu title="Analytics">
               <Link to={{
                 pathname: "/target-demo-site/popularity/most-viewed-across-site-analytics",
                 search: searchParams.toString()
-              }}>Most Viewed Across Site
+              }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/popularity/most-viewed-across-site-analytics')}}>Most Viewed Across Site
                 Analytics</Link>
               <Link to={{
                 pathname: "/target-demo-site/popularity/most-viewed-by-category-analytics",
                 search: searchParams.toString()
-              }}>Most Viewed by Category
+              }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/popularity/most-viewed-by-category-analytics')}}>Most Viewed by Category
                 Analytics</Link>
               <Link to={{
                 pathname: "/target-demo-site/popularity/most-viewed-by-attribute-analytics",
                 search: searchParams.toString()
-              }}>Most Viewed by Attribute
+              }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/popularity/most-viewed-by-attribute-analytics')}}>Most Viewed by Attribute
                 Analytics</Link>
               <Link to={{
                 pathname: "/target-demo-site/popularity/top-sellers-across-site-analytics",
                 search: searchParams.toString()
-              }}>Top Sellers Across Site
+              }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/popularity/top-sellers-across-site-analytics')}}>Top Sellers Across Site
                 Analytics</Link>
               <Link to={{
                 pathname: "/target-demo-site/popularity/top-sellers-by-category-analytics",
                 search: searchParams.toString()
-              }}>Top Sellers by Category
+              }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/popularity/top-sellers-by-category-analytics')}}>Top Sellers by Category
                 Analytics</Link>
               <Link to={{
                 pathname: "/target-demo-site/popularity/top-sellers-by-item-attribute-analytics",
                 search: searchParams.toString()
-              }}>Top Sellers by Item
+              }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/popularity/top-sellers-by-item-attribute-analytics')}}>Top Sellers by Item
                 Attribute Analytics</Link>
             </DropdownMenu>
           </DropdownMenu>
 
           <DropdownMenu title="Item Based">
-            <Link to={{
-              pathname: "/target-demo-site/item/viewed_viewed",
-              search: searchParams.toString()
-            }}>Viewed Viewed</Link>
-            <Link to={{
-              pathname: "/target-demo-site/item/viewed_bought",
-              search: searchParams.toString()
-            }}>Viewed Bought</Link>
-            <Link to={{
-              pathname: "/target-demo-site/item/bought_bought",
-              search: searchParams.toString()
-            }}>Bought Bought</Link>
-            <Link to={{
-              pathname: "/target-demo-site/item/content_similarity",
-              search: searchParams.toString()
-            }}>Content Similarity</Link>
+            <Link
+              to={{
+                pathname: "/target-demo-site/item/viewed_viewed",
+                search: searchParams.toString(),
+              }}
+              onClick={(e) => handleLinkClick(e, "/target-demo-site/item/viewed_viewed")}
+            >
+              Viewed Viewed
+            </Link>
+            <Link
+              to={{
+                pathname: "/target-demo-site/item/viewed_bought",
+                search: searchParams.toString(),
+              }}
+              onClick={(e) => handleLinkClick(e, "/target-demo-site/item/viewed_bought")}
+            >
+              Viewed Bought
+            </Link>
+            <Link
+              to={{
+                pathname: "/target-demo-site/item/bought_bought",
+                search: searchParams.toString(),
+              }}
+              onClick={(e) => handleLinkClick(e, "/target-demo-site/item/bought_bought")}
+            >
+              Bought Bought
+            </Link>
+            <Link
+              to={{
+                pathname: "/target-demo-site/item/content_similarity",
+                search: searchParams.toString(),
+              }}
+              onClick={(e) => handleLinkClick(e, "/target-demo-site/item/content_similarity")}
+            >
+              Content Similarity
+            </Link>
             <DropdownMenu title="Analytics">
-              <Link to={{
-                pathname: "/target-demo-site/item/viewed_viewed_analytics",
-                search: searchParams.toString()
-              }}>Viewed Viewed Analytics</Link>
-              <Link to={{
-                pathname: "/target-demo-site/item/viewed_bought_analytics",
-                search: searchParams.toString()
-              }}>Viewed Bought Analytics</Link>
-              <Link to={{
-                pathname: "/target-demo-site/item/bought_bought_analytics",
-                search: searchParams.toString()
-              }}>Bought Bought Analytics</Link>
+              <Link
+                to={{
+                  pathname: "/target-demo-site/item/viewed_viewed_analytics",
+                  search: searchParams.toString(),
+                }}
+                onClick={(e) =>
+                  handleLinkClick(e, "/target-demo-site/item/viewed_viewed_analytics")
+                }
+              >
+                Viewed Viewed Analytics
+              </Link>
+              <Link
+                to={{
+                  pathname: "/target-demo-site/item/viewed_bought_analytics",
+                  search: searchParams.toString(),
+                }}
+                onClick={(e) =>
+                  handleLinkClick(e, "/target-demo-site/item/viewed_bought_analytics")
+                }
+              >
+                Viewed Bought Analytics
+              </Link>
+              <Link
+                to={{
+                  pathname: "/target-demo-site/item/bought_bought_analytics",
+                  search: searchParams.toString(),
+                }}
+                onClick={(e) =>
+                  handleLinkClick(e, "/target-demo-site/item/bought_bought_analytics")
+                }
+              >
+                Bought Bought Analytics
+              </Link>
             </DropdownMenu>
           </DropdownMenu>
 
           <DropdownMenu title="User Based">
-            <Link to={{
-              pathname: "/target-demo-site/userbased/recently_viewed",
-              search: searchParams.toString()
-            }}>Recently Viewed</Link>
-            <Link to={{
-              pathname: "/target-demo-site/userbased/recommended_for_you",
-              search: searchParams.toString()
-            }}>Recommended for You</Link>
-            <Link to={{
-              pathname: "/target-demo-site/userbased/recommended_for_you_analytics",
-              search: searchParams.toString()
-            }}>Recommended for You Analytics</Link>
+            <Link
+              to={{
+                pathname: "/target-demo-site/userbased/recently_viewed",
+                search: searchParams.toString(),
+              }}
+              onClick={(e) =>
+                handleLinkClick(e, "/target-demo-site/userbased/recently_viewed")
+              }
+            >
+              Recently Viewed
+            </Link>
+            <Link
+              to={{
+                pathname: "/target-demo-site/userbased/recommended_for_you",
+                search: searchParams.toString(),
+              }}
+              onClick={(e) =>
+                handleLinkClick(e, "/target-demo-site/userbased/recommended_for_you")
+              }
+            >
+              Recommended for You
+            </Link>
+            <Link
+              to={{
+                pathname: "/target-demo-site/userbased/recommended_for_you_analytics",
+                search: searchParams.toString(),
+              }}
+              onClick={(e) =>
+                handleLinkClick(e, "/target-demo-site/userbased/recommended_for_you_analytics")
+              }
+            >
+              Recommended for You Analytics
+            </Link>
           </DropdownMenu>
 
           <DropdownMenu title="Custom">
-            <Link to={{
-              pathname: "/target-demo-site/custom/custom_algo",
-              search: searchParams.toString()
-            }}>Custom Algo</Link>
-            <Link to={{
-              pathname: "/target-demo-site/custom/custom_algo_analytics",
-              search: searchParams.toString()
-            }}>Custom Algo Analytics</Link>
+            <Link
+              to={{
+                pathname: "/target-demo-site/custom/custom_algo",
+                search: searchParams.toString(),
+              }}
+              onClick={(e) =>
+                handleLinkClick(e, "/target-demo-site/custom/custom_algo")
+              }
+            >
+              Custom Algo
+            </Link>
+            <Link
+              to={{
+                pathname: "/target-demo-site/custom/custom_algo_analytics",
+                search: searchParams.toString(),
+              }}
+              onClick={(e) =>
+                handleLinkClick(e, "/target-demo-site/custom/custom_algo_analytics")
+              }
+            >
+              Custom Algo Analytics
+            </Link>
           </DropdownMenu>
+      </DropdownMenu>
 
-
-        </DropdownMenu>
         <DropdownMenu title="Util">
           <Link to={{
             pathname: "/target-demo-site/util/products",
             search: searchParams.toString()
-          }}>Products</Link>
+          }} onClick={(e) =>
+            handleLinkClick(e, "/target-demo-site/util/products")
+          }>Products</Link>
         </DropdownMenu>
       </nav>
     </header>

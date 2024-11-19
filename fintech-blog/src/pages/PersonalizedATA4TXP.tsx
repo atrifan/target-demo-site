@@ -4,6 +4,7 @@ import Tracker from '../lib/tracker';
 import getMcId, { getSdId } from '../lib/visitor';
 import { randomUUID } from 'node:crypto';
 import LoadingModal from '../components/LoadingModal';
+import TrafficGenerator from '../components/TrafficGenerator';
 
 interface XperienceProps {
   displayName: string;
@@ -168,64 +169,12 @@ const PersonalizationATA4TXP: React.FC<XperienceProps> = ({ displayName, token, 
 
       </div>
 
-      {/* Generate Views without Conversions Section */}
-      <div style={{ marginTop: '20px' }}>
-        <h4>Generate Views without Conversions</h4>
-        <input
-          type="number"
-          placeholder="Enter number of views"
-          id="viewsWithoutConversions"
-          style={{ marginRight: '10px', padding: '5px', width: '100px' }}
-        />
-        <button
-          onClick={() => {
-            const number = (document.getElementById('viewsWithoutConversions') as HTMLInputElement)?.value;
-            generateViews(number);
-          }}
-          style={{ padding: '5px 10px' }}
-        >
-          Generate Views
-        </button>
-      </div>
-
-      {/* Generate Views with Conversions Section */}
-      <div style={{ marginTop: '20px' }}>
-        <h4>Generate Views with Conversions</h4>
-        <input
-          type="number"
-          placeholder="Enter number of views"
-          id="viewsWithConversions"
-          style={{ marginRight: '10px', padding: '5px', width: '100px' }}
-        />
-        <button
-          onClick={() => {
-            const number = (document.getElementById('viewsWithConversions') as HTMLInputElement)?.value;
-            generateConversions(number);
-          }}
-          style={{ padding: '5px 10px' }}
-        >
-          Generate Views with Conversions
-        </button>
-      </div>
-
-      <div style={{ marginTop: '20px' }}>
-        <h4>Chang Algorithm Id</h4>
-        <input
-          type="number"
-          placeholder="Change alogrithmId"
-          id="algorithmId"
-          style={{ marginRight: '10px', padding: '5px', width: '100px' }}
-        />
-        <button
-          onClick={() => {
-            const number = (document.getElementById('algorithmId') as HTMLInputElement)?.value;
-            changeAlgorithmId(number);
-          }}
-          style={{ padding: '5px 10px' }}
-        >
-          Save Algorithm ID
-        </button>
-      </div>
+      <TrafficGenerator displayName={displayName} country={country} hobby={hobby} age={age}
+                        experienceIndex={experienceIndex}
+                        setAlgorithmId={setAlgorithmId} selectAlgorithm={true}
+                        reportingServer={reportingServer} conversionEvent={"event32"}
+                        setTotal={setTotal} setCurrent={setCurrent} setModalVisible={setModalVisible}
+                        mboxes={['target-demo-site-at-a4t-mbox']} />
       <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)} current={current} total={total}/>
     </main>
   )

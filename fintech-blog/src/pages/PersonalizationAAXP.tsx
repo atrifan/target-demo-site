@@ -3,6 +3,7 @@ import AtJs, { generateViewsWithConversions } from '../lib/atJs';
 import Tracker from '../lib/tracker';
 import getMcId from '../lib/visitor';
 import LoadingModal from '../components/LoadingModal';
+import TrafficGenerator from '../components/TrafficGenerator';
 
 interface XperienceProps {
     displayName: string;
@@ -81,45 +82,10 @@ const PersonalizationAAA4TXP: React.FC<XperienceProps> = ({ displayName, token, 
           <div data-mbox="target-demo-site-aa-mbox" className="mbox-name-target-demo-site-aa-mbox" data-at-mbox-name="target-demo-site-aa-mbox">
 
           </div>
-          {/* Generate Views without Conversions Section */}
-          <div style={{ marginTop: '20px' }}>
-              <h4>Generate Views without Conversions</h4>
-              <input
-                type="number"
-                placeholder="Enter number of views"
-                id="viewsWithoutConversions"
-                style={{ marginRight: '10px', padding: '5px', width: '100px' }}
-              />
-              <button
-                onClick={() => {
-                    const number = (document.getElementById('viewsWithoutConversions') as HTMLInputElement)?.value;
-                    generateViews(number);
-                }}
-                style={{ padding: '5px 10px' }}
-              >
-                  Generate Views
-              </button>
-          </div>
-
-          {/* Generate Views with Conversions Section */}
-          <div style={{ marginTop: '20px' }}>
-              <h4>Generate Views with Conversions</h4>
-              <input
-                type="number"
-                placeholder="Enter number of views"
-                id="viewsWithConversions"
-                style={{ marginRight: '10px', padding: '5px', width: '100px' }}
-              />
-              <button
-                onClick={() => {
-                    const number = (document.getElementById('viewsWithConversions') as HTMLInputElement)?.value;
-                    generateConversions(number);
-                }}
-                style={{ padding: '5px 10px' }}
-              >
-                  Generate Views with Conversions
-              </button>
-          </div>
+         <TrafficGenerator displayName={displayName} country={country} hobby={hobby} age={age}
+                          experienceIndex={experienceIndex}
+                          setTotal={setTotal} setCurrent={setCurrent} setModalVisible={setModalVisible}
+                          mboxes={['target-demo-site-aa-mbox']} />
           <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)} current={current} total={total}/>
       </main>
     )

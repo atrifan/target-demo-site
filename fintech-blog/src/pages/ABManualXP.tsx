@@ -4,6 +4,7 @@ import AtJs, { generateViewsWithConversions } from '../lib/atJs';
 import Tracker from '../lib/tracker';
 import getMcId from '../lib/visitor';
 import LoadingModal from '../components/LoadingModal';
+import TrafficGenerator from '../components/TrafficGenerator';
 
 interface XperienceProps {
     displayName: string;
@@ -12,7 +13,7 @@ interface XperienceProps {
     experienceIndex: number;
     trueAudienceId: number;
     setActivityIndex: (index: number) => void;
-    setExperienceIndex: (index: number) => void;
+    setExperienceIndex: React.Dispatch<React.SetStateAction<number>>;
     setTrueAudienceId: (id: number) => void;
     setToken: (name: string) => void;
     country: string;
@@ -89,20 +90,6 @@ const ABManualXP: React.FC<XperienceProps> = ({ displayName, token, setToken, ac
     }, [refreshKey, displayName, country, hobby, age]);
 
 
-    const generateViews = (number: string) => {
-        generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, '', { displayName, country, hobby, age }, ["target-demo-site-ab-mbox"], undefined, false, undefined, undefined, undefined, true);
-    }
-
-    const generateConversions = (number: string) => {
-        generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, '', { displayName, country, hobby, age }, ["target-demo-site-ab-mbox"], undefined, true, "click", 1, undefined, true);
-    }
-
-    const handleSetToken = (newToken: string, activityId: number, experienceId: number) => {
-        setToken(newToken);
-        setExperienceIndex(experienceId);
-        setActivityIndex(activityId);
-    };
-
     return (
       <main>
           <div style={{ padding: '20px' }}>
@@ -111,44 +98,10 @@ const ABManualXP: React.FC<XperienceProps> = ({ displayName, token, setToken, ac
 
               </div>
           </div>
-          {/* Generate Views without Conversions Section */}
-          <div style={{ marginTop: '20px' }}>
-              <h4>Generate Views without Conversions</h4>
-              <input
-                type="number"
-                placeholder="Enter number of views"
-                id="viewsWithoutConversions"
-                style={{ marginRight: '10px', padding: '5px', width: '100px' }}
-              />
-              <button
-                onClick={() => {
-                    const number = (document.getElementById('viewsWithoutConversions') as HTMLInputElement)?.value;
-                    generateViews(number);
-                }}
-                style={{ padding: '5px 10px' }}
-              >
-                  Generate Views
-              </button>
-          </div>
-          {/* Generate Views with Conversions Section */}
-          <div style={{ marginTop: '20px' }}>
-              <h4>Generate Views with Conversions</h4>
-              <input
-                type="number"
-                placeholder="Enter number of views"
-                id="viewsWithConversions"
-                style={{ marginRight: '10px', padding: '5px', width: '100px' }}
-              />
-              <button
-                onClick={() => {
-                    const number = (document.getElementById('viewsWithConversions') as HTMLInputElement)?.value;
-                    generateConversions(number);
-                }}
-                style={{ padding: '5px 10px' }}
-              >
-                  Generate Views with Conversions
-              </button>
-          </div>
+          <TrafficGenerator displayName={displayName} country={country} hobby={hobby} age={age}
+                            experienceIndex={experienceIndex}
+                            setTotal={setTotal} setCurrent={setCurrent} setModalVisible={setModalVisible}
+                            mboxes={['target-demo-site-ab-mbox']} />
           <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)} current={current} total={total}/>
       </main>
     )

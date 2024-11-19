@@ -1,8 +1,9 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import AtJs, { generateViewsWithConversions } from '../lib/atJs';
 import getMcId from '../lib/visitor';
 import LoadingModal from '../components/LoadingModal';
+import TrafficGenerator from '../components/TrafficGenerator';
 
 interface XperienceProps {
   displayName: string;
@@ -11,7 +12,7 @@ interface XperienceProps {
   experienceIndex: number;
   trueAudienceId: number;
   setActivityIndex: (index: number) => void;
-  setExperienceIndex: (index: number) => void;
+  setExperienceIndex: React.Dispatch<React.SetStateAction<number>>;
   setTrueAudienceId: (id: number) => void;
   setToken: (name: string) => void;
   country: string;
@@ -25,6 +26,7 @@ const PersonalizationAT: React.FC<XperienceProps> = ({ displayName, token, setTo
   const [isModalVisible, setModalVisible] = useState(false);
   const [total, setTotal] = useState(0);
   const [current, setCurrent] = useState(0);
+  const [searchParams] = useSearchParams();
   useLayoutEffect(() => {
     //reset experience-index on main page
     setExperienceIndex(-100);
@@ -113,7 +115,15 @@ const PersonalizationAT: React.FC<XperienceProps> = ({ displayName, token, setTo
 
         <div style={{ marginBottom: '15px' }}>
           <Link
-            to="/target-demo-site/personalization/at/xp?at_preview_token=ZkuLDeLZ6SdSR9RthgNI2osfdKGAJyg5DsJ3XxNj67A&at_preview_index=1_1&at_preview_listed_activities_only=true"
+            to={{
+              pathname: '/target-demo-site/personalization/at/xp',
+              search: new URLSearchParams({
+                ...Object.fromEntries(searchParams), // Keep existing query params
+                at_preview_token: 'ZkuLDeLZ6SdSR9RthgNI2osfdKGAJyg5DsJ3XxNj67A',
+                at_preview_index: '1_1', // Set new index
+                at_preview_listed_activities_only: 'true',
+              }).toString(),
+            }}
             style={{ textDecoration: 'none', color: '#000', fontSize: '18px' }}
             onClick={() => handleSetToken('ZkuLDeLZ6SdSR9RthgNI2osfdKGAJyg5DsJ3XxNj67A', 1, 1)}
           >
@@ -123,7 +133,15 @@ const PersonalizationAT: React.FC<XperienceProps> = ({ displayName, token, setTo
 
         <div style={{ marginBottom: '20px' }}>
           <Link
-            to="/target-demo-site/personalization/at/xp?at_preview_token=ZkuLDeLZ6SdSR9RthgNI2osfdKGAJyg5DsJ3XxNj67A&at_preview_index=1_2&at_preview_listed_activities_only=true"
+            to={{
+              pathname: '/target-demo-site/personalization/at/xp',
+              search: new URLSearchParams({
+                ...Object.fromEntries(searchParams), // Keep existing query params
+                at_preview_token: 'ZkuLDeLZ6SdSR9RthgNI2osfdKGAJyg5DsJ3XxNj67A',
+                at_preview_index: '1_2', // Set new index
+                at_preview_listed_activities_only: 'true',
+              }).toString(),
+            }}
             style={{ textDecoration: 'none', color: '#000', fontSize: '18px' }}
             onClick={() => handleSetToken('ZkuLDeLZ6SdSR9RthgNI2osfdKGAJyg5DsJ3XxNj67A', 1, 2)}
           >
@@ -133,13 +151,22 @@ const PersonalizationAT: React.FC<XperienceProps> = ({ displayName, token, setTo
 
         <div style={{ marginBottom: '20px' }}>
           <Link
-            to="/target-demo-site/personalization/at/xp?at_preview_token=ZkuLDeLZ6SdSR9RthgNI2osfdKGAJyg5DsJ3XxNj67A&at_preview_index=1_3&at_preview_listed_activities_only=true"
+            to={{
+              pathname: '/target-demo-site/personalization/at/xp',
+              search: new URLSearchParams({
+                ...Object.fromEntries(searchParams), // Keep existing query params
+                at_preview_token: 'ZkuLDeLZ6SdSR9RthgNI2osfdKGAJyg5DsJ3XxNj67A',
+                at_preview_index: '1_3', // Set new index
+                at_preview_listed_activities_only: 'true',
+              }).toString(),
+            }}
             style={{ textDecoration: 'none', color: '#000', fontSize: '18px' }}
             onClick={() => handleSetToken('ZkuLDeLZ6SdSR9RthgNI2osfdKGAJyg5DsJ3XxNj67A', 1, 3)}
           >
             Go to Experience 3
           </Link>
         </div>
+
 
         <div style={{
           border: '1px solid #ddd',
@@ -155,64 +182,11 @@ const PersonalizationAT: React.FC<XperienceProps> = ({ displayName, token, setTo
 
           </div>
         </div>
-        {/* Generate Views without Conversions Section */}
-        <div style={{ marginTop: '20px' }}>
-          <h4>Generate Views without Conversions</h4>
-          <input
-            type="number"
-            placeholder="Enter number of views"
-            id="viewsWithoutConversions"
-            style={{ marginRight: '10px', padding: '5px', width: '100px' }}
-          />
-          <button
-            onClick={() => {
-              const number = (document.getElementById('viewsWithoutConversions') as HTMLInputElement)?.value;
-              generateViews(number);
-            }}
-            style={{ padding: '5px 10px' }}
-          >
-            Generate Views
-          </button>
-        </div>
-        {/* Generate Views with Conversions Section */}
-        <div style={{ marginTop: '20px' }}>
-          <h4>Generate Views with Conversions</h4>
-          <input
-            type="number"
-            placeholder="Enter number of views"
-            id="viewsWithConversions"
-            style={{ marginRight: '10px', padding: '5px', width: '100px' }}
-          />
-          <button
-            onClick={() => {
-              const number = (document.getElementById('viewsWithConversions') as HTMLInputElement)?.value;
-              generateConversions(number);
-            }}
-            style={{ padding: '5px 10px' }}
-          >
-            Generate Views with Conversions
-          </button>
-          for experience { experienceIndex == -100 ? 'All' : experienceIndex + 1 }
-        </div>
-
-        <div style={{ marginTop: '20px' }}>
-          <h4>Target Experience conversions</h4>
-          <input
-            type="number"
-            placeholder="Target experienceId"
-            id="experienceId"
-            style={{ marginRight: '10px', padding: '5px', width: '100px' }}
-          />
-          <button
-            onClick={() => {
-              const number = (document.getElementById('experienceId') as HTMLInputElement)?.value;
-              changeExperienceId(number);
-            }}
-            style={{ padding: '5px 10px' }}
-          >
-            Save Targeted Experience
-          </button>
-        </div>
+        <TrafficGenerator displayName={displayName} country={country} hobby={hobby} age={age}
+                          experienceIndex={experienceIndex} setExperienceIndex={setExperienceIndex}
+                          showExperienceIndex={true}
+                          setTotal={setTotal} setCurrent={setCurrent} setModalVisible={setModalVisible}
+                          mboxes={['target-demo-site-at-mbox']}/>
       </div>
       <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)} total={total} current={current}/>
     </main>

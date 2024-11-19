@@ -1,9 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 
 const VariationsGrid = ({ handleSetToken }: { handleSetToken: (token: string, index: number, variation: number) => void }) => {
   const variations = Array.from({ length: 8 }, (_, i) => i + 1); // Generate variations 1 to 8
 
+  const [searchParams] = useSearchParams();
   return (
     <section style={{ marginTop: '20px', marginBottom: '40px' }}>
       <h2 style={{ fontSize: '24px', marginBottom: '15px' }}>Choose a Variation</h2>
@@ -17,7 +18,16 @@ const VariationsGrid = ({ handleSetToken }: { handleSetToken: (token: string, in
         {variations.map((variation) => (
           <Link
             key={variation}
-            to={`/target-demo-site/personalization/ap/xp?at_preview_token=dczqkm4C5P9S8L6ExR8KTYsfdKGAJyg5DsJ3XxNj67A&at_preview_index=1_${variation}&at_preview_listed_activities_only=true&at_preview_evaluate_as_true_audience_ids=3440621`}
+            to={{
+              pathname: '/target-demo-site/personalization/ap/xp',
+              search: new URLSearchParams({
+                ...Object.fromEntries(searchParams.entries()), // Keep the existing search params
+                at_preview_token: 'dczqkm4C5P9S8L6ExR8KTYsfdKGAJyg5DsJ3XxNj67A',
+                at_preview_index: `1_${variation}`,
+                at_preview_listed_activities_only: 'true',
+                at_preview_evaluate_as_true_audience_ids: '3440621',
+              }).toString(),
+            }}
             style={{
               color: '#000',
               padding: '10px',
@@ -32,6 +42,7 @@ const VariationsGrid = ({ handleSetToken }: { handleSetToken: (token: string, in
       </div>
     </section>
   );
+
 };
 
 export default VariationsGrid;

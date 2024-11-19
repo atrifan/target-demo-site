@@ -5,6 +5,7 @@ import Tracker from '../lib/tracker';
 import getMcId from '../lib/visitor';
 import LoadingModal from '../components/LoadingModal';
 import VariationsGrid from '../components/VariationGrid';
+import TrafficGenerator from '../components/TrafficGenerator';
 
 interface XperienceProps {
     displayName: string;
@@ -13,7 +14,7 @@ interface XperienceProps {
     experienceIndex: number;
     trueAudienceId: number;
     setActivityIndex: (index: number) => void;
-    setExperienceIndex: (index: number) => void;
+    setExperienceIndex: React.Dispatch<React.SetStateAction<number>>;
     setTrueAudienceId: (id: number) => void;
     setToken: (name: string) => void;
     country: string;
@@ -194,64 +195,10 @@ const PersonalizationAP: React.FC<XperienceProps> = ({ displayName, token, setTo
                   </div>
               </div>
 
-              {/* Generate Views without Conversions Section */}
-              <div style={{ marginTop: '20px' }}>
-                  <h4>Generate Views without Conversions</h4>
-                  <input
-                    type="number"
-                    placeholder="Enter number of views"
-                    id="viewsWithoutConversions"
-                    style={{ marginRight: '10px', padding: '5px', width: '100px' }}
-                  />
-                  <button
-                    onClick={() => {
-                        const number = (document.getElementById('viewsWithoutConversions') as HTMLInputElement)?.value;
-                        generateViews(number);
-                    }}
-                    style={{ padding: '5px 10px' }}
-                  >
-                      Generate Views
-                  </button>
-              </div>
-
-              {/* Generate Views with Conversions Section */}
-              <div style={{ marginTop: '20px' }}>
-                  <h4>Generate Views with Conversions</h4>
-                  <input
-                    type="number"
-                    placeholder="Enter number of views"
-                    id="viewsWithConversions"
-                    style={{ marginRight: '10px', padding: '5px', width: '100px' }}
-                  />
-                  <button
-                    onClick={() => {
-                        const number = (document.getElementById('viewsWithConversions') as HTMLInputElement)?.value;
-                        generateConversions(number);
-                    }}
-                    style={{ padding: '5px 10px' }}
-                  >
-                      Generate Views with Conversions
-                  </button>
-                  for experience { experienceIndex == -100 ? 'All' : experienceIndex + 1 }
-              </div>
-              <div style={{ marginTop: '20px' }}>
-                  <h4>Target Experience conversions</h4>
-                  <input
-                    type="number"
-                    placeholder="Target experienceId"
-                    id="experienceId"
-                    style={{ marginRight: '10px', padding: '5px', width: '100px' }}
-                  />
-                  <button
-                    onClick={() => {
-                        const number = (document.getElementById('experienceId') as HTMLInputElement)?.value;
-                        changeExperienceId(number);
-                    }}
-                    style={{ padding: '5px 10px' }}
-                  >
-                      Save Targeted Experience
-                  </button>
-              </div>
+              <TrafficGenerator displayName={displayName} country={country} hobby={hobby} age={age}
+                                experienceIndex={experienceIndex} setExperienceIndex={setExperienceIndex} showExperienceIndex={true}
+                                setTotal={setTotal} setCurrent={setCurrent} setModalVisible={setModalVisible}
+                                mboxes={['target-demo-site-ap-mbox-1', 'target-demo-site-api-mbox-2', 'target-demo-site-ap-mbox-3']} />
           </div>
           <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)} current={current}
                         total={total}/>
