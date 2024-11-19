@@ -101,25 +101,23 @@ export interface ProfileData {
 
 export function getNewCookiePCValue(newPCValue: string): string | undefined {
   // Retrieve the current mbox cookie
-  const mboxCookie = null;
-  // const mboxCookie = Cookies.get('mbox');
+  const mboxCookie = Cookies.get('mbox');
 
   if (!mboxCookie) {
-    console.error('mbox cookie not found.');
     return `${newPCValue}.37_0`;
   }
 
-  // Extract the mbox cookie value and split by '|'
-  // const parts = mboxCookie.split('|');
-  //
-  // // Iterate over parts to find and update the 'PC' value
-  // for (let i = 0; i < parts.length; i++) {
-  //   if (parts[i].startsWith('PC#')) {
-  //     const currentPC = parts[i].split('#')[1];
-  //     const version = currentPC.split('.')[1];  // Retain version "37_0"
-  //     return `${newPCValue}.${version}`
-  //   }
-  // }
+  //Extract the mbox cookie value and split by '|'
+  const parts = mboxCookie.split('|');
+
+  // Iterate over parts to find and update the 'PC' value
+  for (let i = 0; i < parts.length; i++) {
+    if (parts[i].startsWith('PC#')) {
+      const currentPC = parts[i].split('#')[1];
+      const version = currentPC.split('.')[1];  // Retain version "37_0"
+      return `${newPCValue}.${version}`
+    }
+  }
 
   return `${newPCValue}.37_0`;
 }
