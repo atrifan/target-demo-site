@@ -18,10 +18,9 @@ const Product: React.FC<ProductProps> = ({ product }) => {
   useLayoutEffect(() => {
     window.targetPageParams = () => {
       return {
-        "entity": {
-          "id": entityId,
+        "entity.id": entityId,
         }
-      }
+
     }
     AtJs().then(() => {
       window.adobe.target?.triggerView('product');

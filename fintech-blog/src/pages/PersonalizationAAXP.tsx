@@ -101,26 +101,6 @@ const PersonalizationAAA4TXP: React.FC<XperienceProps> = ({ displayName, token, 
               </button>
           </div>
 
-          {/* Generate Views without Conversions Section */}
-          <div style={{ marginTop: '20px' }}>
-              <h4>Generate Views without Conversions</h4>
-              <input
-                type="number"
-                placeholder="Enter number of views"
-                id="viewsWithoutConversions"
-                style={{ marginRight: '10px', padding: '5px', width: '100px' }}
-              />
-              <button
-                onClick={() => {
-                    const number = (document.getElementById('viewsWithoutConversions') as HTMLInputElement)?.value;
-                    generateViews(number);
-                }}
-                style={{ padding: '5px 10px' }}
-              >
-                  Generate Views
-              </button>
-          </div>
-
           {/* Generate Views with Conversions Section */}
           <div style={{ marginTop: '20px' }}>
               <h4>Generate Views with Conversions</h4>

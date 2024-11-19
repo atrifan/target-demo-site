@@ -17,6 +17,9 @@ interface ProductsProps {
 
 const Products:React.FC<ProductsProps> = ({ onSelectProduct }) => {
   const [products, setProducts] = useState<Product[]>([]);
+  window.targetPageParams = () => {
+    return;
+  }
 
   useLayoutEffect(() => {
     const fetchData = async () => {
