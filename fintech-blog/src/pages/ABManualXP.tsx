@@ -100,6 +100,8 @@ const ABManualXP: React.FC<XperienceProps> = ({ displayName, token, setToken, ac
           </div>
           <TrafficGenerator displayName={displayName} country={country} hobby={hobby} age={age}
                             experienceIndex={experienceIndex}
+                            isTarget={true}
+                            conversionEvent={'click'}
                             setTotal={setTotal} setCurrent={setCurrent} setModalVisible={setModalVisible}
                             mboxes={['target-demo-site-ab-mbox']} />
           <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)} current={current} total={total}/>

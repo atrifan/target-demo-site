@@ -214,6 +214,7 @@ const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, set
               <TrafficGenerator displayName={displayName} country={country} hobby={hobby} age={age}
                                 experienceIndex={experienceIndex} setExperienceIndex={setExperienceIndex}
                                 showExperienceIndex={true}
+                                isTarget={false}
                                 setTotal={setTotal} setCurrent={setCurrent} setModalVisible={setModalVisible}
                                 conversionEvent={"event10"} reportingServer={reportingServer}
                                 mboxes={['target-demo-site-aa-a4t-mbox']}/>

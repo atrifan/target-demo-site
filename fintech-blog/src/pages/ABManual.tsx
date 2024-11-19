@@ -180,6 +180,8 @@ const ABManual: React.FC<XperienceProps> = ({ displayName, token, setToken, acti
               <TrafficGenerator displayName={displayName} country={country} hobby={hobby} age={age}
                                 experienceIndex={experienceIndex} setExperienceIndex={setExperienceIndex}
                                 showExperienceIndex={true}
+                                isTarget={true}
+                                conversionEvent={'click'}
                                 setTotal={setTotal} setCurrent={setCurrent} setModalVisible={setModalVisible}
                                 mboxes={['target-demo-site-ab-mbox']}/>
           </div>

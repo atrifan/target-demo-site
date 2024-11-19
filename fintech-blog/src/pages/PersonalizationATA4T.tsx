@@ -198,29 +198,6 @@ const PersonalizationATA4T: React.FC<XperienceProps> = ({ displayName, token, se
     setActivityIndex(activityId);
   };
 
-  const generateViews = (number: string) => {
-    generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, reportingServer, { displayName, country, hobby, age }, ["target-demo-site-at-a4t-mbox"], undefined, false, undefined, undefined, algorithmId, false, experienceIndex);
-  }
-
-  const generateConversions = (number: string) => {
-    generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, reportingServer, { displayName, country, hobby, age }, ["target-demo-site-at-a4t-mbox"], undefined, true, "event32", 1, algorithmId, false, experienceIndex);
-  }
-
-  const changeAlgorithmId = (number: string) => {
-    if (number.length === 0) {
-      return;
-    }
-    setAlgorithmId(parseInt(number));
-  }
-
-  const changeExperienceId = (number: string) => {
-    if (number.length === 0) {
-      setExperienceIndex(-100);
-      return;
-    }
-    setExperienceIndex(parseInt(number) - 1);
-  }
-
   return (
     <main>
       <div style={{ padding: '20px' }}>
@@ -301,6 +278,8 @@ const PersonalizationATA4T: React.FC<XperienceProps> = ({ displayName, token, se
                           experienceIndex={experienceIndex} setExperienceIndex={setExperienceIndex}
                           showExperienceIndex={true}
                           setAlgorithmId={setAlgorithmId} selectAlgorithm={true}
+                          algorithmId={algorithmId}
+                          isTarget={false}
                           reportingServer={reportingServer} conversionEvent={"event32"}
                           setTotal={setTotal} setCurrent={setCurrent} setModalVisible={setModalVisible}
                           mboxes={['target-demo-site-at-a4t-mbox']}/>

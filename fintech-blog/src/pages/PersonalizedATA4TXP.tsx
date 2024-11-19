@@ -147,21 +147,6 @@ const PersonalizationATA4TXP: React.FC<XperienceProps> = ({ displayName, token, 
     }
   }, [refreshKey]);
 
-  const generateViews = (number: string) => {
-    generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, reportingServer, {displayName, country, hobby, age}, ['target-demo-site-at-a4t-mbox'], tntA, false, undefined, undefined, algorithmId);
-  }
-
-  const generateConversions = (number: string) => {
-    generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, reportingServer, {displayName, country, hobby, age}, ['target-demo-site-at-a4t-mbox'], tntA, true, 'event32', 1, algorithmId);
-  }
-
-  const changeAlgorithmId = (number: string) => {
-    if (number.length === 0) {
-      return;
-    }
-    setAlgorithmId(parseInt(number));
-  }
-
   return (
     <main>
       <div data-mbox="target-demo-site-at-a4t-mbox" className="mbox-name-target-demo-site-at-a4t-mbox"
@@ -173,6 +158,9 @@ const PersonalizationATA4TXP: React.FC<XperienceProps> = ({ displayName, token, 
                         experienceIndex={experienceIndex}
                         setAlgorithmId={setAlgorithmId} selectAlgorithm={true}
                         reportingServer={reportingServer} conversionEvent={"event32"}
+                        tntA={tntA}
+                        isTarget={false}
+                        algorithmId={algorithmId}
                         setTotal={setTotal} setCurrent={setCurrent} setModalVisible={setModalVisible}
                         mboxes={['target-demo-site-at-a4t-mbox']} />
       <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)} current={current} total={total}/>

@@ -70,13 +70,6 @@ const PersonalizationAAA4TXP: React.FC<XperienceProps> = ({ displayName, token, 
             }
         })
     }, [refreshKey]);
-    const generateViews = (number: string) => {
-        generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, '', { displayName, country, hobby, age }, ["target-demo-site-aa-mbox"], undefined, false, undefined, undefined, undefined, true);
-    }
-
-    const generateConversions = (number: string) => {
-        generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, '', { displayName, country, hobby, age }, ["target-demo-site-aa-mbox"], undefined, true, "click", 1, undefined, true);
-    }
     return (
       <main>
           <div data-mbox="target-demo-site-aa-mbox" className="mbox-name-target-demo-site-aa-mbox" data-at-mbox-name="target-demo-site-aa-mbox">
@@ -84,6 +77,8 @@ const PersonalizationAAA4TXP: React.FC<XperienceProps> = ({ displayName, token, 
           </div>
          <TrafficGenerator displayName={displayName} country={country} hobby={hobby} age={age}
                           experienceIndex={experienceIndex}
+                           isTarget={true}
+                           conversionEvent={'click'}
                           setTotal={setTotal} setCurrent={setCurrent} setModalVisible={setModalVisible}
                           mboxes={['target-demo-site-aa-mbox']} />
           <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)} current={current} total={total}/>

@@ -122,7 +122,12 @@ export function getNewCookiePCValue(newPCValue: string): string | undefined {
   return `${newPCValue}.37_0`;
 }
 
-export const generateViewsWithConversions = (number: string, setTotal: any, setCurrent: any, setModalVisible: any, reportingServer: string, profileData: ProfileData, mboxes: string[], tntA?: string, conversion: boolean = false,
+function getQueryParameter(param: string) {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(param);
+}
+
+export const generateViewsWithConversions = (uniqueVisitors: boolean, number: string, setTotal: any, setCurrent: any, setModalVisible: any, reportingServer: string, profileData: ProfileData, mboxes: string[], tntA?: string, conversion: boolean = false,
                                              conversionEvent?: string, conversionValue: number = 1, algorithmId: number=-1000, isTarget = false, experienceIndex?: number) => {
   if (number.length === 0) {
     return;
@@ -134,12 +139,20 @@ export const generateViewsWithConversions = (number: string, setTotal: any, setC
   const interval = setInterval(() => {
     //mboxSession generates a new user unique entry // TODO: set profile attributes
     //update visitorid
-    const mcId = `${generateToken(2)}-${generateToken(2)}`;
-    updateQueryParams("PC", getNewCookiePCValue(generateToken()));
-    updateQueryParams('mboxSession', generateToken());
+    //I don't care about this if not unique it will take current query params
+    let mcId: any;
+    if (uniqueVisitors) {
+      mcId = `${generateToken(2)}-${generateToken(2)}`;
+      updateQueryParams("MCID", mcId);
+      updateQueryParams("PC", getNewCookiePCValue(generateToken()));
+      updateQueryParams('mboxSession', generateToken());
+    } else {
+      mcId = getQueryParameter("MCID") || getMcId();
+    }
+
     window.adobe.target?.getOffers({
       request: {
-        id: {
+        mid: {
           marketingCloudVisitorId: mcId,
         },
         experienceCloud: {
@@ -177,7 +190,7 @@ export const generateViewsWithConversions = (number: string, setTotal: any, setC
           //reset it to the default
           element.innerHTML = "";
         });
-        let okTargeted = false;
+        let okTargeted: Promise<boolean>[] = [];
         mboxes.forEach((el) => {
           window.adobe.target?.applyOffers({
             selector: `.mbox-name-${el.name}`,
@@ -187,12 +200,17 @@ export const generateViewsWithConversions = (number: string, setTotal: any, setC
               }
             }
           });
-          okTargeted = isTarget? sendNotificationTarget(el, conversionEvent, conversion, profileData, experienceIndex) : sendNotificationAnalytics(tntA, el, algorithmId, reportingServer, mcId, conversion, conversionEvent, conversionValue, experienceIndex);
+          okTargeted.push(isTarget? sendNotificationTarget(el, conversionEvent, conversion, profileData, experienceIndex) : sendNotificationAnalytics(tntA, el, algorithmId, reportingServer, mcId, conversion, conversionEvent, conversionValue, experienceIndex));
         })
-        if (experienceIndex != undefined && experienceIndex != -100 && okTargeted) {
-          numberOfViews -= 1;
-          setCurrent(numberOfViews);
-        }
+
+        Promise.all(okTargeted).then((okTargeted) => {
+          const converted = okTargeted.filter((e) => e).length;
+          if (experienceIndex != undefined && experienceIndex != -100 && converted > 0) {
+            numberOfViews -= 1;
+            setCurrent(numberOfViews);
+          }
+        });
+
       });
     if(experienceIndex == undefined || experienceIndex == -100) {
       numberOfViews -= 1;
@@ -202,7 +220,7 @@ export const generateViewsWithConversions = (number: string, setTotal: any, setC
       setModalVisible(false);
       clearInterval(interval);
     }
-  }, 200);
+  }, 300);
 }
 
 function generateNotificationRequest(el: any, type: string, profileData: ProfileData) {
@@ -233,95 +251,103 @@ function generateNotificationRequest(el: any, type: string, profileData: Profile
   }
   return result;
 }
-export function sendNotificationTarget(el: any, event: string|undefined, conversion: boolean, profileData: ProfileData, experienceIndex?: number) {
+export function sendNotificationTarget(el: any, event: string|undefined, conversion: boolean, profileData: ProfileData, experienceIndex?: number): Promise<boolean>{
   // window.adobe.target?.sendNotifications({
   //     request: { notifications: [generateNotificationRequest(el, 'display', profileData)] }
   //   }
   // );
 
-  if(conversion && event && (el.options[0].responseTokens["experience.id"] == experienceIndex ||
-    (experienceIndex == -100 && experienceIndex == undefined))) {
-    setTimeout(() => {
-      const notifications = generateNotificationRequest(el, event, profileData);
-      if (notifications) {
-        window.adobe.target?.sendNotifications({
-            request: { notifications: [notifications] }
-          }
-        );
-      }
+  return new Promise((resolve, reject) => {
+    if(conversion && event && (el.options[0].responseTokens["experience.id"] == experienceIndex ||
+      (experienceIndex == -100 && experienceIndex == undefined))) {
+      setTimeout(() => {
+        const notifications = generateNotificationRequest(el, event, profileData);
+        if (notifications) {
+          window.adobe.target?.sendNotifications({
+              request: { notifications: [notifications] }
+            }
+          );
+        }
+        resolve(true);
+      }, 50);
+      return;
+    }
 
-    }, 50);
-    return true;
-  }
+    resolve(false);
+  })
 
-  return false;
 }
 
 
-export function sendNotificationAnalytics(tntA :string|undefined, el: any, algorithmId: number, reportingServer: string, mcId: string, conversion: boolean, conversionEvent: string|undefined, conversionValue: number, experienceIndex: number|undefined) {
+export function sendNotificationAnalytics(tntA :string|undefined, el: any, algorithmId: number, reportingServer: string, mcId: string, conversion: boolean, conversionEvent: string|undefined, conversionValue: number, experienceIndex: number|undefined): Promise<boolean> {
   // const mcId = getMcId();
   //don't use experienceindex for analytics not sure if it's needed
-  let tntaData = tntA? tntA : el.analytics.payload.tnta;
-  console.log(tntA)
-  //make targeted events
-  tntaData = tntaData.split(',').map((event: string) => {
-    //remove visits and unique visits and not conversion
-    const eventBreakDown = event.split(':');
-    //traffic type - targeted
-    eventBreakDown[2] = conversionEvent == 'event10' ? '0' : '1';
-    //algorithm id change
-    if (algorithmId !== -1000) {
-      let [algoId, event] = eventBreakDown[3].split('|');
-      algoId = `${algorithmId}`;
-      eventBreakDown[3] = `${algoId}|${event}`;
+  return new Promise((resolve, reject) => {
+    let tntaData = tntA? tntA : el.analytics.payload.tnta;
+    console.log(tntA)
+    //make targeted events
+    tntaData = tntaData.split(',').map((event: string) => {
+      //remove visits and unique visits and not conversion
+      const eventBreakDown = event.split(':');
+      //traffic type - targeted
+      eventBreakDown[2] = conversionEvent == 'event10' ? '0' : '1';
+      //algorithm id change
+      if (algorithmId !== -1000) {
+        let [algoId, event] = eventBreakDown[3].split('|');
+        algoId = `${algorithmId}`;
+        eventBreakDown[3] = `${algoId}|${event}`;
+      }
+
+      return eventBreakDown.join(':');
+    }).join(',');
+
+
+    const events = tntaData.split(',');
+    const revenueEvent = events.filter((event: string) => {
+      return event.split('|')[0].split(":").length === 4;
+    })[0].split("|");
+
+    if (tntaData.indexOf("|1") == -1) {
+      tntaData = `${revenueEvent[0]}|1,${tntaData}`;
     }
 
-    return eventBreakDown.join(':');
-  }).join(',');
+    //no unique
+    if (tntaData.indexOf("|0") == -1) {
+      tntaData = `${revenueEvent[0]}|0,${tntaData}`;
+    }
 
+    let viewsLink = `https://${reportingServer}/b/ss/atetrifandemo/0/TA-1.0?pe=tnt&tnta=${tntaData}&mid=${mcId}&c.a.target.sessionid=${el.analytics.payload["session-id"]}`
+    fetch(viewsLink, {
+      method: "GET",
+      headers: {
+        "Content-Type": "text/plain"
+      },
+      // Make sure to include credentials if needed, depending on Adobe's CORS policy
+      credentials: "include" // or "same-origin" if running on the same domain
+    }).finally(() => {
+      if (!conversion) {
+        resolve(true);
+        return;
+      }
 
-  const events = tntaData.split(',');
-  const revenueEvent = events.filter((event: string) => {
-    return event.split('|')[0].split(":").length === 4;
-  })[0].split("|");
+      if(conversion && conversionEvent && (el.options[0].responseTokens["experience.id"] == experienceIndex ||
+        (experienceIndex == -100 && experienceIndex == undefined))) {
+        viewsLink = `https://${reportingServer}/b/ss/atetrifandemo/0/TA-1.0?pe=tnt&tnta=${revenueEvent[0]}|32767,${revenueEvent[0]}|${conversionEvent?.replace("event","")}|${conversionValue}&mid=${mcId}&c.a.target.sessionid=${el.analytics.payload["session-id"]}&events=${conversionEvent}=${conversionValue}`
+        setTimeout(()=>{
+          fetch(viewsLink, {
+            method: "GET",
+            headers: {
+              "Content-Type": "text/plain"
+            },
+            // Make sure to include credentials if needed, depending on Adobe's CORS policy
+            credentials: "include" // or "same-origin" if running on the same domain
+          })
+          resolve(true);
+        }, 50);
+        return;
+      }
+      resolve(false);
+    })
+  });
 
-  if (tntaData.indexOf("|1") == -1) {
-    tntaData = `${revenueEvent[0]}|1,${tntaData}`;
-  }
-
-  //no unique
-  if (tntaData.indexOf("|0") == -1) {
-    tntaData = `${revenueEvent[0]}|0,${tntaData}`;
-  }
-
-  let viewsLink = `https://${reportingServer}/b/ss/atetrifandemo/0/TA-1.0?pe=tnt&tnta=${tntaData}&mid=${mcId}&c.a.target.sessionid=${el.analytics.payload["session-id"]}`
-  fetch(viewsLink, {
-    method: "GET",
-    headers: {
-      "Content-Type": "text/plain"
-    },
-    // Make sure to include credentials if needed, depending on Adobe's CORS policy
-    credentials: "include" // or "same-origin" if running on the same domain
-  })
-  if (!conversion) {
-    return true;
-  }
-
-  if(conversion && conversionEvent && (el.options[0].responseTokens["experience.id"] == experienceIndex ||
-    (experienceIndex == -100 && experienceIndex == undefined))) {
-    viewsLink = `https://${reportingServer}/b/ss/atetrifandemo/0/TA-1.0?pe=tnt&tnta=${revenueEvent[0]}|32767,${revenueEvent[0]}|${conversionEvent?.replace("event","")}|${conversionValue}&mid=${mcId}&c.a.target.sessionid=${el.analytics.payload["session-id"]}&events=${conversionEvent}=${conversionValue}`
-    setTimeout(()=>{
-      fetch(viewsLink, {
-        method: "GET",
-        headers: {
-          "Content-Type": "text/plain"
-        },
-        // Make sure to include credentials if needed, depending on Adobe's CORS policy
-        credentials: "include" // or "same-origin" if running on the same domain
-      })
-    }, 50);
-    return true;
-  }
-
-  return false;
 }

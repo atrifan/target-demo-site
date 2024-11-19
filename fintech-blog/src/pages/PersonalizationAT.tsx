@@ -86,22 +86,6 @@ const PersonalizationAT: React.FC<XperienceProps> = ({ displayName, token, setTo
 
   }, [refreshKey, displayName, country, hobby, age]);
 
-  const generateViews = (number: string) => {
-    generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, '', { displayName, country, hobby, age }, ["target-demo-site-at-mbox"], undefined, false, undefined, undefined, undefined, true, experienceIndex);
-  }
-
-  const generateConversions = (number: string) => {
-    generateViewsWithConversions(number, setTotal, setCurrent, setModalVisible, '', { displayName, country, hobby, age }, ["target-demo-site-at-mbox"], undefined, true, "click", 1, undefined, true, experienceIndex);
-  }
-
-  const changeExperienceId = (number: string) => {
-    if (number.length === 0) {
-      setExperienceIndex(-100);
-      return;
-    }
-    setExperienceIndex(parseInt(number) - 1);
-  }
-
   const handleSetToken = (newToken: string, activityId: number, experienceId: number) => {
     setToken(newToken);
     setExperienceIndex(experienceId);
@@ -185,6 +169,8 @@ const PersonalizationAT: React.FC<XperienceProps> = ({ displayName, token, setTo
         <TrafficGenerator displayName={displayName} country={country} hobby={hobby} age={age}
                           experienceIndex={experienceIndex} setExperienceIndex={setExperienceIndex}
                           showExperienceIndex={true}
+                          isTarget={true}
+                          conversionEvent={'click'}
                           setTotal={setTotal} setCurrent={setCurrent} setModalVisible={setModalVisible}
                           mboxes={['target-demo-site-at-mbox']}/>
       </div>

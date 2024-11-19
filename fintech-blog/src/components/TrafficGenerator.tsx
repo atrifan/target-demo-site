@@ -9,13 +9,17 @@ interface GeneratorComponentProps {
   experienceIndex: number;
   setExperienceIndex?: React.Dispatch<React.SetStateAction<number>>;
   showExperienceIndex?: boolean;
+  setAlgorithmId?: React.Dispatch<React.SetStateAction<number>>;
   setTotal: React.Dispatch<React.SetStateAction<number>>;
   setCurrent: React.Dispatch<React.SetStateAction<number>>;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  setAlgorithmId?: React.Dispatch<React.SetStateAction<number>>;
+  algorithmId?: number;
   selectAlgorithm?: boolean;
   conversionEvent?: string;
   reportingServer?: string;
+  isTarget: boolean;
+  tntA?: string;
+
   mboxes: string[];
 }
 
@@ -26,14 +30,17 @@ const GeneratorComponent: React.FC<GeneratorComponentProps> = ({
                                                                  age,
                                                                  experienceIndex,
                                                                  setExperienceIndex = () => {},
+                                                                 setAlgorithmId = () => {},
                                                                  showExperienceIndex = false,
                                                                  setTotal,
                                                                  setCurrent,
                                                                  setModalVisible,
-                                                                 setAlgorithmId = () => {},
+                                                                 algorithmId = undefined,
                                                                  selectAlgorithm = false,
                                                                  conversionEvent = undefined,
                                                                  reportingServer = '',
+                                                                 tntA = undefined,
+                                                                  isTarget,
                                                                  mboxes,
                                                                }) => {
   const [uniqueVisitors, setUniqueVisitors] = useState(true);
@@ -41,6 +48,7 @@ const GeneratorComponent: React.FC<GeneratorComponentProps> = ({
 
   const generateViews = (number: string) => {
     generateViewsWithConversions(
+      uniqueVisitors,
       number,
       setTotal,
       setCurrent,
@@ -48,18 +56,19 @@ const GeneratorComponent: React.FC<GeneratorComponentProps> = ({
       reportingServer,
       { displayName, country, hobby, age },
       mboxes,
-      undefined,
+      tntA,
       false,
-      undefined,
-      undefined,
+      conversionEvent,
       revenueValue,
-      uniqueVisitors,
+      algorithmId,
+      isTarget,
       experienceIndex
     );
   };
 
   const generateConversions = (number: string) => {
     generateViewsWithConversions(
+      uniqueVisitors,
       number,
       setTotal,
       setCurrent,
@@ -67,12 +76,12 @@ const GeneratorComponent: React.FC<GeneratorComponentProps> = ({
       reportingServer,
       { displayName, country, hobby, age },
       mboxes,
-      undefined,
+      tntA,
       true,
       conversionEvent,
-      1,
       revenueValue,
-      uniqueVisitors,
+      algorithmId,
+      isTarget,
       experienceIndex
     );
   };
@@ -207,13 +216,24 @@ const GeneratorComponent: React.FC<GeneratorComponentProps> = ({
         <h4>Set Revenue Value</h4>
         <input
           type="number"
-          value={revenueValue}
-          onChange={(e) => setRevenueValue(parseFloat(e.target.value))}
+          placeholder="Change revenue value"
+          id="revenue"
           style={{ marginRight: '10px', padding: '5px', width: '100px' }}
         />
+        <button
+          onClick={() => {
+            const number = (
+              document.getElementById('revenue') as HTMLInputElement
+            )?.value;
+            setRevenueValue(number.length > 0 ? parseFloat(number) : 1);
+          }}
+          style={{ padding: '5px 10px' }}
+        >
+          Save Revenue Value
+        </button>
       </div>
     </div>
-  );
+);
 };
 
 export default GeneratorComponent;
