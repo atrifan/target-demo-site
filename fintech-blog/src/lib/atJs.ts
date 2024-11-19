@@ -12,9 +12,10 @@ export const clearAllCookies = () => {
 
   localStorage.clear();
   sessionStorage.clear();
+
 };
 
-export function updateQueryParam(key: string, value?: string) {
+export function updateQueryParams(key: string, value?: string) {
   const url = new URL(window.location.href);
   const params = new URLSearchParams(url.search);
 
@@ -24,6 +25,7 @@ export function updateQueryParam(key: string, value?: string) {
   } else {
     params.delete(key); // Optionally, delete the param if value is empty
   }
+
 
   // Update the browser URL
   window.history.pushState({}, '', `${url.pathname}?${params.toString()}`);
@@ -75,7 +77,6 @@ export default async function AtJs() {
         console.log("at.js loaded");
         //burn the pageload
         resolve(true);
-
       };
       script.onerror = () => {
         console.error("Failed to load at.js");
@@ -130,8 +131,8 @@ export const generateViewsWithConversions = (number: string, setTotal: any, setC
     //mboxSession generates a new user unique entry // TODO: set profile attributes
     //update visitorid
     const mcId = `${generateToken(2)}-${generateToken(2)}`;
-    updateQueryParam("PC", getNewCookiePCValue(generateToken()));
-    updateQueryParam('mboxSession', generateToken());
+    updateQueryParams("PC", getNewCookiePCValue(generateToken()));
+    updateQueryParams('mboxSession', generateToken());
     window.adobe.target?.getOffers({
       request: {
         id: {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useSearchParams } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import PersonalizationAT from './pages/PersonalizationAT';
@@ -11,7 +11,7 @@ import PersonalizationAAXP from './pages/PersonalizationAAXP';
 import PersonalizationAA from './pages/PersonalizationAA';
 import PersonalizationATA4TXP from './pages/PersonalizedATA4TXP';
 import PersonalizationATA4T from './pages/PersonalizationATA4T';
-import { generateToken, getNewCookiePCValue, updateQueryParam } from './lib/atJs';
+import { generateToken, getNewCookiePCValue, updateQueryParams } from './lib/atJs';
 import ABManual from './pages/ABManual';
 import ABManualXP from './pages/ABManualXP';
 import PersonalizationAP from './pages/PersonalizationAP';
@@ -42,12 +42,21 @@ const App: React.FC = () => {
   const [mcId, setMcId] = useState('');
   const [refreshKey, setRefreshKey] = useState(0);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const handlePersonaSave = () => {
+
     // Increment the refresh key to trigger re-render
-    updateQueryParam('mboxSession', generateToken());
+    const token = generateToken();
+    // updateQueryParams('mboxSession', `${token}`);
     //new tntId
-    updateQueryParam("PC", getNewCookiePCValue(generateToken()));
+    const pcToken = getNewCookiePCValue(generateToken());
+    // updateQueryParams("PC", `${pcToken}`);
+
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set('mboxSession', `${token}`);
+    newParams.set('PC', `${pcToken}`);
+    setSearchParams(newParams);
     //new mcid
     setMcId(generateToken());
     setRefreshKey(prevKey => prevKey + 1);
@@ -64,7 +73,6 @@ const App: React.FC = () => {
   }, []);
   return (
     <PersonaProvider>
-      <Router basename="/target-demo-site">
         <Header refreshOnSave={handlePersonaSave}/>
         <Routes>
           <Route
@@ -398,7 +406,6 @@ const App: React.FC = () => {
           />
         </Routes>
         <Footer />
-      </Router>
     </PersonaProvider>
   );
 

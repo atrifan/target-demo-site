@@ -29,8 +29,21 @@ const RecentlyViewed: React.FC<XperienceProps> = ({ displayName, token, setToken
           id: {
             marketingCloudVisitorId: mcIdToUse,
           },
-          'execute': {
-            'pageLoad': [{
+          execute: {
+            pageLoad: {
+              "parameters": {
+                "entity.id": ""
+              },
+              'profileParameters': {
+                'user.422': `${displayName}-${Date.now()}`,
+                'user.country': country,
+                'user.hobby': hobby,
+                'user.age': age
+              }
+            }
+          },
+          'prefetch': {
+            'views': [{
               "parameters": {
                 "entity.id": ""
               },
@@ -52,7 +65,7 @@ const RecentlyViewed: React.FC<XperienceProps> = ({ displayName, token, setToken
         console.log("AT: getOffers failed - Error", error);
       }).finally(() => {
         // Trigger View call, assuming pageView is defined elsewhere
-        window.adobe.target?.triggerView('recentlyViewed');
+        //window.adobe.target?.triggerView('recentlyViewed');
       });
     });
   }, [refreshKey, displayName, country, hobby, age]);

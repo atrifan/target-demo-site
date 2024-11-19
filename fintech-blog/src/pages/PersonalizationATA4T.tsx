@@ -1,9 +1,9 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import AtJs, { clearAllCookies, generateToken, generateViewsWithConversions, updateQueryParam } from '../lib/atJs';
 import Tracker from '../lib/tracker';
 import getMcId, { getSdId, trackEvent } from '../lib/visitor';
 import LoadingModal from '../components/LoadingModal';
+import AtJs, { generateViewsWithConversions } from '../lib/atJs';
 
 interface XperienceProps {
   displayName: string;

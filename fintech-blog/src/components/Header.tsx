@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { usePersona } from './Persona';  // Import the context hook
 
 interface DropdownMenuProps {
@@ -39,6 +39,7 @@ const Header: React.FC<{ refreshOnSave: () => void }> = ({ refreshOnSave }) => {
   const [inputCountry, setInputCountry] = useState(country || '');
   const [inputHobby, setInputHobby] = useState(hobby || '');
   const [inputAge, setInputAge] = useState(age || '');
+  const [searchParams] = useSearchParams();
 
   // Populate fields on component load if they are empty
   useEffect(() => {
@@ -132,83 +133,203 @@ const Header: React.FC<{ refreshOnSave: () => void }> = ({ refreshOnSave }) => {
       <h1>Target demo site with at.js delivery</h1>
       <nav>
         <DropdownMenu title="A/B">
-          <Link to="/target-demo-site/ab">A/B Manual Allocate</Link>
-          <Link to="/target-demo-site/personalization/aa">Auto Allocate</Link>
-          <Link to="/target-demo-site/personalization/aa/a4t">Auto Allocate A4T</Link>
+          <Link to={{
+            pathname: "/target-demo-site/ab",
+            search: searchParams.toString()
+          }}>A/B Manual Allocate</Link>
+          <Link to={{
+            pathname: "/target-demo-site/personalization/aa",
+            search: searchParams.toString()
+          }}>Auto Allocate</Link>
+          <Link to={{
+            pathname: "/target-demo-site/personalization/aa/a4t",
+            search: searchParams.toString()
+          }}>Auto Allocate A4T</Link>
           <DropdownMenu title="Personalization">
-            <Link to="/target-demo-site/personalization/at">Personalization AT</Link>
-            <Link to="/target-demo-site/personalization/at/a4t">Personalization AT A4T</Link>
+            <Link to={{
+              pathname: "/target-demo-site/personalization/at",
+              search: searchParams.toString()
+            }}>Personalization AT</Link>
+            <Link to={{
+              pathname: "/target-demo-site/personalization/at/a4t",
+              search: searchParams.toString()
+            }}>Personalization AT A4T</Link>
           </DropdownMenu>
         </DropdownMenu>
 
-        <Link to="/target-demo-site/personalization/ap">Personalization AP</Link>
-        <Link to="/target-demo-site/experience-targeting">Experience Targeting</Link>
-        <Link to="/target-demo-site/mvt">MVT</Link>
+        <Link to={{
+          pathname: "/target-demo-site/personalization/ap",
+          search: searchParams.toString()
+        }}>Personalization AP</Link>
+        <Link to={{
+          pathname: "/target-demo-site/experience-targeting",
+          search: searchParams.toString()
+        }}>Experience Targeting</Link>
+        <Link to={{
+          pathname: "/target-demo-site/mvt",
+          search: searchParams.toString()
+        }}>MVT</Link>
 
         {/* Other Dropdown Menus */}
         <DropdownMenu title="Recs">
-          <Link to="/target-demo-site/criteria_sequence">Criteria Sequence</Link>
+          <Link to={{
+            pathname: "/target-demo-site/criteria_sequence",
+            search: searchParams.toString()
+          }}>Criteria Sequence</Link>
           <DropdownMenu title="Cart">
-            <Link to="/target-demo-site/cart/target-demo-site/bought_bought">Bought Bought</Link>
-            <Link to="/target-demo-site/cart/viewed_bought">Viewed Bought</Link>
-            <Link to="/target-demo-site/cart/viewed_viewed">Viewed Viewed</Link>
+            <Link to={{
+              pathname: "/target-demo-site/cart/target-demo-site/bought_bought",
+              search: searchParams.toString()
+            }}>Bought Bought</Link>
+            <Link to={{
+              pathname: "/target-demo-site/cart/viewed_bought",
+              search: searchParams.toString()
+            }}>Viewed Bought</Link>
+            <Link to={{
+              pathname: "/target-demo-site/cart/viewed_viewed",
+              search: searchParams.toString()
+            }}>Viewed Viewed</Link>
             <DropdownMenu title="Analytics">
-              <Link to="/target-demo-site/cart/bought_bought_analytics">Bought Bought Analytics</Link>
-              <Link to="/target-demo-site/cart/viewed_bought_analytics">Viewed Bought Analytics</Link>
-              <Link to="/target-demo-site/cart/viewed_viewed_analytics">Viewed Viewed Analytics</Link>
+              <Link to={{
+                pathname: "/target-demo-site/cart/bought_bought_analytics",
+                search: searchParams.toString()
+              }}>Bought Bought Analytics</Link>
+              <Link to={{
+                pathname: "/target-demo-site/cart/viewed_bought_analytics",
+                search: searchParams.toString()
+              }}>Viewed Bought Analytics</Link>
+              <Link to={{
+                pathname: "/target-demo-site/cart/viewed_viewed_analytics",
+                search: searchParams.toString()
+              }}>Viewed Viewed Analytics</Link>
             </DropdownMenu>
           </DropdownMenu>
 
           <DropdownMenu title="Popularity">
-            <Link to="/target-demo-site/popularity/most-viewed-across-site">Most Viewed Across Site</Link>
-            <Link to="/target-demo-site/popularity/most-viewed-by-category">Most Viewed by Category</Link>
-            <Link to="/target-demo-site/popularity/most-viewed-by-attribute">Most Viewed by Attribute</Link>
-            <Link to="/target-demo-site/popularity/top-sellers-across-site">Top Sellers Across Site</Link>
-            <Link to="/target-demo-site/popularity/top-sellers-by-category">Top Sellers by Category</Link>
-            <Link to="/target-demo-site/popularity/top-sellers-by-item-attribute">Top Sellers by Item Attribute</Link>
+            <Link to={{
+              pathname: "/target-demo-site/popularity/most-viewed-across-site",
+              search: searchParams.toString()
+            }}>Most Viewed Across Site</Link>
+            <Link to={{
+              pathname: "/target-demo-site/popularity/most-viewed-by-category",
+              search: searchParams.toString()
+            }}>Most Viewed by Category</Link>
+            <Link to={{
+              pathname: "/target-demo-site/popularity/most-viewed-by-attribute",
+              search: searchParams.toString()
+            }}>Most Viewed by Attribute</Link>
+            <Link to={{
+              pathname: "/target-demo-site/popularity/top-sellers-across-site",
+              search: searchParams.toString()
+            }}>Top Sellers Across Site</Link>
+            <Link to={{
+              pathname: "/target-demo-site/popularity/top-sellers-by-category",
+              search: searchParams.toString()
+            }}>Top Sellers by Category</Link>
+            <Link to={{
+              pathname: "/target-demo-site/popularity/top-sellers-by-item-attribute",
+              search: searchParams.toString()
+            }}>Top Sellers by Item Attribute</Link>
             <DropdownMenu title="Analytics">
-              <Link to="/target-demo-site/popularity/most-viewed-across-site-analytics">Most Viewed Across Site
+              <Link to={{
+                pathname: "/target-demo-site/popularity/most-viewed-across-site-analytics",
+                search: searchParams.toString()
+              }}>Most Viewed Across Site
                 Analytics</Link>
-              <Link to="/target-demo-site/popularity/most-viewed-by-category-analytics">Most Viewed by Category
+              <Link to={{
+                pathname: "/target-demo-site/popularity/most-viewed-by-category-analytics",
+                search: searchParams.toString()
+              }}>Most Viewed by Category
                 Analytics</Link>
-              <Link to="/target-demo-site/popularity/most-viewed-by-attribute-analytics">Most Viewed by Attribute
+              <Link to={{
+                pathname: "/target-demo-site/popularity/most-viewed-by-attribute-analytics",
+                search: searchParams.toString()
+              }}>Most Viewed by Attribute
                 Analytics</Link>
-              <Link to="/target-demo-site/popularity/top-sellers-across-site-analytics">Top Sellers Across Site
+              <Link to={{
+                pathname: "/target-demo-site/popularity/top-sellers-across-site-analytics",
+                search: searchParams.toString()
+              }}>Top Sellers Across Site
                 Analytics</Link>
-              <Link to="/target-demo-site/popularity/top-sellers-by-category-analytics">Top Sellers by Category
+              <Link to={{
+                pathname: "/target-demo-site/popularity/top-sellers-by-category-analytics",
+                search: searchParams.toString()
+              }}>Top Sellers by Category
                 Analytics</Link>
-              <Link to="/target-demo-site/popularity/top-sellers-by-item-attribute-analytics">Top Sellers by Item
+              <Link to={{
+                pathname: "/target-demo-site/popularity/top-sellers-by-item-attribute-analytics",
+                search: searchParams.toString()
+              }}>Top Sellers by Item
                 Attribute Analytics</Link>
             </DropdownMenu>
           </DropdownMenu>
 
           <DropdownMenu title="Item Based">
-            <Link to="/target-demo-site/item/viewed_viewed">Viewed Viewed</Link>
-            <Link to="/target-demo-site/item/viewed_bought">Viewed Bought</Link>
-            <Link to="/target-demo-site/item/bought_bought">Bought Bought</Link>
-            <Link to="/target-demo-site/item/content_similarity">Content Similarity</Link>
+            <Link to={{
+              pathname: "/target-demo-site/item/viewed_viewed",
+              search: searchParams.toString()
+            }}>Viewed Viewed</Link>
+            <Link to={{
+              pathname: "/target-demo-site/item/viewed_bought",
+              search: searchParams.toString()
+            }}>Viewed Bought</Link>
+            <Link to={{
+              pathname: "/target-demo-site/item/bought_bought",
+              search: searchParams.toString()
+            }}>Bought Bought</Link>
+            <Link to={{
+              pathname: "/target-demo-site/item/content_similarity",
+              search: searchParams.toString()
+            }}>Content Similarity</Link>
             <DropdownMenu title="Analytics">
-              <Link to="/target-demo-site/item/viewed_viewed_analytics">Viewed Viewed Analytics</Link>
-              <Link to="/target-demo-site/item/viewed_bought_analytics">Viewed Bought Analytics</Link>
-              <Link to="/target-demo-site/item/bought_bought_analytics">Bought Bought Analytics</Link>
+              <Link to={{
+                pathname: "/target-demo-site/item/viewed_viewed_analytics",
+                search: searchParams.toString()
+              }}>Viewed Viewed Analytics</Link>
+              <Link to={{
+                pathname: "/target-demo-site/item/viewed_bought_analytics",
+                search: searchParams.toString()
+              }}>Viewed Bought Analytics</Link>
+              <Link to={{
+                pathname: "/target-demo-site/item/bought_bought_analytics",
+                search: searchParams.toString()
+              }}>Bought Bought Analytics</Link>
             </DropdownMenu>
           </DropdownMenu>
 
           <DropdownMenu title="User Based">
-            <Link to="/target-demo-site/userbased/recently_viewed">Recently Viewed</Link>
-            <Link to="/target-demo-site/userbased/recommended_for_you">Recommended for You</Link>
-            <Link to="/target-demo-site/userbased/recommended_for_you_analytics">Recommended for You Analytics</Link>
+            <Link to={{
+              pathname: "/target-demo-site/userbased/recently_viewed",
+              search: searchParams.toString()
+            }}>Recently Viewed</Link>
+            <Link to={{
+              pathname: "/target-demo-site/userbased/recommended_for_you",
+              search: searchParams.toString()
+            }}>Recommended for You</Link>
+            <Link to={{
+              pathname: "/target-demo-site/userbased/recommended_for_you_analytics",
+              search: searchParams.toString()
+            }}>Recommended for You Analytics</Link>
           </DropdownMenu>
 
           <DropdownMenu title="Custom">
-            <Link to="/target-demo-site/custom/custom_algo">Custom Algo</Link>
-            <Link to="/target-demo-site/custom/custom_algo_analytics">Custom Algo Analytics</Link>
+            <Link to={{
+              pathname: "/target-demo-site/custom/custom_algo",
+              search: searchParams.toString()
+            }}>Custom Algo</Link>
+            <Link to={{
+              pathname: "/target-demo-site/custom/custom_algo_analytics",
+              search: searchParams.toString()
+            }}>Custom Algo Analytics</Link>
           </DropdownMenu>
 
 
         </DropdownMenu>
         <DropdownMenu title="Util">
-          <Link to="/target-demo-site/util/products">Products</Link>
+          <Link to={{
+            pathname: "/target-demo-site/util/products",
+            search: searchParams.toString()
+          }}>Products</Link>
         </DropdownMenu>
       </nav>
     </header>

@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import "./Products.css";
 import AtJs from '../../../lib/atJs';
 
@@ -20,7 +20,7 @@ const Products:React.FC<ProductsProps> = ({ onSelectProduct }) => {
   window.targetPageParams = () => {
     return;
   }
-
+  const [searchParams] = useSearchParams();
   useLayoutEffect(() => {
     const fetchData = async () => {
       try {
@@ -54,7 +54,10 @@ const Products:React.FC<ProductsProps> = ({ onSelectProduct }) => {
       {products.map((product) => (
         <div className="product-card" key={product.entityId}>
           <Link
-            to={`/target-demo-site/util/products/${product.entityId}`}
+            to={{
+              pathname: `/target-demo-site/util/products/${product.entityId}`,
+              search: searchParams.toString()
+            }}
             onClick={() => onSelectProduct(product)}
           >
             <img src={product.thumbnailUrl} alt={product.name} />
