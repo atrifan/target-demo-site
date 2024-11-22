@@ -5,6 +5,7 @@ import Tracker from '../lib/tracker';
 import getMcId, { trackEvent } from '../lib/visitor';
 import LoadingModal from '../components/LoadingModal';
 import TrafficGenerator from '../components/TrafficGenerator';
+import ModelExplorer from '../components/ModelExplorer';
 
 interface XperienceProps {
     displayName: string;
@@ -29,6 +30,7 @@ const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, set
     const [total, setTotal] = useState(0);
     const [current, setCurrent] = useState(0);
     const [searchParams] = useSearchParams();
+    const [campaignId, setCampaignId] = useState('');
     useLayoutEffect(() => {
         //reset experience-index on main page
         setExperienceIndex(-100);
@@ -89,6 +91,7 @@ const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, set
                       const sdid = window.s.visitor.getSupplementalDataID();
 
                       mboxes.forEach(el => {
+                          setCampaignId(el.options[0].responseTokens["activity.id"])
                           cleanupEvents.push(new Promise((resolve, reject) => {
                               window.adobe.target?.applyOffers({
                                   selector: `.mbox-name-${el.name}`,
@@ -194,6 +197,8 @@ const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, set
                       Go to Experience 3
                   </Link>
               </div>
+
+              <ModelExplorer campaignId={campaignId} tenant={"bullseye"}/>
 
 
               <div style={{

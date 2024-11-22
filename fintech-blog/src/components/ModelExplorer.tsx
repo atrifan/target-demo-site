@@ -12,13 +12,13 @@ interface Props {
 const ModelExplorer: React.FC<Props> = ({ campaignId, tenant }) => {
   const [models, setModels] = useState<any[]>([]);
   const [expanded, setExpanded] = useState<{ [key: string]: boolean }>({});
+  const [postResponses, setPostResponses] = useState<{ [key: string]: any }>({});
 
   const lambdaUrl =
     "https://t7mdhjxlqv6mttyehb3jfjagfa0mznfe.lambda-url.us-west-2.on.aws/";
 
-  // Fetch data from Lambda's /model endpoint using the CORS action
   useEffect(() => {
-    if (!campaignId || campaignId == "") {
+    if (!campaignId || campaignId === "") {
       return;
     }
     const fetchModels = async () => {
@@ -26,20 +26,19 @@ const ModelExplorer: React.FC<Props> = ({ campaignId, tenant }) => {
         const body = {
           client_code: tenant,
           campaign_id: campaignId,
-          action: "cors",  // Specify 'cors' action
-          url: "https://internal-zeus.personalization.prod.target.adobe.net/model",  // Pass the Zeus URL
+          action: "cors",
+          url: "https://internal-zeus.personalization.prod.target.adobe.net/model",
         };
 
-        // Make the request to Lambda
-        const response = await axios.post(lambdaUrl, body, {
+        const response = await axios.get(lambdaUrl, {
           headers: {
             "Content-Type": "application/json",
+            Accept: "application/json",
           },
-          withCredentials: false, // Set to `true` if you need to include cookies or credentials
+          withCredentials: false,
         });
         const data = response.data;
 
-        // Handle the response and filter models based on tenant and campaignId
         if (data && Array.isArray(data)) {
           const filteredModels = data.filter((item: any) => {
             const [, tenantCode, campaignCode] = item.id.split(":");
@@ -55,30 +54,26 @@ const ModelExplorer: React.FC<Props> = ({ campaignId, tenant }) => {
     fetchModels();
   }, [campaignId, tenant]);
 
-  // Toggle collapse state
   const toggleCollapse = (id: string) => {
     setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
+    if (!expanded[id]) {
+      handlePost(id);
+    }
   };
 
-  // Handle the POST request to Lambda (same as before)
   const handlePost = async (modelId: string) => {
     try {
-      const body = {
-        client_code: tenant,
-        campaign_id: campaignId,
-        model_id: modelId,
-        zeus_url: "https://internal-zeus.personalization.prod.target.adobe.net",
-        action: "download",
-      };
-      const response = await axios.post(lambdaUrl, body, {
+      const response = await axios.get(`${lambdaUrl}?model_id=${modelId}`, {
         headers: {
           "Content-Type": "application/json",
+          Accept: "application/json",
         },
-        withCredentials: false, // Set to `true` if you need to include cookies or credentials
+        withCredentials: false,
       });
-      console.log("Response from Lambda:", response.data);
+      setPostResponses((prev) => ({ ...prev, [modelId]: response.data }));
     } catch (error) {
       console.error("Error in Lambda POST request:", error);
+      setPostResponses((prev) => ({ ...prev, [modelId]: { error: "Error fetching data" } }));
     }
   };
 
@@ -88,21 +83,25 @@ const ModelExplorer: React.FC<Props> = ({ campaignId, tenant }) => {
       {models.map((model) => {
         const { id, updateTime } = model;
         const friendlyDate = new Date(updateTime).toLocaleString();
+        const postResponse = postResponses[id];
 
         return (
           <div key={id} style={styles.card}>
             <div
               style={styles.cardHeader}
-              onClick={() => {
-                toggleCollapse(id);
-                handlePost(id); // Trigger POST request when expanded
-              }}
+              onClick={() => toggleCollapse(id)}
             >
               {id} - {friendlyDate}
             </div>
             <Collapse isOpened={expanded[id]}>
               <div style={styles.cardContent}>
                 <JSONPretty data={model}></JSONPretty>
+                {postResponse && (
+                  <>
+                    <h4>POST Response:</h4>
+                    <JSONPretty data={postResponse}></JSONPretty>
+                  </>
+                )}
               </div>
             </Collapse>
           </div>
@@ -114,19 +113,18 @@ const ModelExplorer: React.FC<Props> = ({ campaignId, tenant }) => {
 
 export default ModelExplorer;
 
-// Styles (unchanged)
 const styles = {
   container: {
     position: "fixed" as "fixed",
-    top: "10px",
+    bottom: "10px",
     right: "10px",
-    width: "300px",
+    width: "400px", // Increased size
     backgroundColor: "#f8f9fa",
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
     borderRadius: "8px",
     padding: "1rem",
     overflowY: "auto" as "auto",
-    maxHeight: "90vh",
+    maxHeight: "80vh", // Adjusted height for better visibility
     zIndex: 1000,
   },
   header: {

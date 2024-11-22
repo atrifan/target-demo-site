@@ -6,6 +6,7 @@ import getMcId from '../lib/visitor';
 import LoadingModal from '../components/LoadingModal';
 import VariationsGrid from '../components/VariationGrid';
 import TrafficGenerator from '../components/TrafficGenerator';
+import ModelExplorer from '../components/ModelExplorer';
 
 interface XperienceProps {
     displayName: string;
@@ -28,6 +29,7 @@ const PersonalizationAP: React.FC<XperienceProps> = ({ displayName, token, setTo
     const [isModalVisible, setModalVisible] = useState(false);
     const [total, setTotal] = useState(0);
     const [current, setCurrent] = useState(0);
+    const [campaignId, setCampaignId] = useState('');
     useLayoutEffect(() => {
         //reset experience-index on main page
         setExperienceIndex(-100);
@@ -81,6 +83,7 @@ const PersonalizationAP: React.FC<XperienceProps> = ({ displayName, token, setTo
                       let count = 1;
 
                       mboxes.forEach(el => {
+                          setCampaignId(el.options[0].responseTokens["activity.id"])
                           window.adobe.target?.applyOffers({
                               selector: `.mbox-name-${el.name}`,
                               response: {
@@ -126,6 +129,8 @@ const PersonalizationAP: React.FC<XperienceProps> = ({ displayName, token, setTo
               <h2>Navigate to Experiences</h2>
 
               <VariationsGrid handleSetToken={handleSetToken}/>
+
+              <ModelExplorer campaignId={campaignId} tenant={"bullseye"}/>
 
               <div style={{
                   border: '1px solid #ddd',

@@ -4,6 +4,7 @@ import AtJs, { generateViewsWithConversions } from '../lib/atJs';
 import getMcId from '../lib/visitor';
 import LoadingModal from '../components/LoadingModal';
 import TrafficGenerator from '../components/TrafficGenerator';
+import ModelExplorer from '../components/ModelExplorer';
 
 interface XperienceProps {
   displayName: string;
@@ -27,6 +28,7 @@ const PersonalizationAT: React.FC<XperienceProps> = ({ displayName, token, setTo
   const [total, setTotal] = useState(0);
   const [current, setCurrent] = useState(0);
   const [searchParams] = useSearchParams();
+  const [campaignId, setCampaignId] = useState('');
   useLayoutEffect(() => {
     //reset experience-index on main page
     setExperienceIndex(-100);
@@ -66,6 +68,7 @@ const PersonalizationAT: React.FC<XperienceProps> = ({ displayName, token, setTo
             let count = 1;
 
             mboxes.forEach(el => {
+              setCampaignId(el.options[0].responseTokens["activity.id"])
               window.adobe.target?.applyOffers({
                 selector: `.mbox-name-${el.name}`,
                 response: {
@@ -150,6 +153,8 @@ const PersonalizationAT: React.FC<XperienceProps> = ({ displayName, token, setTo
             Go to Experience 3
           </Link>
         </div>
+
+        <ModelExplorer campaignId={campaignId} tenant={"bullseye"}/>
 
 
         <div style={{
