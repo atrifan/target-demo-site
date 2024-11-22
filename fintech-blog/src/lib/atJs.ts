@@ -269,7 +269,7 @@ export function sendNotificationTarget(el: any, event: string|undefined, convers
           );
         }
         resolve(true);
-      }, 50);
+      }, 100);
       return;
     }
 
@@ -343,7 +343,7 @@ export function sendNotificationAnalytics(tntA :string|undefined, el: any, algor
             credentials: "include" // or "same-origin" if running on the same domain
           })
           resolve(true);
-        }, 50);
+        }, 100);
         return;
       }
       resolve(false);
