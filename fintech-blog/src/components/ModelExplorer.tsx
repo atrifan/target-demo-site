@@ -70,12 +70,15 @@ const ModelExplorer: React.FC<Props> = ({ campaignId, tenant }) => {
         },
         withCredentials: false,
       });
-      response.data = response.data.replaceAll("NaN", "\"NaN\"")
-      response.data = JSON.parse(response.data)
-      response.data.result.modules = response.data.result.modules.map((module: any) => {
-        delete module.rfdata
-        return module
-      })
+      if (typeof response.data == 'string') {
+        response.data = response.data.replaceAll("NaN", "\"NaN\"")
+        response.data = JSON.parse(response.data)
+        response.data.result.modules = response.data.result.modules.map((module: any) => {
+          delete module.rfdata
+          return module
+        })
+      }
+
       setPostResponses((prev) => ({ ...prev, [modelId]: response.data }));
     } catch (error) {
       console.error("Error in Lambda POST request:", error);
