@@ -70,6 +70,8 @@ const ModelExplorer: React.FC<Props> = ({ campaignId, tenant }) => {
         },
         withCredentials: false,
       });
+      //from response.data.result.modules every module from modules remove key rfdata
+
       setPostResponses((prev) => ({ ...prev, [modelId]: response.data }));
     } catch (error) {
       console.error("Error in Lambda POST request:", error);
