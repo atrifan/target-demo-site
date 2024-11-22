@@ -15,7 +15,7 @@ const ModelExplorer: React.FC<Props> = ({ campaignId, tenant }) => {
   const [postResponses, setPostResponses] = useState<{ [key: string]: any }>({});
 
   const lambdaUrl =
-    "https://t7mdhjxlqv6mttyehb3jfjagfa0mznfe.lambda-url.us-west-2.on.aws/";
+    "https://xmw3bsgzoi.execute-api.us-west-2.amazonaws.com/default/zeusUtil";
 
   useEffect(() => {
     if (!campaignId || campaignId === "") {
@@ -70,8 +70,12 @@ const ModelExplorer: React.FC<Props> = ({ campaignId, tenant }) => {
         },
         withCredentials: false,
       });
-      //from response.data.result.modules every module from modules remove key rfdata
-
+      response.data = response.data.replaceAll("NaN", "\"NaN\"")
+      response.data = JSON.parse(response.data)
+      response.data.result.modules = response.data.result.modules.map((module: any) => {
+        delete module.rfdata
+        return module
+      })
       setPostResponses((prev) => ({ ...prev, [modelId]: response.data }));
     } catch (error) {
       console.error("Error in Lambda POST request:", error);
@@ -100,7 +104,7 @@ const ModelExplorer: React.FC<Props> = ({ campaignId, tenant }) => {
                 <JSONPretty data={model}></JSONPretty>
                 {postResponse && (
                   <>
-                    <h4>POST Response:</h4>
+                    <h4 style={styles.responseHeader}>POST Response:</h4>
                     <JSONPretty data={postResponse}></JSONPretty>
                   </>
                 )}
@@ -120,13 +124,14 @@ const styles = {
     position: "fixed" as "fixed",
     bottom: "10px",
     right: "10px",
-    width: "400px", // Increased size
-    backgroundColor: "#f8f9fa",
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+    width: "400px",
+    backgroundColor: "#333", // Dark background
+    color: "#fff", // White text for contrast
+    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)", // Enhanced shadow
     borderRadius: "8px",
     padding: "1rem",
     overflowY: "auto" as "auto",
-    maxHeight: "80vh", // Adjusted height for better visibility
+    maxHeight: "80vh",
     zIndex: 1000,
   },
   header: {
@@ -134,24 +139,34 @@ const styles = {
     fontWeight: "bold",
     marginBottom: "1rem",
     textAlign: "center" as "center",
-    color: "#333",
+    color: "#f8f9fa", // Header color
   },
   card: {
     marginBottom: "1rem",
-    border: "1px solid #ddd",
+    border: "1px solid #444", // Subtle border
     borderRadius: "6px",
     overflow: "hidden",
-    backgroundColor: "#fff",
+    backgroundColor: "#222", // Card background
   },
   cardHeader: {
-    backgroundColor: "#007bff",
+    backgroundColor: "#007bff", // Bright header color
     color: "#fff",
     padding: "0.5rem",
     cursor: "pointer",
     fontWeight: "bold",
+    transition: "background-color 0.3s ease",
+    ':hover': {
+      backgroundColor: "#0056b3", // Darker blue on hover
+    },
   },
   cardContent: {
     padding: "0.5rem",
-    backgroundColor: "#f1f1f1",
+    backgroundColor: "#444", // Content background
+    color: "#fff", // Text color
+  },
+  responseHeader: {
+    fontSize: "1rem",
+    fontWeight: "bold",
+    color: "#ffb700", // Highlight response header
   },
 };
