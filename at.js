@@ -3564,6 +3564,8 @@ window.adobe.target = (function () {
     const listedActivitiesOnly = query[ACTIVITIES_ONLY];
     if (isNotBlank(listedActivitiesOnly) && listedActivitiesOnly === TRUE) {
       result.listedActivitiesOnly = true;
+    } else {
+      result.listedActivitiesOnly = false;
     }
     const trueAudiences = query[TRUE_AUDIENCE_IDS];
     if (isNotBlank(trueAudiences)) {
@@ -9241,10 +9243,11 @@ window.adobe.target = (function () {
 
 })();
 
+
 window.adobe.target.init(window, document, {
-    "clientCode": "bullseye",
-    "imsOrgId": "011B56B451AE49A90A490D4D@AdobeOrg",
-    "serverDomain": "bullseye.tt.omtrdc.net",
+    "clientCode": "etassureco",
+    "imsOrgId": "798B3233633D9B460A495E8A@AdobeOrg",
+    "serverDomain": "etassureco.tt.omtrdc.net",
     "crossDomain": "disabled",
     "timeout": 5000,
     "globalMboxName": "target-global-mbox",
