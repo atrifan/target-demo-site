@@ -9243,11 +9243,20 @@ window.adobe.target = (function () {
 
 })();
 
+function getQueryParam(paramName) {
+  // Create a URLSearchParams object from the current URL's query string
+  const urlParams = new URLSearchParams(window.location.search);
+
+  // Get the value of the parameter
+  let result = urlParams.get(paramName);
+  console.log(result);
+  return result;
+}
 
 window.adobe.target.init(window, document, {
-    "clientCode": "etassureco",
-    "imsOrgId": "798B3233633D9B460A495E8A@AdobeOrg",
-    "serverDomain": "etassureco.tt.omtrdc.net",
+    "clientCode": getQueryParam("tenant") || "bullseye",
+    "imsOrgId": getQueryParam("org") || "011B56B451AE49A90A490D4D@AdobeOrg",
+    "serverDomain": `${getQueryParam("tenant") || "bullseye"}.tt.omtrdc.net`,
     "crossDomain": "disabled",
     "timeout": 5000,
     "globalMboxName": "target-global-mbox",
