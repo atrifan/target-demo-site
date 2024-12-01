@@ -258,7 +258,7 @@ export function sendNotificationTarget(el: any, event: string|undefined, convers
   // );
 
   return new Promise((resolve, reject) => {
-    if(conversion && event && (el.options[0].responseTokens["experience.id"] == experienceIndex ||
+    if(conversion && event && (el?.options?.[0]?.responseTokens["experience.id"] == experienceIndex ||
       (experienceIndex == -100 && experienceIndex == undefined))) {
       setTimeout(() => {
         const notifications = generateNotificationRequest(el, event, profileData);

@@ -1,7 +1,7 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import "./Products.css";
-import AtJs from '../../../lib/atJs';
+import AtJs from "../../../lib/atJs";
 
 interface Product {
   entityId: string;
@@ -15,12 +15,16 @@ interface ProductsProps {
   onSelectProduct: (product: Product) => void;
 }
 
-const Products:React.FC<ProductsProps> = ({ onSelectProduct }) => {
+const Products: React.FC<ProductsProps> = ({ onSelectProduct }) => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [unique, setUnique] = useState<{ [key: string]: boolean }>({});
+  const [views, setViews] = useState<{ [key: string]: number }>({});
+  const [searchParams] = useSearchParams();
+
   window.targetPageParams = () => {
     return;
-  }
-  const [searchParams] = useSearchParams();
+  };
+
   useLayoutEffect(() => {
     const fetchData = async () => {
       try {
@@ -39,7 +43,7 @@ const Products:React.FC<ProductsProps> = ({ onSelectProduct }) => {
 
         setProducts(parsedProducts);
         AtJs().then(() => {
-          window.adobe.target?.triggerView('products');
+          window.adobe.target?.triggerView("products");
         });
       } catch (error) {
         console.error("Error fetching CSV:", error);
@@ -49,6 +53,24 @@ const Products:React.FC<ProductsProps> = ({ onSelectProduct }) => {
     fetchData();
   }, []);
 
+  const handleUniqueChange = (entityId: string, value: boolean) => {
+    setUnique((prev) => ({ ...prev, [entityId]: value }));
+  };
+
+  const handleViewsChange = (entityId: string, value: number) => {
+    setViews((prev) => ({ ...prev, [entityId]: value }));
+  };
+
+  const generateViews = (entityId: string, unique: boolean, views: number) => {
+
+  };
+
+  const handleGenerateViews = (entityId: string) => {
+    const isUnique = unique[entityId] ?? true;
+    const numViews = views[entityId] ?? 0;
+    generateViews(entityId, isUnique, numViews);
+  };
+
   return (
     <div className="products-container">
       {products.map((product) => (
@@ -56,13 +78,33 @@ const Products:React.FC<ProductsProps> = ({ onSelectProduct }) => {
           <Link
             to={{
               pathname: `/target-demo-site/util/products/${product.entityId}`,
-              search: searchParams.toString()
+              search: searchParams.toString(),
             }}
             onClick={() => onSelectProduct(product)}
           >
             <img src={product.thumbnailUrl} alt={product.name} />
             <div className="product-name">{product.name}</div>
           </Link>
+          <div className="product-actions">
+            <label>
+              <input
+                type="checkbox"
+                checked={unique[product.entityId] ?? true}
+                onChange={(e) => handleUniqueChange(product.entityId, e.target.checked)}
+              />
+              Unique
+            </label>
+            <input
+              type="number"
+              placeholder="Number of views"
+              value={views[product.entityId] ?? ""}
+              onChange={(e) => handleViewsChange(product.entityId, parseInt(e.target.value) || 0)}
+              className="views-input"
+            />
+            <button onClick={() => handleGenerateViews(product.entityId)} className="generate-views-button">
+              Generate Views
+            </button>
+          </div>
         </div>
       ))}
     </div>

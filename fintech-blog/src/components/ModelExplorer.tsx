@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { Collapse } from "react-collapse";
 import JSONPretty from "react-json-pretty";
@@ -13,6 +13,7 @@ const ModelExplorer: React.FC<Props> = ({ campaignId, tenant }) => {
   const [models, setModels] = useState<any[]>([]);
   const [expanded, setExpanded] = useState<{ [key: string]: boolean }>({});
   const [postResponses, setPostResponses] = useState<{ [key: string]: any }>({});
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   const lambdaUrl =
     "https://xmw3bsgzoi.execute-api.us-west-2.amazonaws.com/default/zeusUtil";
@@ -54,6 +55,22 @@ const ModelExplorer: React.FC<Props> = ({ campaignId, tenant }) => {
     fetchModels();
   }, [campaignId, tenant]);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        setExpanded({}); // Collapse all
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   const toggleCollapse = (id: string) => {
     setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
     if (!expanded[id]) {
@@ -70,24 +87,29 @@ const ModelExplorer: React.FC<Props> = ({ campaignId, tenant }) => {
         },
         withCredentials: false,
       });
-      if (typeof response.data == 'string') {
-        response.data = response.data.replaceAll("NaN", "\"NaN\"")
-        response.data = JSON.parse(response.data)
-        response.data.result.modules = response.data.result.modules.map((module: any) => {
-          delete module.rfdata
-          return module
-        })
+      if (typeof response.data == "string") {
+        response.data = response.data.replaceAll("NaN", '"NaN"');
+        response.data = JSON.parse(response.data);
+        response.data.result.modules = response.data.result.modules.map(
+          (module: any) => {
+            delete module.rfdata;
+            return module;
+          }
+        );
       }
 
       setPostResponses((prev) => ({ ...prev, [modelId]: response.data }));
     } catch (error) {
       console.error("Error in Lambda POST request:", error);
-      setPostResponses((prev) => ({ ...prev, [modelId]: { error: "Error fetching data" } }));
+      setPostResponses((prev) => ({
+        ...prev,
+        [modelId]: { error: "Error fetching data" },
+      }));
     }
   };
 
   return (
-    <div style={styles.container}>
+    <div style={styles.container} ref={containerRef}>
       <h3 style={styles.header}>Model Explorer</h3>
       {models.map((model) => {
         const { id, updateTime } = model;
@@ -128,9 +150,9 @@ const styles = {
     bottom: "10px",
     right: "10px",
     width: "400px",
-    backgroundColor: "#333", // Dark background
-    color: "#fff", // White text for contrast
-    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)", // Enhanced shadow
+    backgroundColor: "#333",
+    color: "#fff",
+    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)",
     borderRadius: "8px",
     padding: "1rem",
     overflowY: "auto" as "auto",
@@ -142,34 +164,34 @@ const styles = {
     fontWeight: "bold",
     marginBottom: "1rem",
     textAlign: "center" as "center",
-    color: "#f8f9fa", // Header color
+    color: "#f8f9fa",
   },
   card: {
     marginBottom: "1rem",
-    border: "1px solid #444", // Subtle border
+    border: "1px solid #444",
     borderRadius: "6px",
     overflow: "hidden",
-    backgroundColor: "#222", // Card background
+    backgroundColor: "#222",
   },
   cardHeader: {
-    backgroundColor: "#007bff", // Bright header color
+    backgroundColor: "#007bff",
     color: "#fff",
     padding: "0.5rem",
     cursor: "pointer",
     fontWeight: "bold",
     transition: "background-color 0.3s ease",
-    ':hover': {
-      backgroundColor: "#0056b3", // Darker blue on hover
+    ":hover": {
+      backgroundColor: "#0056b3",
     },
   },
   cardContent: {
     padding: "0.5rem",
-    backgroundColor: "#444", // Content background
-    color: "#fff", // Text color
+    backgroundColor: "#444",
+    color: "#fff",
   },
   responseHeader: {
     fontSize: "1rem",
     fontWeight: "bold",
-    color: "#ffb700", // Highlight response header
+    color: "#ffb700",
   },
 };

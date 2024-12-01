@@ -3564,6 +3564,8 @@ window.adobe.target = (function () {
     const listedActivitiesOnly = query[ACTIVITIES_ONLY];
     if (isNotBlank(listedActivitiesOnly) && listedActivitiesOnly === TRUE) {
       result.listedActivitiesOnly = true;
+    } else {
+      result.listedActivitiesOnly = false;
     }
     const trueAudiences = query[TRUE_AUDIENCE_IDS];
     if (isNotBlank(trueAudiences)) {
@@ -9241,10 +9243,20 @@ window.adobe.target = (function () {
 
 })();
 
+function getQueryParam(paramName) {
+  // Create a URLSearchParams object from the current URL's query string
+  const urlParams = new URLSearchParams(window.location.search);
+
+  // Get the value of the parameter
+  let result = urlParams.get(paramName);
+  console.log(result);
+  return result;
+}
+
 window.adobe.target.init(window, document, {
-    "clientCode": "bullseye",
-    "imsOrgId": "011B56B451AE49A90A490D4D@AdobeOrg",
-    "serverDomain": "bullseye.tt.omtrdc.net",
+    "clientCode": getQueryParam("tenant") || "bullseye",
+    "imsOrgId": getQueryParam("org") || "011B56B451AE49A90A490D4D@AdobeOrg",
+    "serverDomain": `${getQueryParam("tenant") || "bullseye"}.tt.omtrdc.net`,
     "crossDomain": "disabled",
     "timeout": 5000,
     "globalMboxName": "target-global-mbox",

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import AtJs, { generateViewsWithConversions } from '../lib/atJs';
 
 interface GeneratorComponentProps {
@@ -45,6 +45,24 @@ const GeneratorComponent: React.FC<GeneratorComponentProps> = ({
                                                                }) => {
   const [uniqueVisitors, setUniqueVisitors] = useState(true);
   const [revenueValue, setRevenueValue] = useState(1);
+
+  const [showTooltip, setShowTooltip] = useState(false);
+  const tooltipRef = useRef<HTMLDivElement | null>(null);
+
+  const algorithmDetails = [
+    { id: 1, name: "touch_clarity", description: "Residual Variance", date: "2017-05-25 11:07:23", flag: 0 },
+    { id: 2, name: "e_greedy_rf", description: "Random Forest", date: "2017-05-25 11:07:23", flag: 0 },
+    { id: 3, name: "ltv", description: "Lifetime Value", date: "2017-05-25 11:07:23", flag: 0 },
+    { id: 4, name: "thompson_sampling", description: "Thompson Sampling", date: "2017-05-25 11:07:23", flag: 0 },
+    { id: 5, name: "tesla", description: "Tesla", date: "2017-05-25 11:07:23", flag: 0 },
+    { id: 6, name: "darwin", description: "Darwin", date: "2017-05-25 11:07:23", flag: 0 },
+    { id: 7, name: "urandom_visitor", description: "Uniform Random by Visitor", date: "2017-05-25 11:07:23", flag: 0 },
+    { id: 8, name: "urandom_visit", description: "Uniform Random by Visit", date: "2019-03-12 23:08:37", flag: 0 },
+    { id: 9, name: "urandom_visitor_coldstart", description: "Uniform Random by Visitor Cold Start", date: "2019-03-12 23:08:37", flag: 0 },
+    { id: 10, name: "urandom_visit_coldstart", description: "Uniform Random by Visit Cold Start", date: "2019-03-12 23:08:37", flag: 0 },
+    { id: 11, name: "custom_dsw", description: "BYOM Decision Stack", date: "2020-06-24 08:14:16", flag: 0 },
+    { id: 12, name: "model_experiment", description: "Model Experimentation Decision Stack", date: "2020-10-22 12:11:08", flag: 0 },
+  ];
 
   const generateViews = (number: string) => {
     generateViewsWithConversions(
@@ -100,6 +118,22 @@ const GeneratorComponent: React.FC<GeneratorComponentProps> = ({
     }
     setAlgorithmId(parseInt(number));
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (tooltipRef.current && !tooltipRef.current.contains(event.target as Node)) {
+        setShowTooltip(false);
+      }
+    };
+
+    if (showTooltip) {
+      document.addEventListener('click', handleClickOutside);
+    } else {
+      document.removeEventListener('click', handleClickOutside);
+    }
+
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [showTooltip]);
 
   return (
     <div>
@@ -208,6 +242,67 @@ const GeneratorComponent: React.FC<GeneratorComponentProps> = ({
           >
             Save Algorithm ID
           </button>
+          <span
+            onClick={(event: React.MouseEvent) => {event.preventDefault(); event.stopPropagation(); setShowTooltip(!showTooltip)}}
+            style={{
+              marginLeft: '10px',
+              width: '24px',
+              height: '24px',
+              display: 'inline-flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: '50%',
+              backgroundColor: '#007bff',
+              color: '#fff',
+              fontSize: '16px',
+              fontWeight: 'bold',
+              cursor: 'pointer',
+              position: 'relative',
+            }}
+          >
+            ?
+            {showTooltip && (
+              <div
+                ref={tooltipRef}
+                style={{
+                  position: 'absolute',
+                  bottom: '40px', // Position above the question mark
+                  left: '-120px',
+                  width: '300px',
+                  padding: '10px',
+                  backgroundColor: '#333',
+                  color: '#fff',
+                  borderRadius: '8px',
+                  boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+                  fontSize: '14px',
+                  textAlign: 'left',
+                  zIndex: 10,
+                }}
+              >
+                <h5 style={{ margin: '0 0 10px' }}>Algorithm Details</h5>
+                <ul style={{ padding: '0 10px', listStyle: 'none', margin: 0 }}>
+                  {algorithmDetails.map((algo) => (
+                    <li key={algo.id} style={{ marginBottom: '5px' }}>
+                      <strong>{algo.id}</strong>, {algo.name}, {algo.description}, {algo.date}, {algo.flag}
+                    </li>
+                  ))}
+                </ul>
+                <div
+                  style={{
+                    position: 'absolute',
+                    bottom: '-10px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: '0',
+                    height: '0',
+                    borderLeft: '10px solid transparent',
+                    borderRight: '10px solid transparent',
+                    borderTop: '10px solid #333',
+                  }}
+                />
+              </div>
+            )}
+          </span>
         </div>
       )}
 
@@ -233,7 +328,7 @@ const GeneratorComponent: React.FC<GeneratorComponentProps> = ({
         </button>
       </div>
     </div>
-);
+  );
 };
 
 export default GeneratorComponent;
