@@ -1,0 +1,37 @@
+.banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    background: linear-gradient(to right, #4facfe, #00f2fe); /* Modern gradient */
+    border-radius: 8px; /* Slightly rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    color: #fff;
+}
+
+.banner:hover {
+    transform: scale(1.02); /* Slight grow effect on hover */
+    transition: transform 0.3s ease-in-out;
+}
+
+.hello {
+    font-size: 1.5rem; /* Modern large text size */
+    font-weight: bold;
+    margin-right: 20px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Subtle text shadow */
+}
+
+img {
+    width: 100px;
+    height: auto;
+    border-radius: 50%; /* Circular image */
+    border: 3px solid #fff;
+    object-fit: cover; /* Ensures image retains aspect ratio */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+img:hover {
+    transform: scale(1.1); /* Slight zoom on hover */
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3); /* More pronounced shadow */
+}

@@ -19,6 +19,8 @@ import PersonalizationAPXP from './pages/PersonalizationAPXP';
 import RecentlyViewed from './pages/recs/RecentlyViewed';
 import Products from './pages/recs/products/Products';
 import Product from './pages/recs/products/Product';
+import XT from './pages/XT';
+import XTXP from './pages/XTXP';
 
 const App: React.FC = () => {
   interface Product {
@@ -351,6 +353,58 @@ const App: React.FC = () => {
               <PersonaConsumer>
                 {({ displayName, country, hobby, age }) => (
                   <ABManualXP
+                    displayName={displayName}
+                    token={token}
+                    setToken={setToken}
+                    activityIndex={activityIndex}
+                    setActivityIndex={setActivityIndex}
+                    experienceIndex={experienceIndex}
+                    setExperienceIndex={setExperienceIndex}
+                    trueAudienceId={trueAudienceId}
+                    setTrueAudienceId={setTrueAudienceId}
+                    country={country}
+                    hobby={hobby}
+                    age={age}
+                    refreshKey={refreshKey}
+                    mcId={mcId}
+                  />
+                )}
+              </PersonaConsumer>
+            }
+          />
+
+
+          <Route
+            path="/target-demo-site/xt"
+            element={
+              <PersonaConsumer>
+                {({ displayName, country, hobby, age }) => (
+                  <XT
+                    displayName={displayName}
+                    token={token}
+                    setToken={setToken}
+                    activityIndex={activityIndex}
+                    setActivityIndex={setActivityIndex}
+                    experienceIndex={experienceIndex}
+                    setExperienceIndex={setExperienceIndex}
+                    trueAudienceId={trueAudienceId}
+                    setTrueAudienceId={setTrueAudienceId}
+                    country={country}
+                    hobby={hobby}
+                    age={age}
+                    refreshKey={refreshKey}
+                    mcId={mcId}
+                  />
+                )}
+              </PersonaConsumer>
+            }
+          />
+          <Route
+            path="/target-demo-site/xt/xp"
+            element={
+              <PersonaConsumer>
+                {({ displayName, country, hobby, age }) => (
+                  <XTXP
                     displayName={displayName}
                     token={token}
                     setToken={setToken}

@@ -107,16 +107,15 @@ const ABManual: React.FC<XperienceProps> = ({ displayName, token, setToken, acti
               <div style={{ marginBottom: '20px' }}>
                   <Link
                     to={{
-                        pathname: "/target-demo-site/personalization/aa/xp",
+                        pathname: "/target-demo-site/ab/xp",
                         search: new URLSearchParams({
                             ...Object.fromEntries(searchParams.entries()), // Keep the existing search params
-                            at_preview_token: 'e73XhadLHKh4wmj8RrfeBYsfdKGAJyg5DsJ3XxNj67A',
+                            at_preview_token: 'LmE_RN_gXztn_dkkFsgWwIsfdKGAJyg5DsJ3XxNj67A',
                             at_preview_index: '1_1',
                             at_preview_listed_activities_only: 'true',
-                            at_preview_evaluate_as_true_audience_ids: '3440621'
                         }).toString()
                     }}
-                    onClick={() => handleSetToken('ZkuLDeLZ6SdSR9RthgNI2osfdKGAJyg5DsJ3XxNj67A', 1, 1)}
+                    onClick={() => handleSetToken('LmE_RN_gXztn_dkkFsgWwIsfdKGAJyg5DsJ3XxNj67A', 1, 1)}
                     style={{ textDecoration: 'none', color: '#000', fontSize: '18px' }}
                   >
                       Go to Experience 1
@@ -126,16 +125,15 @@ const ABManual: React.FC<XperienceProps> = ({ displayName, token, setToken, acti
               <div style={{ marginBottom: '20px' }}>
                   <Link
                     to={{
-                        pathname: "/target-demo-site/personalization/aa/xp",
+                        pathname: "/target-demo-site/ab/xp",
                         search: new URLSearchParams({
                             ...Object.fromEntries(searchParams.entries()), // Keep the existing search params
-                            at_preview_token: 'e73XhadLHKh4wmj8RrfeBYsfdKGAJyg5DsJ3XxNj67A',
+                            at_preview_token: 'LmE_RN_gXztn_dkkFsgWwIsfdKGAJyg5DsJ3XxNj67A',
                             at_preview_index: '1_2',
                             at_preview_listed_activities_only: 'true',
-                            at_preview_evaluate_as_true_audience_ids: '3440621'
                         }).toString()
                     }}
-                    onClick={() => handleSetToken('ZkuLDeLZ6SdSR9RthgNI2osfdKGAJyg5DsJ3XxNj67A', 1, 2)}
+                    onClick={() => handleSetToken('LmE_RN_gXztn_dkkFsgWwIsfdKGAJyg5DsJ3XxNj67A', 1, 2)}
                     style={{ textDecoration: 'none', color: '#000', fontSize: '18px' }}
                   >
                       Go to Experience 2
@@ -145,16 +143,15 @@ const ABManual: React.FC<XperienceProps> = ({ displayName, token, setToken, acti
               <div style={{ marginBottom: '20px' }}>
                   <Link
                     to={{
-                        pathname: "/target-demo-site/personalization/aa/xp",
+                        pathname: "/target-demo-site/ab/xp",
                         search: new URLSearchParams({
                             ...Object.fromEntries(searchParams.entries()), // Keep the existing search params
-                            at_preview_token: 'e73XhadLHKh4wmj8RrfeBYsfdKGAJyg5DsJ3XxNj67A',
+                            at_preview_token: 'LmE_RN_gXztn_dkkFsgWwIsfdKGAJyg5DsJ3XxNj67A',
                             at_preview_index: '1_3',
                             at_preview_listed_activities_only: 'true',
-                            at_preview_evaluate_as_true_audience_ids: '3440621'
                         }).toString()
                     }}
-                    onClick={() => handleSetToken('ZkuLDeLZ6SdSR9RthgNI2osfdKGAJyg5DsJ3XxNj67A', 1, 3)}
+                    onClick={() => handleSetToken('LmE_RN_gXztn_dkkFsgWwIsfdKGAJyg5DsJ3XxNj67A', 1, 3)}
                     style={{ textDecoration: 'none', color: '#000', fontSize: '18px' }}
                   >
                       Go to Experience 3

@@ -185,9 +185,9 @@ const Header: React.FC<{ refreshOnSave: () => void }> = ({ refreshOnSave }) => {
           search: searchParams.toString()
         }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/personalization/ap')}}>Personalization AP</Link>
         <Link to={{
-          pathname: "/target-demo-site/experience-targeting",
+          pathname: "/target-demo-site/xt",
           search: searchParams.toString()
-        }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/experience-targeting')}}>Experience Targeting</Link>
+        }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/xt')}}>Experience Targeting</Link>
         <Link to={{
           pathname: "/target-demo-site/mvt",
           search: searchParams.toString()
