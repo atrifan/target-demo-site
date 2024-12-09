@@ -122,7 +122,7 @@ export function getNewCookiePCValue(newPCValue: string): string | undefined {
   return `${newPCValue}.37_0`;
 }
 
-function getQueryParameter(param: string) {
+export function getQueryParameter(param: string) {
   const urlParams = new URLSearchParams(window.location.search);
   return urlParams.get(param);
 }
@@ -223,30 +223,30 @@ export const generateViewsWithConversions = (uniqueVisitors: boolean, number: st
   }, 300);
 }
 
-function generateNotificationRequest(el: any, type: string, profileData: ProfileData) {
+export function generateNotificationRequest(el: any, type: string, profileData?: ProfileData, useMbox: boolean = true) {
   const result = {
     id: generateToken(4),
     type: type,
     timestamp: Date.now(),
-    mbox: {
+    mbox: useMbox ? {
       name: el.name,
       state: el.state
-    },
+    } : undefined,
     tokens: el.metrics?.filter((e:any) => e.type === type).map((e:any) => e.eventToken),
     parameters: el.parameters,
-    profileParameters: {
+    profileParameters: profileData ? {
       ...el.profileParameters,
       "user.422": `${profileData.displayName}-${Date.now()}`,
       "user.country": profileData.country,
       "user.hobby": profileData.hobby,
       "user.age": profileData.age,
       "brand.bought": "offline"
-    },
+    }: undefined,
     order: el.order,
     product: el.product
   }
 
-  if (result.tokens == undefined) {
+  if (result.tokens == undefined && type !== 'display') {
     return undefined;
   }
   return result;

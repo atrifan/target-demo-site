@@ -454,11 +454,11 @@ const App: React.FC = () => {
 
           <Route
             path="/target-demo-site/util/products"
-            element={<Products onSelectProduct={setSelectedProduct}/>}
+            element={<Products onSelectProduct={setSelectedProduct} mcId={mcId}/>}
           />
           <Route
             path="/target-demo-site/util/products/:entityId"
-            element={<Product product={selectedProduct}/>}
+            element={<Product onSelectProduct={setSelectedProduct} product={selectedProduct} mcId={mcId}/>}
           />
         </Routes>
         <Footer />

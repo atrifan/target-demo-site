@@ -1,9 +1,16 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import "./Products.css";
-import AtJs from "../../../lib/atJs";
+import AtJs, {
+  generateNotificationRequest,
+  generateToken,
+  getNewCookiePCValue, getQueryParameter,
+  updateQueryParams
+} from '../../../lib/atJs';
+import LoadingModal from '../../../components/LoadingModal';
+import getMcId from '../../../lib/visitor';
 
-interface Product {
+export interface ProductInterface {
   entityId: string;
   name: string;
   message: string;
@@ -12,13 +19,18 @@ interface Product {
 }
 
 interface ProductsProps {
-  onSelectProduct: (product: Product) => void;
+  onSelectProduct: (product: ProductInterface) => void;
+  providedEntityId?: string;
+  mcId?: string;
 }
 
-const Products: React.FC<ProductsProps> = ({ onSelectProduct }) => {
-  const [products, setProducts] = useState<Product[]>([]);
+const Products: React.FC<ProductsProps> = ({ onSelectProduct, providedEntityId, mcId }) => {
+  const [products, setProducts] = useState<ProductInterface[]>([]);
   const [unique, setUnique] = useState<{ [key: string]: boolean }>({});
   const [views, setViews] = useState<{ [key: string]: number }>({});
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [total, setTotal] = useState(0);
+  const [current, setCurrent] = useState(0);
   const [searchParams] = useSearchParams();
 
   window.targetPageParams = () => {
@@ -51,7 +63,7 @@ const Products: React.FC<ProductsProps> = ({ onSelectProduct }) => {
     };
 
     fetchData();
-  }, []);
+  }, [mcId]);
 
   const handleUniqueChange = (entityId: string, value: boolean) => {
     setUnique((prev) => ({ ...prev, [entityId]: value }));
@@ -62,6 +74,60 @@ const Products: React.FC<ProductsProps> = ({ onSelectProduct }) => {
   };
 
   const generateViews = (entityId: string, unique: boolean, views: number) => {
+    setModalVisible(true);
+    setTotal(views);
+    setCurrent(views);
+    const interval = setInterval(() => {
+      let mcId: any;
+      if (unique) {
+        mcId = `${generateToken(2)}-${generateToken(2)}`;
+        updateQueryParams("MCID", mcId);
+        updateQueryParams("PC", getNewCookiePCValue(generateToken()));
+        updateQueryParams('mboxSession', generateToken());
+        window.adobe.target?.getOffers({
+          'request': {
+            id: {
+              marketingCloudVisitorId: mcId,
+            },
+            execute: {
+              pageLoad: {
+              }
+            }
+          }
+        }).then(function(response) {
+          // Apply Offers
+          window.adobe.target?.applyOffers({
+            response: response
+          });
+        }).catch(function(error) {
+          console.log("AT: getOffers failed - Error", error);
+        }).finally(() => {
+          // Trigger View call, assuming pageView is defined elsewhere
+          //window.adobe.target?.triggerView('recentlyViewed');
+        });
+      } else {
+        mcId = getQueryParameter("MCID") || getMcId();
+      }
+
+
+      const notifications = generateNotificationRequest({
+        product: {
+          id: entityId
+        }
+      },'display', undefined, false);
+      if (notifications) {
+        window.adobe.target?.sendNotifications({
+            request: { notifications: [notifications] }
+          }
+        );
+      }
+      views = views - 1;
+      setCurrent(views);
+      if (views === 0) {
+        clearInterval(interval);
+        setModalVisible(false);
+      }
+    }, 50)
 
   };
 
@@ -73,7 +139,9 @@ const Products: React.FC<ProductsProps> = ({ onSelectProduct }) => {
 
   return (
     <div className="products-container">
-      {products.map((product) => (
+      {products
+        .filter((product) => product.entityId !== providedEntityId)
+        .map((product) => (
         <div className="product-card" key={product.entityId}>
           <Link
             to={{
@@ -107,6 +175,8 @@ const Products: React.FC<ProductsProps> = ({ onSelectProduct }) => {
           </div>
         </div>
       ))}
+      <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)} total={total}
+                    current={current}/>
     </div>
   );
 };
