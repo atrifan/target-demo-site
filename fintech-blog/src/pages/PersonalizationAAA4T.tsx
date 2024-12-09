@@ -147,13 +147,13 @@ const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, set
                         pathname: "/target-demo-site/personalization/aa/a4t/xp",
                         search: new URLSearchParams({
                             ...Object.fromEntries(searchParams.entries()), // Keep the existing search params
-                            at_preview_token: 'EO7Sp4vPtlZgWG9OFQvQOIsfdKGAJyg5DsJ3XxNj67A',
+                            at_preview_token: 'is5C6uIOZ2MaxqMSN0bhmIsfdKGAJyg5DsJ3XxNj67A',
                             at_preview_index: '1_1',
                             at_preview_listed_activities_only: 'true',
                             at_preview_evaluate_as_true_audience_ids: '3440621'
                         }).toString()
                     }}
-                    onClick={() => handleSetToken('ZkuLDeLZ6SdSR9RthgNI2osfdKGAJyg5DsJ3XxNj67A', 1, 1)}
+                    onClick={() => handleSetToken('is5C6uIOZ2MaxqMSN0bhmIsfdKGAJyg5DsJ3XxNj67A', 1, 1)}
                     style={{ textDecoration: 'none', color: '#000', fontSize: '18px' }}
                   >
                       Go to Experience 1
@@ -166,13 +166,13 @@ const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, set
                         pathname: "/target-demo-site/personalization/aa/a4t/xp",
                         search: new URLSearchParams({
                             ...Object.fromEntries(searchParams.entries()), // Keep the existing search params
-                            at_preview_token: 'EO7Sp4vPtlZgWG9OFQvQOIsfdKGAJyg5DsJ3XxNj67A',
+                            at_preview_token: 'is5C6uIOZ2MaxqMSN0bhmIsfdKGAJyg5DsJ3XxNj67A',
                             at_preview_index: '1_2',
                             at_preview_listed_activities_only: 'true',
                             at_preview_evaluate_as_true_audience_ids: '3440621'
                         }).toString()
                     }}
-                    onClick={() => handleSetToken('ZkuLDeLZ6SdSR9RthgNI2osfdKGAJyg5DsJ3XxNj67A', 1, 2)}
+                    onClick={() => handleSetToken('is5C6uIOZ2MaxqMSN0bhmIsfdKGAJyg5DsJ3XxNj67A', 1, 2)}
                     style={{ textDecoration: 'none', color: '#000', fontSize: '18px' }}
                   >
                       Go to Experience 2
@@ -185,13 +185,13 @@ const PersonalizationAA4T: React.FC<XperienceProps> = ({ displayName, token, set
                         pathname: "/target-demo-site/personalization/aa/a4t/xp",
                         search: new URLSearchParams({
                             ...Object.fromEntries(searchParams.entries()), // Keep the existing search params
-                            at_preview_token: 'EO7Sp4vPtlZgWG9OFQvQOIsfdKGAJyg5DsJ3XxNj67A',
+                            at_preview_token: 'is5C6uIOZ2MaxqMSN0bhmIsfdKGAJyg5DsJ3XxNj67A',
                             at_preview_index: '1_3',
                             at_preview_listed_activities_only: 'true',
                             at_preview_evaluate_as_true_audience_ids: '3440621'
                         }).toString()
                     }}
-                    onClick={() => handleSetToken('ZkuLDeLZ6SdSR9RthgNI2osfdKGAJyg5DsJ3XxNj67A', 1, 3)}
+                    onClick={() => handleSetToken('is5C6uIOZ2MaxqMSN0bhmIsfdKGAJyg5DsJ3XxNj67A', 1, 3)}
                     style={{ textDecoration: 'none', color: '#000', fontSize: '18px' }}
                   >
                       Go to Experience 3
