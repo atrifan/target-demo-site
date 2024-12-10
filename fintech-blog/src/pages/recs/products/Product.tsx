@@ -21,13 +21,7 @@ const Product: React.FC<ProductProps> = ({ product, onSelectProduct, mcId }) => 
   const { entityId } = useParams();
   useLayoutEffect(() => {
     const mcIdToUse = mcId && mcId.length > 0 ? mcId : getMcId();
-    AtJs(() => {
-      return {
-        "entity.id": entityId,
-      }
-
-    }).then(() => {
-      window.adobe.target?.triggerView('product');
+    AtJs().then(() => {
       window.adobe.target?.getOffers({
         'request': {
           id: {
@@ -35,6 +29,9 @@ const Product: React.FC<ProductProps> = ({ product, onSelectProduct, mcId }) => 
           },
           execute: {
             pageLoad: {
+              parameters: {
+                "entity.id": entityId
+              }
             }
           }
         }
@@ -50,7 +47,7 @@ const Product: React.FC<ProductProps> = ({ product, onSelectProduct, mcId }) => 
         //window.adobe.target?.triggerView('recentlyViewed');
       });
     });
-  },[mcId]);
+  },[product, mcId]);
 
   return (
     <main>

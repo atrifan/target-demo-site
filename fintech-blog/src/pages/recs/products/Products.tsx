@@ -28,6 +28,7 @@ const Products: React.FC<ProductsProps> = ({ onSelectProduct, providedEntityId, 
   const [products, setProducts] = useState<ProductInterface[]>([]);
   const [unique, setUnique] = useState<{ [key: string]: boolean }>({});
   const [views, setViews] = useState<{ [key: string]: number }>({});
+  const [buys, setBuys] = useState<{ [key: string]: number }>({});
   const [isModalVisible, setModalVisible] = useState(false);
   const [total, setTotal] = useState(0);
   const [current, setCurrent] = useState(0);
@@ -54,9 +55,6 @@ const Products: React.FC<ProductsProps> = ({ onSelectProduct, providedEntityId, 
           });
 
         setProducts(parsedProducts);
-        AtJs().then(() => {
-          window.adobe.target?.triggerView("products");
-        });
       } catch (error) {
         console.error("Error fetching CSV:", error);
       }
@@ -73,7 +71,11 @@ const Products: React.FC<ProductsProps> = ({ onSelectProduct, providedEntityId, 
     setViews((prev) => ({ ...prev, [entityId]: value }));
   };
 
-  const generateViews = (entityId: string, unique: boolean, views: number) => {
+  const handleBuyChange = (entityId: string, value: number) => {
+    setBuys((prev) => ({ ...prev, [entityId]: value }));
+  };
+
+  const generate = (entityId: string, unique: boolean, views: number, type: string) => {
     setModalVisible(true);
     setTotal(views);
     setCurrent(views);
@@ -99,6 +101,7 @@ const Products: React.FC<ProductsProps> = ({ onSelectProduct, providedEntityId, 
           window.adobe.target?.applyOffers({
             response: response
           });
+          _generateEvent(type, entityId, --views, interval);
         }).catch(function(error) {
           console.log("AT: getOffers failed - Error", error);
         }).finally(() => {
@@ -107,34 +110,89 @@ const Products: React.FC<ProductsProps> = ({ onSelectProduct, providedEntityId, 
         });
       } else {
         mcId = getQueryParameter("MCID") || getMcId();
+        _generateEvent(type, entityId, --views, interval);
       }
 
 
-      const notifications = generateNotificationRequest({
-        product: {
-          id: entityId
-        }
-      },'display', undefined, false);
-      if (notifications) {
-        window.adobe.target?.sendNotifications({
-            request: { notifications: [notifications] }
-          }
-        );
-      }
-      views = views - 1;
-      setCurrent(views);
-      if (views === 0) {
-        clearInterval(interval);
-        setModalVisible(false);
-      }
-    }, 50)
-
+    }, 300)
   };
+
+  const _generateEvent = (type: string, entityId: string, views: number, interval: any) => {
+    //check ProductConstants.java in m2
+    setTimeout(() => {
+      if (type == 'views') {
+        window.adobe.target?.getOffers({
+          'request': {
+            id: {
+              marketingCloudVisitorId: mcId,
+            },
+            execute: {
+              pageLoad: {
+                parameters: {
+                  "entity.id": entityId
+                }
+              }
+            }
+          }
+        }).then(function (response) {
+          // Apply Offers
+          window.adobe.target?.applyOffers({
+            response: response
+          }).finally(() => {
+            setCurrent(views);
+            if (views === 0) {
+              clearInterval(interval);
+              setModalVisible(false);
+            }
+          });
+        })
+          .finally(() => {
+
+          });
+      } else {
+        window.adobe.target?.getOffers({
+          'request': {
+            id: {
+              marketingCloudVisitorId: mcId,
+            },
+            execute: {
+              pageLoad: {
+                parameters: {
+                  orderId: `${Date.now()}-${entityId}`,
+                  orderTotal: `${products.filter((product) => product.entityId === entityId)[0].value || '100'}`,
+                  productPurchaseId: entityId
+                }
+              }
+            }
+          }
+        }).then(function (response) {
+          // Apply Offers
+          window.adobe.target?.applyOffers({
+            response: response
+          }).finally(() => {
+            setCurrent(views);
+            if (views === 0) {
+              clearInterval(interval);
+              setModalVisible(false);
+            }
+          });
+
+        }).finally(() => {
+        });
+      }
+    }, 100);
+  }
 
   const handleGenerateViews = (entityId: string) => {
     const isUnique = unique[entityId] ?? true;
     const numViews = views[entityId] ?? 0;
-    generateViews(entityId, isUnique, numViews);
+    generate(entityId, isUnique, numViews, 'views');
+  };
+
+  const handleGenerateBuys = (entityId: string) => {
+    const isUnique = unique[entityId] ?? true;
+    const numBuys = buys[entityId] ?? 0;
+    generate(entityId, isUnique, numBuys, 'buys');
   };
 
   return (
@@ -165,16 +223,26 @@ const Products: React.FC<ProductsProps> = ({ onSelectProduct, providedEntityId, 
             <input
               type="number"
               placeholder="Number of views"
-              value={views[product.entityId] ?? ""}
+              value={views[product.entityId] ?? ''}
               onChange={(e) => handleViewsChange(product.entityId, parseInt(e.target.value) || 0)}
-              className="views-input"
+              className="buy-input"
+            />
+            <input
+              type="number"
+              placeholder="Number of buys"
+              value={buys[product.entityId] ?? ''}
+              onChange={(e) => handleBuyChange(product.entityId, parseInt(e.target.value) || 0)}
+              className="buy-input"
             />
             <button onClick={() => handleGenerateViews(product.entityId)} className="generate-views-button">
               Generate Views
             </button>
+            <button onClick={() => handleGenerateBuys(product.entityId)} className="generate-buys-button">
+              Generate Buys
+            </button>
           </div>
         </div>
-      ))}
+        ))}
       <LoadingModal isVisible={isModalVisible} onClose={() => setModalVisible(false)} total={total}
                     current={current}/>
     </div>

@@ -1,0 +1,198 @@
+/* General Header Layout */
+header {
+    background-color: #007bff;
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column; /* Stack header-top and header-bottom */
+    align-items: center; /* Center-align the content */
+}
+
+/* Top Row: Profile and Cart Icons */
+.header-top {
+    display: flex;
+    justify-content: space-between; /* Space between profile and cart */
+    align-items: center;
+    width: 100%;
+    max-width: 1200px; /* Center both top and bottom rows */
+    padding: 0 20px;
+    box-sizing: border-box; /* Include padding in width */
+    margin-bottom: 20px; /* Space below the top row */
+}
+
+/* Profile Icon */
+.profile-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.profile-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    float: left;
+}
+
+.profile-details {
+    float: right;
+    margin-left: 10px;
+}
+
+.profile-details p {
+    margin: 0;
+    font-size: 14px;
+    color: #555;
+}
+
+/* Cart Icon */
+.cart-icon {
+    position: relative;
+    cursor: pointer;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cart-image {
+    width: 30px;
+    height: 30px;
+}
+
+.cart-bubble {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: red;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Bottom Row: Title and Navbar */
+.header-bottom {
+    display: flex;
+    flex-direction: column; /* Stack title and navbar */
+    align-items: center; /* Center-align content */
+    width: 100%;
+    max-width: 1200px; /* Match the width of the top row */
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.header-bottom h1 {
+    margin: 0;
+}
+
+.navbar {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 0;
+    gap: 20px; /* Space between nav items */
+    justify-content: center; /* Center-align navbar items */
+}
+
+.navbar li a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.navbar li a:hover {
+    color: #ffd700; /* Highlight on hover */
+}
+
+/* Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+header input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.cancel-button {
+    background: #ccc;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.save-button {
+    background: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.save-button:hover {
+    background: #0056b3;
+}
+
+.cancel-button:hover {
+    background: #999;
+}

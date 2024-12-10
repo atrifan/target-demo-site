@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useSearchParams, useNavigate} from 'react-router-dom';
 import { usePersona } from './Persona';  // Import the context hook
+import './Header.css';
 
 interface DropdownMenuProps {
   title: string;
@@ -41,6 +42,8 @@ const Header: React.FC<{ refreshOnSave: () => void }> = ({ refreshOnSave }) => {
   const [inputHobby, setInputHobby] = useState(hobby || '');
   const [inputAge, setInputAge] = useState(age || '');
   const [searchParams, setSearchParams] = useSearchParams();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [itemsInCart, setItemsInCart] = useState(0);
 
   // Populate fields on component load if they are empty
   useEffect(() => {
@@ -75,6 +78,7 @@ const Header: React.FC<{ refreshOnSave: () => void }> = ({ refreshOnSave }) => {
   };
 
   const handleSave = (event?: any) => {
+    setIsModalOpen(false);
     if (event) {
       event.preventDefault();
     }
@@ -95,343 +99,347 @@ const Header: React.FC<{ refreshOnSave: () => void }> = ({ refreshOnSave }) => {
 
   return (
     <header>
-      {/* Input fields for Name, Country, Hobby, and Age */}
-      <div style={{ marginBottom: '20px' }}>
-        <label htmlFor="name-input">Enter Name:</label>
-        <input
-          id="name-input"
-          type="text"
-          value={inputName}
-          onChange={(e) => setInputName(e.target.value)}
-          placeholder="Enter your name"
-          style={{ marginLeft: '10px' }}
-        />
+      <div className={"header-top"}>
+        {/* Input fields for Name, Country, Hobby, and Age */}
+        <div className="profile-container">
+          {/* Profile Icon */}
+          <div className="profile-icon" onClick={() => setIsModalOpen(true)}>
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/4794/4794936.png" // Replace with user's avatar if available
+              alt="Profile"
+              className="profile-avatar"
+            />
+            <div className="profile-details">
+              <p>{displayName}</p>
+              <p>{country}</p>
+              <p>{hobby}</p>
+              <p>{age} years old</p>
+            </div>
+          </div>
+
+          {/* Modal */}
+          {isModalOpen && (
+            <div className="modal-overlay">
+              <div className="modal-content">
+                <h2>Edit Profile</h2>
+                <div className="form-group">
+                  <label htmlFor="name-input">Name:</label>
+                  <input
+                    id="name-input"
+                    type="text"
+                    value={displayName}
+                    onChange={(e) => setDisplayName(e.target.value)}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="country-input">Country:</label>
+                  <input
+                    id="country-input"
+                    type="text"
+                    value={country}
+                    onChange={(e) => setCountry(e.target.value)}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="hobby-input">Hobby:</label>
+                  <input
+                    id="hobby-input"
+                    type="text"
+                    value={hobby}
+                    onChange={(e) => setHobby(e.target.value)}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="age-input">Age:</label>
+                  <input
+                    id="age-input"
+                    type="text"
+                    value={age}
+                    onChange={(e) => setAge(e.target.value)}
+                  />
+                </div>
+                <div className="modal-actions">
+                  <button onClick={() => setIsModalOpen(false)} className="cancel-button">
+                    Cancel
+                  </button>
+                  <button onClick={handleSave} className="save-button">
+                    Save
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+          <div className="cart-icon">
+            <img
+              src="https://d1nhio0ox7pgb.cloudfront.net/_img/g_collection_png/standard/512x512/shopping_cart.png"
+              alt="Cart Icon"
+              className="cart-image"
+            />
+            <div className="cart-bubble">{itemsInCart}</div>
+          </div>
       </div>
 
-      <div style={{ marginBottom: '20px' }}>
-        <label htmlFor="country-input">Enter Country:</label>
-        <input
-          id="country-input"
-          type="text"
-          value={inputCountry}
-          onChange={(e) => setInputCountry(e.target.value)}
-          placeholder="Enter your country"
-          style={{ marginLeft: '10px' }}
-        />
-      </div>
-
-      <div style={{ marginBottom: '20px' }}>
-        <label htmlFor="hobby-input">Enter Hobby:</label>
-        <input
-          id="hobby-input"
-          type="text"
-          value={inputHobby}
-          onChange={(e) => setInputHobby(e.target.value)}
-          placeholder="Enter your hobby"
-          style={{ marginLeft: '10px' }}
-        />
-      </div>
-
-      <div style={{ marginBottom: '20px' }}>
-        <label htmlFor="age-input">Enter Age:</label>
-        <input
-          id="age-input"
-          type="text"
-          value={inputAge}
-          onChange={(e) => setInputAge(e.target.value)}
-          placeholder="Enter your age"
-          style={{ marginLeft: '10px' }}
-        />
-      </div>
-
-      {/* Displaying profile details */}
-      {displayName && <p>User profile param set to: {displayName}</p>}
-      {country && <p>Country: {country}</p>}
-      {hobby && <p>Hobby: {hobby}</p>}
-      {age && <p>Age: {age}</p>}
-
-      {/* Save button that triggers the persona data saving */}
-      <button onClick={handleSave}>Save</button>
-
-      <h1>Target demo site with at.js delivery</h1>
-      <nav>
-        <DropdownMenu title="A/B">
-          <Link to={{
-            pathname: "/target-demo-site/ab",
-            search: searchParams.toString()
-          }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/ab')}}>A/B Manual Allocate</Link>
-          <Link to={{
-            pathname: "/target-demo-site/personalization/aa",
-            search: searchParams.toString()
-          }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/personalization/aa')}}>Auto Allocate</Link>
-          <Link to={{
-            pathname: "/target-demo-site/personalization/aa/a4t",
-            search: searchParams.toString()
-          }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/personalization/aa/a4t')}}>Auto Allocate A4T</Link>
-          <DropdownMenu title="Personalization">
+      <div className={"header-bottom"}>
+        <h1>Target demo site with at.js delivery</h1>
+        <nav>
+          <DropdownMenu title="A/B">
             <Link to={{
-              pathname: "/target-demo-site/personalization/at",
+              pathname: "/target-demo-site/ab",
               search: searchParams.toString()
-            }}>Personalization AT</Link>
+            }} onClick={(e) => {
+              handleLinkClick(e, '/target-demo-site/ab')
+            }}>A/B Manual Allocate</Link>
             <Link to={{
-              pathname: "/target-demo-site/personalization/at/a4t",
+              pathname: "/target-demo-site/personalization/aa",
               search: searchParams.toString()
-            }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/personalization/at/a4t')}}>Personalization AT A4T</Link>
-          </DropdownMenu>
-        </DropdownMenu>
-
-        <Link to={{
-          pathname: "/target-demo-site/personalization/ap",
-          search: searchParams.toString()
-        }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/personalization/ap')}}>Personalization AP</Link>
-        <Link to={{
-          pathname: "/target-demo-site/xt",
-          search: searchParams.toString()
-        }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/xt')}}>Experience Targeting</Link>
-        <Link to={{
-          pathname: "/target-demo-site/mvt",
-          search: searchParams.toString()
-        }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/mvt')}}>MVT</Link>
-
-        {/* Other Dropdown Menus */}
-        <DropdownMenu title="Recs">
-          <Link to={{
-            pathname: "/target-demo-site/criteria_sequence",
-            search: searchParams.toString()
-          }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/criteria_sequence')}}>Criteria Sequence</Link>
-          <DropdownMenu title="Cart">
+            }} onClick={(e) => {
+              handleLinkClick(e, '/target-demo-site/personalization/aa')
+            }}>Auto Allocate</Link>
             <Link to={{
-              pathname: "/target-demo-site/cart/target-demo-site/bought_bought",
+              pathname: "/target-demo-site/personalization/aa/a4t",
               search: searchParams.toString()
-            }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/cart/bought_bought')}}>Bought Bought</Link>
-            <Link to={{
-              pathname: "/target-demo-site/cart/viewed_bought",
-              search: searchParams.toString()
-            }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/cart/viewed_bought')}}>Viewed Bought</Link>
-            <Link to={{
-              pathname: "/target-demo-site/cart/viewed_viewed",
-              search: searchParams.toString()
-            }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/cart/viewed_viewed')}}>Viewed Viewed</Link>
-            <DropdownMenu title="Analytics">
+            }} onClick={(e) => {
+              handleLinkClick(e, '/target-demo-site/personalization/aa/a4t')
+            }}>Auto Allocate A4T</Link>
+            <DropdownMenu title="Personalization">
               <Link to={{
-                pathname: "/target-demo-site/cart/bought_bought_analytics",
+                pathname: "/target-demo-site/personalization/at",
                 search: searchParams.toString()
-              }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/cart/bought_bought_analytics')}}>Bought Bought Analytics</Link>
+              }}>Personalization AT</Link>
               <Link to={{
-                pathname: "/target-demo-site/cart/viewed_bought_analytics",
+                pathname: "/target-demo-site/personalization/at/a4t",
                 search: searchParams.toString()
-              }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/cart/viewed_ought_analytics')}}>Viewed Bought Analytics</Link>
-              <Link to={{
-                pathname: "/target-demo-site/cart/viewed_viewed_analytics",
-                search: searchParams.toString()
-              }}onClick={(e) => {handleLinkClick(e, '/target-demo-site/cart/viewed_viewed_analytics')}}>Viewed Viewed Analytics</Link>
+              }} onClick={(e) => {
+                handleLinkClick(e, '/target-demo-site/personalization/at/a4t')
+              }}>Personalization AT A4T</Link>
             </DropdownMenu>
           </DropdownMenu>
 
-          <DropdownMenu title="Popularity">
-            <Link to={{
-              pathname: "/target-demo-site/popularity/most-viewed-across-site",
-              search: searchParams.toString()
-            }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/popularity/most-viewed-across-site')}}>Most Viewed Across Site</Link>
-            <Link to={{
-              pathname: "/target-demo-site/popularity/most-viewed-by-category",
-              search: searchParams.toString()
-            }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/popularity/most-viewed-by-category')}}>Most Viewed by Category</Link>
-            <Link to={{
-              pathname: "/target-demo-site/popularity/most-viewed-by-attribute",
-              search: searchParams.toString()
-            }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/popularity/most-viewed-by-attribute')}}>Most Viewed by Attribute</Link>
-            <Link to={{
-              pathname: "/target-demo-site/popularity/top-sellers-across-site",
-              search: searchParams.toString()
-            }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/popularity/top-sellers-across-site')}}>Top Sellers Across Site</Link>
-            <Link to={{
-              pathname: "/target-demo-site/popularity/top-sellers-by-category",
-              search: searchParams.toString()
-            }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/popularity/top-sellers-by-category')}}>Top Sellers by Category</Link>
-            <Link to={{
-              pathname: "/target-demo-site/popularity/top-sellers-by-item-attribute",
-              search: searchParams.toString()
-            }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/popularity/top-sellers-by-item-attribute')}}>Top Sellers by Item Attribute</Link>
-            <DropdownMenu title="Analytics">
-              <Link to={{
-                pathname: "/target-demo-site/popularity/most-viewed-across-site-analytics",
-                search: searchParams.toString()
-              }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/popularity/most-viewed-across-site-analytics')}}>Most Viewed Across Site
-                Analytics</Link>
-              <Link to={{
-                pathname: "/target-demo-site/popularity/most-viewed-by-category-analytics",
-                search: searchParams.toString()
-              }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/popularity/most-viewed-by-category-analytics')}}>Most Viewed by Category
-                Analytics</Link>
-              <Link to={{
-                pathname: "/target-demo-site/popularity/most-viewed-by-attribute-analytics",
-                search: searchParams.toString()
-              }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/popularity/most-viewed-by-attribute-analytics')}}>Most Viewed by Attribute
-                Analytics</Link>
-              <Link to={{
-                pathname: "/target-demo-site/popularity/top-sellers-across-site-analytics",
-                search: searchParams.toString()
-              }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/popularity/top-sellers-across-site-analytics')}}>Top Sellers Across Site
-                Analytics</Link>
-              <Link to={{
-                pathname: "/target-demo-site/popularity/top-sellers-by-category-analytics",
-                search: searchParams.toString()
-              }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/popularity/top-sellers-by-category-analytics')}}>Top Sellers by Category
-                Analytics</Link>
-              <Link to={{
-                pathname: "/target-demo-site/popularity/top-sellers-by-item-attribute-analytics",
-                search: searchParams.toString()
-              }} onClick={(e) => {handleLinkClick(e, '/target-demo-site/popularity/top-sellers-by-item-attribute-analytics')}}>Top Sellers by Item
-                Attribute Analytics</Link>
-            </DropdownMenu>
-          </DropdownMenu>
-
-          <DropdownMenu title="Item Based">
-            <Link
-              to={{
-                pathname: "/target-demo-site/item/viewed_viewed",
-                search: searchParams.toString(),
-              }}
-              onClick={(e) => handleLinkClick(e, "/target-demo-site/item/viewed_viewed")}
-            >
-              Viewed Viewed
-            </Link>
-            <Link
-              to={{
-                pathname: "/target-demo-site/item/viewed_bought",
-                search: searchParams.toString(),
-              }}
-              onClick={(e) => handleLinkClick(e, "/target-demo-site/item/viewed_bought")}
-            >
-              Viewed Bought
-            </Link>
-            <Link
-              to={{
-                pathname: "/target-demo-site/item/bought_bought",
-                search: searchParams.toString(),
-              }}
-              onClick={(e) => handleLinkClick(e, "/target-demo-site/item/bought_bought")}
-            >
-              Bought Bought
-            </Link>
-            <Link
-              to={{
-                pathname: "/target-demo-site/item/content_similarity",
-                search: searchParams.toString(),
-              }}
-              onClick={(e) => handleLinkClick(e, "/target-demo-site/item/content_similarity")}
-            >
-              Content Similarity
-            </Link>
-            <DropdownMenu title="Analytics">
-              <Link
-                to={{
-                  pathname: "/target-demo-site/item/viewed_viewed_analytics",
-                  search: searchParams.toString(),
-                }}
-                onClick={(e) =>
-                  handleLinkClick(e, "/target-demo-site/item/viewed_viewed_analytics")
-                }
-              >
-                Viewed Viewed Analytics
-              </Link>
-              <Link
-                to={{
-                  pathname: "/target-demo-site/item/viewed_bought_analytics",
-                  search: searchParams.toString(),
-                }}
-                onClick={(e) =>
-                  handleLinkClick(e, "/target-demo-site/item/viewed_bought_analytics")
-                }
-              >
-                Viewed Bought Analytics
-              </Link>
-              <Link
-                to={{
-                  pathname: "/target-demo-site/item/bought_bought_analytics",
-                  search: searchParams.toString(),
-                }}
-                onClick={(e) =>
-                  handleLinkClick(e, "/target-demo-site/item/bought_bought_analytics")
-                }
-              >
-                Bought Bought Analytics
-              </Link>
-            </DropdownMenu>
-          </DropdownMenu>
-
-          <DropdownMenu title="User Based">
-            <Link
-              to={{
-                pathname: "/target-demo-site/userbased/recently_viewed",
-                search: searchParams.toString(),
-              }}
-              onClick={(e) =>
-                handleLinkClick(e, "/target-demo-site/userbased/recently_viewed")
-              }
-            >
-              Recently Viewed
-            </Link>
-            <Link
-              to={{
-                pathname: "/target-demo-site/userbased/recommended_for_you",
-                search: searchParams.toString(),
-              }}
-              onClick={(e) =>
-                handleLinkClick(e, "/target-demo-site/userbased/recommended_for_you")
-              }
-            >
-              Recommended for You
-            </Link>
-            <Link
-              to={{
-                pathname: "/target-demo-site/userbased/recommended_for_you_analytics",
-                search: searchParams.toString(),
-              }}
-              onClick={(e) =>
-                handleLinkClick(e, "/target-demo-site/userbased/recommended_for_you_analytics")
-              }
-            >
-              Recommended for You Analytics
-            </Link>
-          </DropdownMenu>
-
-          <DropdownMenu title="Custom">
-            <Link
-              to={{
-                pathname: "/target-demo-site/custom/custom_algo",
-                search: searchParams.toString(),
-              }}
-              onClick={(e) =>
-                handleLinkClick(e, "/target-demo-site/custom/custom_algo")
-              }
-            >
-              Custom Algo
-            </Link>
-            <Link
-              to={{
-                pathname: "/target-demo-site/custom/custom_algo_analytics",
-                search: searchParams.toString(),
-              }}
-              onClick={(e) =>
-                handleLinkClick(e, "/target-demo-site/custom/custom_algo_analytics")
-              }
-            >
-              Custom Algo Analytics
-            </Link>
-          </DropdownMenu>
-      </DropdownMenu>
-
-        <DropdownMenu title="Util">
           <Link to={{
-            pathname: "/target-demo-site/util/products",
+            pathname: "/target-demo-site/personalization/ap",
             search: searchParams.toString()
-          }} onClick={(e) =>
-            handleLinkClick(e, "/target-demo-site/util/products")
-          }>Products</Link>
-        </DropdownMenu>
-      </nav>
+          }} onClick={(e) => {
+            handleLinkClick(e, '/target-demo-site/personalization/ap')
+          }}>Personalization AP</Link>
+          <Link to={{
+            pathname: "/target-demo-site/xt",
+            search: searchParams.toString()
+          }} onClick={(e) => {
+            handleLinkClick(e, '/target-demo-site/xt')
+          }}>Experience Targeting</Link>
+          <Link to={{
+            pathname: "/target-demo-site/mvt",
+            search: searchParams.toString()
+          }} onClick={(e) => {
+            handleLinkClick(e, '/target-demo-site/mvt')
+          }}>MVT</Link>
+
+          {/* Other Dropdown Menus */}
+          <DropdownMenu title="Recs">
+            <Link to={{
+              pathname: "/target-demo-site/criteria_sequence",
+              search: searchParams.toString()
+            }} onClick={(e) => {
+              handleLinkClick(e, '/target-demo-site/criteria_sequence')
+            }}>Criteria Sequence</Link>
+            <DropdownMenu title="Cart">
+              <Link to={{
+                pathname: "/target-demo-site/cart/target-demo-site/bought_bought",
+                search: searchParams.toString()
+              }} onClick={(e) => {
+                handleLinkClick(e, '/target-demo-site/cart/bought_bought')
+              }}>Bought Bought</Link>
+              <Link to={{
+                pathname: "/target-demo-site/cart/viewed_bought",
+                search: searchParams.toString()
+              }} onClick={(e) => {
+                handleLinkClick(e, '/target-demo-site/cart/viewed_bought')
+              }}>Viewed Bought</Link>
+              <Link to={{
+                pathname: "/target-demo-site/cart/viewed_viewed",
+                search: searchParams.toString()
+              }} onClick={(e) => {
+                handleLinkClick(e, '/target-demo-site/cart/viewed_viewed')
+              }}>Viewed Viewed</Link>
+              <DropdownMenu title="Analytics">
+                <Link to={{
+                  pathname: "/target-demo-site/cart/bought_bought_analytics",
+                  search: searchParams.toString()
+                }} onClick={(e) => {
+                  handleLinkClick(e, '/target-demo-site/cart/bought_bought_analytics')
+                }}>Bought Bought Analytics</Link>
+                <Link to={{
+                  pathname: "/target-demo-site/cart/viewed_bought_analytics",
+                  search: searchParams.toString()
+                }} onClick={(e) => {
+                  handleLinkClick(e, '/target-demo-site/cart/viewed_ought_analytics')
+                }}>Viewed Bought Analytics</Link>
+                <Link to={{
+                  pathname: "/target-demo-site/cart/viewed_viewed_analytics",
+                  search: searchParams.toString()
+                }} onClick={(e) => {
+                  handleLinkClick(e, '/target-demo-site/cart/viewed_viewed_analytics')
+                }}>Viewed Viewed Analytics</Link>
+              </DropdownMenu>
+            </DropdownMenu>
+
+            <DropdownMenu title="Popularity">
+              <Link to={{
+                pathname: "/target-demo-site/popularity/most-viewed-across-site",
+                search: searchParams.toString()
+              }} onClick={(e) => {
+                handleLinkClick(e, '/target-demo-site/popularity/most-viewed-across-site')
+              }}>Most Viewed Across Site</Link>
+              <Link to={{
+                pathname: "/target-demo-site/popularity/most-viewed-by-category",
+                search: searchParams.toString()
+              }} onClick={(e) => {
+                handleLinkClick(e, '/target-demo-site/popularity/most-viewed-by-category')
+              }}>Most Viewed by Category</Link>
+              <Link to={{
+                pathname: "/target-demo-site/popularity/most-viewed-by-attribute",
+                search: searchParams.toString()
+              }} onClick={(e) => {
+                handleLinkClick(e, '/target-demo-site/popularity/most-viewed-by-attribute')
+              }}>Most Viewed by Attribute</Link>
+              <Link to={{
+                pathname: "/target-demo-site/popularity/top-sellers-across-site",
+                search: searchParams.toString()
+              }} onClick={(e) => {
+                handleLinkClick(e, '/target-demo-site/popularity/top-sellers-across-site')
+              }}>Top Sellers Across Site</Link>
+              <Link to={{
+                pathname: "/target-demo-site/popularity/top-sellers-by-category",
+                search: searchParams.toString()
+              }} onClick={(e) => {
+                handleLinkClick(e, '/target-demo-site/popularity/top-sellers-by-category')
+              }}>Top Sellers by Category</Link>
+              <Link to={{
+                pathname: "/target-demo-site/popularity/top-sellers-by-item-attribute",
+                search: searchParams.toString()
+              }} onClick={(e) => {
+                handleLinkClick(e, '/target-demo-site/popularity/top-sellers-by-item-attribute')
+              }}>Top Sellers by Item Attribute</Link>
+              <DropdownMenu title="Analytics">
+                <Link to={{
+                  pathname: "/target-demo-site/popularity/most-viewed-across-site-analytics",
+                  search: searchParams.toString()
+                }} onClick={(e) => {
+                  handleLinkClick(e, '/target-demo-site/popularity/most-viewed-across-site-analytics')
+                }}>Most Viewed Across Site
+                  Analytics</Link>
+                <Link to={{
+                  pathname: "/target-demo-site/popularity/most-viewed-by-category-analytics",
+                  search: searchParams.toString()
+                }} onClick={(e) => {
+                  handleLinkClick(e, '/target-demo-site/popularity/most-viewed-by-category-analytics')
+                }}>Most Viewed by Category
+                  Analytics</Link>
+                <Link to={{
+                  pathname: "/target-demo-site/popularity/most-viewed-by-attribute-analytics",
+                  search: searchParams.toString()
+                }} onClick={(e) => {
+                  handleLinkClick(e, '/target-demo-site/popularity/most-viewed-by-attribute-analytics')
+                }}>Most Viewed by Attribute
+                  Analytics</Link>
+                <Link to={{
+                  pathname: "/target-demo-site/popularity/top-sellers-across-site-analytics",
+                  search: searchParams.toString()
+                }} onClick={(e) => {
+                  handleLinkClick(e, '/target-demo-site/popularity/top-sellers-across-site-analytics')
+                }}>Top Sellers Across Site
+                  Analytics</Link>
+                <Link to={{
+                  pathname: "/target-demo-site/popularity/top-sellers-by-category-analytics",
+                  search: searchParams.toString()
+                }} onClick={(e) => {
+                  handleLinkClick(e, '/target-demo-site/popularity/top-sellers-by-category-analytics')
+                }}>Top Sellers by Category
+                  Analytics</Link>
+                <Link to={{
+                  pathname: "/target-demo-site/popularity/top-sellers-by-item-attribute-analytics",
+                  search: searchParams.toString()
+                }} onClick={(e) => {
+                  handleLinkClick(e, '/target-demo-site/popularity/top-sellers-by-item-attribute-analytics')
+                }}>Top Sellers by Item
+                  Attribute Analytics</Link>
+              </DropdownMenu>
+            </DropdownMenu>
+
+            <DropdownMenu title="User Based">
+              <Link
+                to={{
+                  pathname: "/target-demo-site/userbased/recently_viewed",
+                  search: searchParams.toString(),
+                }}
+                onClick={(e) =>
+                  handleLinkClick(e, "/target-demo-site/userbased/recently_viewed")
+                }
+              >
+                Recently Viewed
+              </Link>
+              <Link
+                to={{
+                  pathname: "/target-demo-site/userbased/recommended_for_you",
+                  search: searchParams.toString(),
+                }}
+                onClick={(e) =>
+                  handleLinkClick(e, "/target-demo-site/userbased/recommended_for_you")
+                }
+              >
+                Recommended for You
+              </Link>
+              <Link
+                to={{
+                  pathname: "/target-demo-site/userbased/recommended_for_you_analytics",
+                  search: searchParams.toString(),
+                }}
+                onClick={(e) =>
+                  handleLinkClick(e, "/target-demo-site/userbased/recommended_for_you_analytics")
+                }
+              >
+                Recommended for You Analytics
+              </Link>
+            </DropdownMenu>
+
+            <DropdownMenu title="Custom">
+              <Link
+                to={{
+                  pathname: "/target-demo-site/custom/custom_algo",
+                  search: searchParams.toString(),
+                }}
+                onClick={(e) =>
+                  handleLinkClick(e, "/target-demo-site/custom/custom_algo")
+                }
+              >
+                Custom Algo
+              </Link>
+              <Link
+                to={{
+                  pathname: "/target-demo-site/custom/custom_algo_analytics",
+                  search: searchParams.toString(),
+                }}
+                onClick={(e) =>
+                  handleLinkClick(e, "/target-demo-site/custom/custom_algo_analytics")
+                }
+              >
+                Custom Algo Analytics
+              </Link>
+            </DropdownMenu>
+          </DropdownMenu>
+
+          <DropdownMenu title="Util">
+            <Link to={{
+              pathname: "/target-demo-site/util/products",
+              search: searchParams.toString()
+            }} onClick={(e) =>
+              handleLinkClick(e, "/target-demo-site/util/products")
+            }>Products</Link>
+          </DropdownMenu>
+        </nav>
+      </div>
     </header>
   );
 };

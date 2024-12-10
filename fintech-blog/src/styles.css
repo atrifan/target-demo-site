@@ -17,8 +17,10 @@ header {
     color: white;
     padding: 20px;
     display: flex;
+    justify-content: space-between;
     flex-direction: column;
     align-items: center;
+    position: relative;
 }
 
 /* Navigation Styles */
@@ -292,4 +294,36 @@ footer {
 .mbox-name-target-demo-site-ap-mbox-3 {
     border-radius: 5px;
     border: 2px solid blue;
+}
+
+/* Floating Refresh Button */
+.floating-refresh-button {
+    position: fixed; /* Keep the button fixed on screen */
+    bottom: 20px; /* Distance from the bottom edge */
+    left: 20px; /* Distance from the left edge */
+    width: 50px; /* Button size */
+    height: 50px;
+    background-color: #007bff; /* Button background */
+    color: white; /* Icon color */
+    border-radius: 50%; /* Circular button */
+    display: flex;
+    align-items: center; /* Center the content inside */
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+    cursor: pointer; /* Indicate clickability */
+    z-index: 1000; /* Ensure it appears above other elements */
+    transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+/* Hover Effects */
+.floating-refresh-button:hover {
+    transform: scale(1.1); /* Slightly enlarge on hover */
+    background-color: #0056b3; /* Darker shade on hover */
+}
+
+/* Refresh Icon */
+.floating-refresh-button img {
+    width: 24px; /* Icon size */
+    height: 24px;
+    pointer-events: none; /* Prevent pointer interactions with the image */
 }
