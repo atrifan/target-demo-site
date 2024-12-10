@@ -127,8 +127,8 @@ const Header: React.FC<{ refreshOnSave: () => void }> = ({ refreshOnSave }) => {
                   <input
                     id="name-input"
                     type="text"
-                    value={displayName}
-                    onChange={(e) => setDisplayName(e.target.value)}
+                    value={inputName}
+                    onChange={(e) => setInputName(e.target.value)}
                   />
                 </div>
                 <div className="form-group">
@@ -136,8 +136,8 @@ const Header: React.FC<{ refreshOnSave: () => void }> = ({ refreshOnSave }) => {
                   <input
                     id="country-input"
                     type="text"
-                    value={country}
-                    onChange={(e) => setCountry(e.target.value)}
+                    value={inputCountry}
+                    onChange={(e) => setInputCountry(e.target.value)}
                   />
                 </div>
                 <div className="form-group">
@@ -145,8 +145,8 @@ const Header: React.FC<{ refreshOnSave: () => void }> = ({ refreshOnSave }) => {
                   <input
                     id="hobby-input"
                     type="text"
-                    value={hobby}
-                    onChange={(e) => setHobby(e.target.value)}
+                    value={inputHobby}
+                    onChange={(e) => setInputHobby(e.target.value)}
                   />
                 </div>
                 <div className="form-group">
@@ -154,8 +154,8 @@ const Header: React.FC<{ refreshOnSave: () => void }> = ({ refreshOnSave }) => {
                   <input
                     id="age-input"
                     type="text"
-                    value={age}
-                    onChange={(e) => setAge(e.target.value)}
+                    value={inputAge}
+                    onChange={(e) => setInputAge(e.target.value)}
                   />
                 </div>
                 <div className="modal-actions">

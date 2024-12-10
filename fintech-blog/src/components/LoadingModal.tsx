@@ -23,7 +23,7 @@ const LoadingModal: React.FC<LoadingModalProps> = ({ isVisible, onClose, total, 
     <div className="modal">
       <div className="modal-content">
         <h3>Loading, please wait...</h3>
-        <TailSpin height="80" width="80" color="grey" />
+        <TailSpin height="25" width="25" color="white" />
         <div className="progress-bar-container" style={{ marginTop: '20px', width: '100%' }}>
           <div
             className="progress-bar"

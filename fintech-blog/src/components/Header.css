@@ -134,7 +134,7 @@ header {
     z-index: 1000;
 }
 
-.modal-content {
+header .modal-content {
     background: white;
     padding: 20px;
     width: 90%;
