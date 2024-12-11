@@ -19,8 +19,8 @@ interface GeneratorComponentProps {
   reportingServer?: string;
   isTarget: boolean;
   tntA?: string;
-
   mboxes: string[];
+  multiplier?: number;
 }
 
 const GeneratorComponent: React.FC<GeneratorComponentProps> = ({
@@ -42,6 +42,7 @@ const GeneratorComponent: React.FC<GeneratorComponentProps> = ({
                                                                  tntA = undefined,
                                                                   isTarget,
                                                                  mboxes,
+                                                                  multiplier = 0
                                                                }) => {
   const [uniqueVisitors, setUniqueVisitors] = useState(true);
   const [revenueValue, setRevenueValue] = useState(1);
@@ -80,7 +81,7 @@ const GeneratorComponent: React.FC<GeneratorComponentProps> = ({
       revenueValue,
       algorithmId,
       isTarget,
-      experienceIndex
+      experienceIndex + multiplier
     );
   };
 
@@ -100,7 +101,7 @@ const GeneratorComponent: React.FC<GeneratorComponentProps> = ({
       revenueValue,
       algorithmId,
       isTarget,
-      experienceIndex
+      experienceIndex + multiplier
     );
   };
 

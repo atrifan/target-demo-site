@@ -21,6 +21,9 @@ import Products from './pages/recs/products/Products';
 import Product from './pages/recs/products/Product';
 import XT from './pages/XT';
 import XTXP from './pages/XTXP';
+import UtilityFloater from './components/UtilityFloater';
+import MVT from './pages/MVT';
+import MVTXP from './pages/MVTXP';
 
 const App: React.FC = () => {
   interface Product {
@@ -42,6 +45,7 @@ const App: React.FC = () => {
   const [hobby, setHobby] = useState('');
   const [age, setAge] = useState('');
   const [mcId, setMcId] = useState('');
+  const [tntId, setTntId] = useState('');
   const [refreshKey, setRefreshKey] = useState(0);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -57,6 +61,7 @@ const App: React.FC = () => {
 
     const mcId = generateToken();
     setMcId(mcId);
+    setTntId(`${pcToken}`);
     const newParams = new URLSearchParams(searchParams);
     newParams.set('mboxSession', `${token}`);
     newParams.set('PC', `${pcToken}`);
@@ -453,6 +458,58 @@ const App: React.FC = () => {
         />
 
         <Route
+          path="/target-demo-site/mvt"
+          element={
+            <PersonaConsumer>
+              {({ displayName, country, hobby, age }) => (
+                <MVT
+                  displayName={displayName}
+                  token={token}
+                  setToken={setToken}
+                  activityIndex={activityIndex}
+                  setActivityIndex={setActivityIndex}
+                  experienceIndex={experienceIndex}
+                  setExperienceIndex={setExperienceIndex}
+                  trueAudienceId={trueAudienceId}
+                  setTrueAudienceId={setTrueAudienceId}
+                  country={country}
+                  hobby={hobby}
+                  age={age}
+                  refreshKey={refreshKey}
+                  mcId={mcId}
+                />
+              )}
+            </PersonaConsumer>
+          }
+        />
+
+        <Route
+          path="/target-demo-site/mvt/xp"
+          element={
+            <PersonaConsumer>
+              {({ displayName, country, hobby, age }) => (
+                <MVTXP
+                  displayName={displayName}
+                  token={token}
+                  setToken={setToken}
+                  activityIndex={activityIndex}
+                  setActivityIndex={setActivityIndex}
+                  experienceIndex={experienceIndex}
+                  setExperienceIndex={setExperienceIndex}
+                  trueAudienceId={trueAudienceId}
+                  setTrueAudienceId={setTrueAudienceId}
+                  country={country}
+                  hobby={hobby}
+                  age={age}
+                  refreshKey={refreshKey}
+                  mcId={mcId}
+                />
+              )}
+            </PersonaConsumer>
+          }
+        />
+
+        <Route
           path="/target-demo-site/util/products"
           element={<Products onSelectProduct={setSelectedProduct} mcId={mcId}/>}
         />
@@ -461,9 +518,8 @@ const App: React.FC = () => {
           element={<Product onSelectProduct={setSelectedProduct} product={selectedProduct} mcId={mcId}/>}
         />
       </Routes>
-      <div className="floating-refresh-button" onClick={handlePersonaSave}>
-        <img src="https://cdn-icons-png.freepik.com/256/10152/10152078.png?semt=ais_hybrid" alt="Refresh"/>
-      </div>
+
+      <UtilityFloater handlePersonaSave={handlePersonaSave} mcId={mcId} tntId={tntId}/>
       <Footer/>
     </PersonaProvider>
   );

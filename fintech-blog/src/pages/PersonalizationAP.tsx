@@ -128,7 +128,7 @@ const PersonalizationAP: React.FC<XperienceProps> = ({ displayName, token, setTo
           <div style={{ padding: '20px' }}>
               <h2>Navigate to Experiences</h2>
 
-              <VariationsGrid handleSetToken={handleSetToken}/>
+              <VariationsGrid previewToken={"dczqkm4C5P9S8L6ExR8KTYsfdKGAJyg5DsJ3XxNj67A"} destination={'/target-demo-site/personalization/ap/xp'} handleSetToken={handleSetToken}/>
 
               <ModelExplorer campaignId={campaignId} tenant={"bullseye"}/>
 

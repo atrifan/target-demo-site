@@ -162,7 +162,7 @@ export const generateViewsWithConversions = (uniqueVisitors: boolean, number: st
           }
         },
         execute: {
-          mboxes: mboxes.map((mboxName, idx) => {
+          mboxes: mboxes.length > 0 ? mboxes.map((mboxName, idx) => {
               return {
                 index: idx,
                 name: mboxName,
@@ -174,14 +174,25 @@ export const generateViewsWithConversions = (uniqueVisitors: boolean, number: st
                   "brand.bought": "offline"
               }
               }
-            })
+            }) : undefined,
+          pageLoad: mboxes.length == 0 ? {
+            parameters: {
+            },
+            profileParameters: {
+              "user.422": `${profileData.displayName}-${Date.now()}`,
+              "user.country": profileData.country,
+              "user.hobby": profileData.hobby,
+              "user.age": profileData.age,
+              "brand.bought": "offline"
+            }
+          } : undefined
         }
       }
     })
       .then(response => {
         console.log(response);
-        const mboxes: any[] = response.execute.mboxes;
-        //content is not removed in place if it's gone missing so than
+
+        //all my elements should be with data-mbox
         document.querySelectorAll('[data-mbox]').forEach(element => {
           const clone = element.cloneNode(true); // Clone the element
           element.parentNode?.replaceChild(clone, element); // Replace the original with the clone
@@ -190,18 +201,27 @@ export const generateViewsWithConversions = (uniqueVisitors: boolean, number: st
           //reset it to the default
           element.innerHTML = "";
         });
+
         let okTargeted: Promise<boolean>[] = [];
-        mboxes.forEach((el) => {
-          window.adobe.target?.applyOffers({
-            selector: `.mbox-name-${el.name}`,
-            response: {
-              execute: {
-                mboxes: [el]
+        if (response.execute.mboxes) {
+          const mboxes: any[] = response.execute.mboxes;
+          //content is not removed in place if it's gone missing so than
+          mboxes.forEach((el) => {
+            window.adobe.target?.applyOffers({
+              selector: `.mbox-name-${el.name}`,
+              response: {
+                execute: {
+                  mboxes: [el]
+                }
               }
-            }
-          });
-          okTargeted.push(isTarget? sendNotificationTarget(el, conversionEvent, conversion, profileData, experienceIndex) : sendNotificationAnalytics(tntA, el, algorithmId, reportingServer, mcId, conversion, conversionEvent, conversionValue, experienceIndex));
-        })
+            });
+            okTargeted.push(isTarget? sendNotificationTarget(el, conversionEvent, conversion, profileData, experienceIndex) : sendNotificationAnalytics(tntA, el, algorithmId, reportingServer, mcId, conversion, conversionEvent, conversionValue, experienceIndex));
+          })
+
+        } else {
+          window.adobe.target?.applyOffers({response: response});
+          okTargeted.push(isTarget? sendNotificationTarget(response.execute.pageLoad, conversionEvent, conversion, profileData, experienceIndex, false) : sendNotificationAnalytics(tntA, response.execute.pageLoad, algorithmId, reportingServer, mcId, conversion, conversionEvent, conversionValue, experienceIndex));
+        }
 
         Promise.all(okTargeted).then((okTargeted) => {
           const converted = okTargeted.filter((e) => e).length;
@@ -210,7 +230,6 @@ export const generateViewsWithConversions = (uniqueVisitors: boolean, number: st
             setCurrent(numberOfViews);
           }
         });
-
       });
     if(experienceIndex == undefined || experienceIndex == -100) {
       numberOfViews -= 1;
@@ -251,7 +270,7 @@ export function generateNotificationRequest(el: any, type: string, profileData?:
   }
   return result;
 }
-export function sendNotificationTarget(el: any, event: string|undefined, conversion: boolean, profileData: ProfileData, experienceIndex?: number): Promise<boolean>{
+export function sendNotificationTarget(el: any, event: string|undefined, conversion: boolean, profileData: ProfileData, experienceIndex?: number, useMbox: boolean = true): Promise<boolean>{
   // window.adobe.target?.sendNotifications({
   //     request: { notifications: [generateNotificationRequest(el, 'display', profileData)] }
   //   }
@@ -261,7 +280,7 @@ export function sendNotificationTarget(el: any, event: string|undefined, convers
     if(conversion && event && (el?.options?.[0]?.responseTokens["experience.id"] == experienceIndex ||
       (experienceIndex == -100 && experienceIndex == undefined))) {
       setTimeout(() => {
-        const notifications = generateNotificationRequest(el, event, profileData);
+        const notifications = generateNotificationRequest(el, event, profileData, useMbox);
         if (notifications) {
           window.adobe.target?.sendNotifications({
               request: { notifications: [notifications] }

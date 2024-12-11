@@ -1,0 +1,181 @@
+/* Floating Refresh Button */
+.floating-refresh-button {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    z-index: 1000;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.floating-refresh-button:hover {
+    transform: scale(1.1);
+    background-color: #0056b3;
+}
+
+.floating-refresh-button img {
+    width: 24px;
+    height: 24px;
+    pointer-events: none;
+}
+
+/* Floating Forward Button */
+.floating-forward-button {
+    position: fixed;
+    bottom: 240px; /* Positioned above the back button */
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: #4caf50; /* Forward button background color */
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    z-index: 1000;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+/* Hover Effects for Forward Button */
+.floating-forward-button:hover {
+    transform: scale(1.1);
+    background-color: #388e3c; /* Darker shade on hover */
+}
+
+/* Forward Icon Styling */
+.floating-forward-button img {
+    width: 24px;
+    height: 24px;
+    pointer-events: none;
+}
+
+/* Floating Back Button */
+.floating-back-button {
+    position: fixed;
+    bottom: 160px; /* Positioned above the profile button */
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: #ff5722; /* Back button background color */
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    z-index: 1000;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+/* Hover Effects for Back Button */
+.floating-back-button:hover {
+    transform: scale(1.1);
+    background-color: #e64a19; /* Darker shade on hover */
+}
+
+/* Back Icon Styling */
+.floating-back-button img {
+    width: 24px;
+    height: 24px;
+    pointer-events: none;
+}
+
+/* Floating Profile Button */
+.floating-profile-button {
+    position: fixed;
+    bottom: 90px; /* Position it above the refresh button */
+    left: 20px; /* Same alignment with the refresh button */
+    width: 50px;
+    height: 50px;
+    background-color: #28a745;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    z-index: 1000;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.floating-profile-button:hover {
+    transform: scale(1.1);
+    background-color: #1e7e34;
+}
+
+.floating-profile-button img {
+    width: 24px;
+    height: 24px;
+    pointer-events: none;
+}
+
+/* Profile Modal */
+.profile-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+}
+
+.profile-modal-content {
+    background: black;
+    padding: 20px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 600px;
+    text-align: left;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    color: white;
+    position: relative;
+}
+
+.json-block {
+    background: #1e1e1e;
+    color: #00ff00;
+    padding: 10px;
+    border-radius: 8px;
+    max-height: 300px; /* Limit height */
+    overflow-y: auto; /* Enable scroll */
+    font-family: monospace;
+    font-size: 0.9em;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* Close Button */
+.close-button {
+    background-color: #ff5722;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 0.9em;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.close-button:hover {
+    background-color: #e64a19;
+}
