@@ -308,7 +308,7 @@ export function sendNotificationAnalytics(tntA :string|undefined, el: any, algor
     tntaData = tntaData.split(',').map((event: string) => {
       //remove visits and unique visits and not conversion
       const eventBreakDown = event.split(':');
-      //traffic type - targeted
+      //traffic type - targeted for AT
       eventBreakDown[2] = conversionEvent == 'event10' ? '0' : '1';
       //algorithm id change
       if (algorithmId !== -1000) {
@@ -350,7 +350,7 @@ export function sendNotificationAnalytics(tntA :string|undefined, el: any, algor
       }
 
       if(conversion && conversionEvent && (el.options[0].responseTokens["experience.id"] == experienceIndex ||
-        (experienceIndex == -100 && experienceIndex == undefined))) {
+        (experienceIndex == -100 || experienceIndex == undefined))) {
         viewsLink = `https://${reportingServer}/b/ss/atetrifandemo/0/TA-1.0?pe=tnt&tnta=${revenueEvent[0]}|32767,${revenueEvent[0]}|${conversionEvent?.replace("event","")}|${conversionValue}&mid=${mcId}&c.a.target.sessionid=${el.analytics.payload["session-id"]}&events=${conversionEvent}=${conversionValue}`
         setTimeout(()=>{
           fetch(viewsLink, {
