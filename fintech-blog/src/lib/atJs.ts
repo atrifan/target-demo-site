@@ -128,118 +128,123 @@ export function getQueryParameter(param: string) {
 }
 
 export const generateViewsWithConversions = (uniqueVisitors: boolean, number: string, setTotal: any, setCurrent: any, setModalVisible: any, reportingServer: string, profileData: ProfileData, mboxes: string[], tntA?: string, conversion: boolean = false,
-                                             conversionEvent?: string, conversionValue: number = 1, algorithmId: number=-1000, isTarget = false, experienceIndex?: number) => {
-  if (number.length === 0) {
-    return;
-  }
-  let numberOfViews = parseInt(number);
-  setTotal(numberOfViews);
-  setCurrent(numberOfViews)
-  setModalVisible(true);
-  const interval = setInterval(() => {
-    //mboxSession generates a new user unique entry // TODO: set profile attributes
-    //update visitorid
-    //I don't care about this if not unique it will take current query params
-    let mcId: any;
-    if (uniqueVisitors) {
-      mcId = `${generateToken(2)}-${generateToken(2)}`;
-      updateQueryParams("MCID", mcId);
-      updateQueryParams("PC", getNewCookiePCValue(generateToken()));
-      updateQueryParams('mboxSession', generateToken());
-    } else {
-      mcId = getQueryParameter("MCID") || getMcId();
-    }
+                                             conversionEvent?: string, conversionValue: number = 1, algorithmId: number=-1000, isTarget = false, experienceIndex?: number): Promise<{[key: string]: number}> => {
 
-    window.adobe.target?.getOffers({
-      request: {
-        mid: {
-          marketingCloudVisitorId: mcId,
-        },
-        experienceCloud: {
-          analytics: {
-            trackingServer: reportingServer,
-            logging: !isTarget ? "client_side" : "server_side"
-          }
-        },
-        execute: {
-          mboxes: mboxes.length > 0 ? mboxes.map((mboxName, idx) => {
+  return new Promise((resolve, reject) => {
+    if (number.length === 0) {
+      return;
+    }
+    let numberOfViews = parseInt(number);
+    setTotal(numberOfViews);
+    setCurrent(numberOfViews)
+    setModalVisible(true);
+    let viewMap: {[key: string]: number} = {};
+    const interval = setInterval(() => {
+      //mboxSession generates a new user unique entry // TODO: set profile attributes
+      //update visitorid
+      //I don't care about this if not unique it will take current query params
+      let mcId: any;
+      if (uniqueVisitors) {
+        mcId = `${generateToken(2)}-${generateToken(2)}`;
+        updateQueryParams("MCID", mcId);
+        updateQueryParams("PC", getNewCookiePCValue(generateToken()));
+        updateQueryParams('mboxSession', generateToken());
+      } else {
+        mcId = getQueryParameter("MCID") || getMcId();
+      }
+
+      window.adobe.target?.getOffers({
+        request: {
+          mid: {
+            marketingCloudVisitorId: mcId,
+          },
+          experienceCloud: {
+            analytics: {
+              trackingServer: reportingServer,
+              logging: !isTarget ? "client_side" : "server_side"
+            }
+          },
+          execute: {
+            mboxes: mboxes.length > 0 ? mboxes.map((mboxName, idx) => {
               return {
                 index: idx,
                 name: mboxName,
                 profileParameters: {
-                "user.422": `${profileData.displayName}-${Date.now()}`,
+                  "user.422": `${profileData.displayName}-${Date.now()}`,
                   "user.country": profileData.country,
                   "user.hobby": profileData.hobby,
                   "user.age": profileData.age,
                   "brand.bought": "offline"
-              }
-              }
-            }) : undefined,
-          pageLoad: mboxes.length == 0 ? {
-            parameters: {
-            },
-            profileParameters: {
-              "user.422": `${profileData.displayName}-${Date.now()}`,
-              "user.country": profileData.country,
-              "user.hobby": profileData.hobby,
-              "user.age": profileData.age,
-              "brand.bought": "offline"
-            }
-          } : undefined
-        }
-      }
-    })
-      .then(response => {
-        console.log(response);
-
-        //all my elements should be with data-mbox
-        document.querySelectorAll('[data-mbox]').forEach(element => {
-          const clone = element.cloneNode(true); // Clone the element
-          element.parentNode?.replaceChild(clone, element); // Replace the original with the clone
-        });
-        document.querySelectorAll('[data-mbox]').forEach(element => {
-          //reset it to the default
-          element.innerHTML = "";
-        });
-
-        let okTargeted: Promise<boolean>[] = [];
-        if (response.execute.mboxes) {
-          const mboxes: any[] = response.execute.mboxes;
-          //content is not removed in place if it's gone missing so than
-          mboxes.forEach((el) => {
-            window.adobe.target?.applyOffers({
-              selector: `.mbox-name-${el.name}`,
-              response: {
-                execute: {
-                  mboxes: [el]
                 }
               }
-            });
-            okTargeted.push(isTarget? sendNotificationTarget(el, conversionEvent, conversion, profileData, experienceIndex) : sendNotificationAnalytics(tntA, el, algorithmId, reportingServer, mcId, conversion, conversionEvent, conversionValue, experienceIndex));
-          })
-
-        } else {
-          window.adobe.target?.applyOffers({response: response});
-          okTargeted.push(isTarget? sendNotificationTarget(response.execute.pageLoad, conversionEvent, conversion, profileData, experienceIndex, false) : sendNotificationAnalytics(tntA, response.execute.pageLoad, algorithmId, reportingServer, mcId, conversion, conversionEvent, conversionValue, experienceIndex));
-        }
-
-        Promise.all(okTargeted).then((okTargeted) => {
-          const converted = okTargeted.filter((e) => e).length;
-          if (experienceIndex != undefined && experienceIndex != -100 && converted > 0) {
-            numberOfViews -= 1;
-            setCurrent(numberOfViews);
+            }) : undefined,
+            pageLoad: mboxes.length == 0 ? {
+              parameters: {
+              },
+              profileParameters: {
+                "user.422": `${profileData.displayName}-${Date.now()}`,
+                "user.country": profileData.country,
+                "user.hobby": profileData.hobby,
+                "user.age": profileData.age,
+                "brand.bought": "offline"
+              }
+            } : undefined
           }
+        }
+      })
+        .then(response => {
+          console.log(response);
+
+          //all my elements should be with data-mbox
+          document.querySelectorAll('[data-mbox]').forEach(element => {
+            const clone = element.cloneNode(true); // Clone the element
+            element.parentNode?.replaceChild(clone, element); // Replace the original with the clone
+          });
+          document.querySelectorAll('[data-mbox]').forEach(element => {
+            //reset it to the default
+            element.innerHTML = "";
+          });
+
+          let okTargeted: Promise<boolean>[] = [];
+          if (response.execute.mboxes) {
+            const mboxes: any[] = response.execute.mboxes;
+            //content is not removed in place if it's gone missing so than
+            mboxes.forEach((el) => {
+              window.adobe.target?.applyOffers({
+                selector: `.mbox-name-${el.name}`,
+                response: {
+                  execute: {
+                    mboxes: [el]
+                  }
+                }
+              });
+              okTargeted.push(isTarget? sendNotificationTarget(el, conversionEvent, conversion, profileData, experienceIndex, true, viewMap) : sendNotificationAnalytics(tntA, el, algorithmId, reportingServer, mcId, conversion, conversionEvent, conversionValue, experienceIndex, viewMap));
+            })
+
+          } else {
+            window.adobe.target?.applyOffers({response: response});
+            okTargeted.push(isTarget? sendNotificationTarget(response.execute.pageLoad, conversionEvent, conversion, profileData, experienceIndex, false, viewMap) : sendNotificationAnalytics(tntA, response.execute.pageLoad, algorithmId, reportingServer, mcId, conversion, conversionEvent, conversionValue, experienceIndex, viewMap));
+          }
+
+          Promise.all(okTargeted).then((okTargeted) => {
+            const converted = okTargeted.filter((e) => e).length;
+            if (experienceIndex != undefined && experienceIndex != -100 && converted > 0) {
+              numberOfViews -= 1;
+              setCurrent(numberOfViews);
+            }
+          });
         });
-      });
-    if(experienceIndex == undefined || experienceIndex == -100) {
-      numberOfViews -= 1;
-      setCurrent(numberOfViews);
-    }
-    if (numberOfViews === 0) {
-      setModalVisible(false);
-      clearInterval(interval);
-    }
-  }, 300);
+      if(experienceIndex == undefined || experienceIndex == -100) {
+        numberOfViews -= 1;
+        setCurrent(numberOfViews);
+      }
+      if (numberOfViews === 0) {
+        setModalVisible(false);
+        resolve(viewMap);
+        clearInterval(interval);
+      }
+    }, 300);
+  })
 }
 
 export function generateNotificationRequest(el: any, type: string, profileData?: ProfileData, useMbox: boolean = true) {
@@ -270,15 +275,22 @@ export function generateNotificationRequest(el: any, type: string, profileData?:
   }
   return result;
 }
-export function sendNotificationTarget(el: any, event: string|undefined, conversion: boolean, profileData: ProfileData, experienceIndex?: number, useMbox: boolean = true): Promise<boolean>{
+export function sendNotificationTarget(el: any, event: string|undefined, conversion: boolean, profileData: ProfileData, experienceIndex?: number, useMbox: boolean = true,
+                                       viewMap?: any): Promise<boolean>{
   // window.adobe.target?.sendNotifications({
   //     request: { notifications: [generateNotificationRequest(el, 'display', profileData)] }
   //   }
   // );
 
+  if (!viewMap[el?.options?.[0]?.responseTokens["experience.id"]]) {
+    viewMap[`${el?.options?.[0]?.responseTokens["experience.id"]}`] = 1;
+  } else {
+    viewMap[`${el?.options?.[0]?.responseTokens["experience.id"]}`] += 1;
+  }
+
   return new Promise((resolve, reject) => {
     if(conversion && event && (el?.options?.[0]?.responseTokens["experience.id"] == experienceIndex ||
-      (experienceIndex == -100 && experienceIndex == undefined))) {
+      (experienceIndex == -100 || experienceIndex == undefined))) {
       setTimeout(() => {
         const notifications = generateNotificationRequest(el, event, profileData, useMbox);
         if (notifications) {
@@ -290,6 +302,10 @@ export function sendNotificationTarget(el: any, event: string|undefined, convers
         resolve(true);
       }, 100);
       return;
+    } else if((el?.options?.[0]?.responseTokens["experience.id"] == experienceIndex ||
+      (experienceIndex == -100 || experienceIndex == undefined))) {
+      resolve(true);
+      return;
     }
 
     resolve(false);
@@ -298,9 +314,16 @@ export function sendNotificationTarget(el: any, event: string|undefined, convers
 }
 
 
-export function sendNotificationAnalytics(tntA :string|undefined, el: any, algorithmId: number, reportingServer: string, mcId: string, conversion: boolean, conversionEvent: string|undefined, conversionValue: number, experienceIndex: number|undefined): Promise<boolean> {
+export function sendNotificationAnalytics(tntA :string|undefined, el: any, algorithmId: number, reportingServer: string, mcId: string, conversion: boolean, conversionEvent: string|undefined, conversionValue: number, experienceIndex: number|undefined,
+                                          viewMap: any): Promise<boolean> {
   // const mcId = getMcId();
   //don't use experienceindex for analytics not sure if it's needed
+  if (!viewMap[el?.options?.[0]?.responseTokens["experience.id"]]) {
+    viewMap[`${el?.options?.[0]?.responseTokens["experience.id"]}`] = 1;
+  } else {
+    viewMap[`${el?.options?.[0]?.responseTokens["experience.id"]}`] += 1;
+  }
+
   return new Promise((resolve, reject) => {
     let tntaData = tntA? tntA : el.analytics.payload.tnta;
     console.log(tntA)
@@ -344,7 +367,8 @@ export function sendNotificationAnalytics(tntA :string|undefined, el: any, algor
       // Make sure to include credentials if needed, depending on Adobe's CORS policy
       credentials: "include" // or "same-origin" if running on the same domain
     }).finally(() => {
-      if (!conversion) {
+      if (!conversion && (el?.options?.[0]?.responseTokens["experience.id"] == experienceIndex ||
+        (experienceIndex == -100 || experienceIndex == undefined))) {
         resolve(true);
         return;
       }

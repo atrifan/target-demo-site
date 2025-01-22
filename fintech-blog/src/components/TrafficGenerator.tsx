@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import AtJs, { generateViewsWithConversions } from '../lib/atJs';
+import HitsModal from './HitsModal';
 
 interface GeneratorComponentProps {
   displayName: string;
@@ -46,6 +47,8 @@ const GeneratorComponent: React.FC<GeneratorComponentProps> = ({
                                                                }) => {
   const [uniqueVisitors, setUniqueVisitors] = useState(true);
   const [revenueValue, setRevenueValue] = useState(1);
+  const [isTrafficModalVisible, setTrafficModalVisible] = useState(false);
+  const [trafficData, setTrafficData] = useState<{[key:string]: number}>({})
 
   const [showTooltip, setShowTooltip] = useState(false);
   const tooltipRef = useRef<HTMLDivElement | null>(null);
@@ -65,8 +68,8 @@ const GeneratorComponent: React.FC<GeneratorComponentProps> = ({
     { id: 12, name: "model_experiment", description: "Model Experimentation Decision Stack", date: "2020-10-22 12:11:08", flag: 0 },
   ];
 
-  const generateViews = (number: string) => {
-    generateViewsWithConversions(
+  const generateViews = async (number: string) => {
+    const stats = await generateViewsWithConversions(
       uniqueVisitors,
       number,
       setTotal,
@@ -83,10 +86,12 @@ const GeneratorComponent: React.FC<GeneratorComponentProps> = ({
       isTarget,
       experienceIndex + multiplier
     );
+    setTrafficModalVisible(true);
+    setTrafficData(stats);
   };
 
-  const generateConversions = (number: string) => {
-    generateViewsWithConversions(
+  const generateConversions = async (number: string) => {
+    const stats = await generateViewsWithConversions(
       uniqueVisitors,
       number,
       setTotal,
@@ -103,6 +108,8 @@ const GeneratorComponent: React.FC<GeneratorComponentProps> = ({
       isTarget,
       experienceIndex + multiplier
     );
+    setTrafficModalVisible(true);
+    setTrafficData(stats);
   };
 
   const changeExperienceId = (number: string) => {
@@ -328,6 +335,12 @@ const GeneratorComponent: React.FC<GeneratorComponentProps> = ({
           Save Revenue Value
         </button>
       </div>
+
+      <HitsModal
+        data={trafficData}
+        visible={isTrafficModalVisible}
+        setVisible={setTrafficModalVisible}
+      />
     </div>
   );
 };

@@ -17,7 +17,6 @@ const ModelExplorer: React.FC<Props> = ({ campaignId, tenant }) => {
 
   const lambdaUrl =
     "https://xmw3bsgzoi.execute-api.us-west-2.amazonaws.com/default/zeusUtil";
-
   useEffect(() => {
     if (!campaignId || campaignId === "") {
       return;
