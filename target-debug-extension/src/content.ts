@@ -43,7 +43,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             rootElement.style.left = '0';
             rootElement.style.width = '100vw';
             rootElement.style.height = '100vh';
-            rootElement.style.zIndex = '999';  // Ensure it is on top of everything else
 
             document.body.appendChild(rootElement);
             const script = document.createElement('script');
