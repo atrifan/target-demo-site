@@ -1,0 +1,49 @@
+{
+  "manifest_version": 3,
+  "name": "Target Debug Extension",
+  "version": "1.0",
+  "description": "A Chrome extension for debugging target-based functionality.",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "tabs",
+    "scripting"
+  ],
+  "background": {
+    "service_worker": "src/background.js"
+  },
+  "action": {
+    "default_popup": "index.html",
+    "default_icon": {
+      "16": "favicon.ico",
+      "48": "logo192.png",
+      "128": "logo512.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/content.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "icons": {
+    "16": "favicon.ico",
+    "48": "logo192.png",
+    "128": "logo512.png"
+  },
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
+  "content_security_policy": {
+    "script-src": "'self'",
+    "object-src": "'self'"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["static/*", "dist/*", "src/*", "public/*"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

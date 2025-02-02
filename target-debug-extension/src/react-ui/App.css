@@ -1,0 +1,38 @@
+#react-root .App {
+  text-align: center;
+}
+
+#react-root .App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+#react-root @media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+#react-root .App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+#react-root .App-link {
+  color: #61dafb;
+}
+
+#react-root @keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

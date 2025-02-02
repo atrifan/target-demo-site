@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "target": "ES2021",                         // Target ES5 for Chrome extension compatibility
+    "lib": ["dom", "ES2021"],                 // Use DOM and ES2015 lib for extension APIs and JS features
+    "jsx": "react",                           // Enable JSX for React code
+    "module": "esnext",                       // Use ESNext module system for compatibility with bundlers
+    "moduleResolution": "node",               // Use Node module resolution
+    "esModuleInterop": true,                  // Enable interoperability between ES modules and CommonJS
+    "skipLibCheck": true,                     // Skip checking of declaration files to speed up compilation
+    "allowJs": true,                          // Allow JavaScript files alongside TypeScript files
+    "noEmit": false,                          // Emit compiled files
+    "outDir": "./build",                      // Output directory for compiled files
+    "sourceMap": true,                        // Generate source maps for debugging
+    "strict": true,                           // Enable strict type checking
+    "resolveJsonModule": true,                // Allow importing JSON files
+    "typeRoots": ["node_modules/@types"],     // Use default type definitions from node_modules
+    "types": ["chrome", "node", "react"],     // Include types for Chrome, Node, and React
+    "baseUrl": ".",                           // Set the base URL to the root directory
+    "paths": {
+      "src/*": ["src/*"]                      // Resolve relative paths in the `src` directory
+    }
+  },
+  "include": [
+    "src/**/*",
+    "dist/**/*",// Include all files in the `src` directory
+    "public/manifest.json"                    // Include the manifest file for type checking
+  ],
+  "exclude": [
+    "node_modules",                           // Exclude `node_modules` from compilation
+    "build"                                   // Exclude the build folder to avoid compiling output files
+  ]
+}

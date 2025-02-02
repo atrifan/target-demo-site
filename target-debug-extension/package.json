@@ -1,0 +1,55 @@
+{
+  "name": "target-debug-extension",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.2.0",
+    "axios": "^1.7.9",
+    "cra-template-typescript": "1.2.0",
+    "js-cookie": "^3.0.5",
+    "react": "^18.3.1",
+    "react-collapse": "^5.1.1",
+    "react-dom": "^18.3.1",
+    "react-json-pretty": "^2.2.0",
+    "react-loader-spinner": "^6.1.6",
+    "react-router-dom": "^7.1.5",
+    "react-scripts": "5.0.1",
+    "web-vitals": "^4.2.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "npx webpack --config webpack.config && react-scripts build && npx tsc --build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.300",
+    "@types/jest": "^29.5.14",
+    "@types/js-cookie": "^3.0.6",
+    "@types/react": "^19.0.8",
+    "@types/react-collapse": "^5.0.4",
+    "@types/react-dom": "^19.0.3",
+    "@types/react-router-dom": "^5.3.3",
+    "ts-loader": "^9.5.2",
+    "webpack-cli": "^6.0.1"
+  }
+}

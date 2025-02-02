@@ -1,0 +1,64 @@
+#react-root .modal-container {
+    position: fixed; /* Ensures full viewport coverage */
+    top: 0;
+    left: 0;
+    width: 100vw; /* Full width */
+    height: 100vh; /* Full height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5); /* Darker overlay */
+    z-index: 1050; /* Higher to stay above other elements */
+}
+
+
+#react-root .modal-traffic {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 100%;
+    position: relative;
+    z-index: 1001;
+    pointer-events: auto;
+}
+
+#react-root .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    border: none;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+#react-root .content {
+    padding-top: 20px;
+}
+
+#react-root .section {
+    margin-top: 20px;
+}
+
+#react-root .checkbox-container {
+    margin-top: 20px;
+}
+
+#react-root button {
+    padding: 5px 10px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+#react-root input[type="number"] {
+    padding: 5px;
+    width: 100px;
+    margin-right: 10px;
+}
+
+#react-root span {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #888;
+}
