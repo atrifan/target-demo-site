@@ -31,6 +31,7 @@
     border: none;
     cursor: pointer;
     z-index: 1001;
+    background-color: orange;
 }
 
 #react-root .content {

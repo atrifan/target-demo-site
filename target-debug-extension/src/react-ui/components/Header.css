@@ -8,6 +8,7 @@
     left: 0;
     top: 0;
     flex-direction: column; /* Stack header-top and header-bottom */
+    z-index: 1500;
     align-items: center; /* Center-align the content */
 }
 
