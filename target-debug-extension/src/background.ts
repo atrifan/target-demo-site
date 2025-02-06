@@ -1,5 +1,7 @@
 // Listen for the message from content.ts
 const extensionId = 'nninfhmoefimbadppcbgeffenjkakkja';
+
+
 chrome.runtime.onInstalled.addListener(() => {
   console.log("🎉 Background script installed!");
   chrome.storage.local.set({ initialized: true });
@@ -7,7 +9,9 @@ chrome.runtime.onInstalled.addListener(() => {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'executeAdobeTargetScript') {
     console.log(message);
-    const { tenant, org, analyticsReportingServer, reportSuite } = message;
+    const { tenant, org, analyticsReportingServer, reportSuite, mboxParams, environment, customEdgeHost } = message;
+
+    console.log(mboxParams)
 
     // Get the tabId (you'll need to get it from the sender if necessary)
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -17,12 +21,21 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         chrome.scripting.executeScript({
           target: { tabId: tabId },
           world: 'MAIN', // Runs in the page’s main execution context
-          func: (tenant, org, analyticsReportingServer, reportSuite, extensionId) => {
+          func: (tenant, org, analyticsReportingServer, reportSuite, extensionId, mboxParams, environment, customEdgeHost) => {
+            let edgeHost = `${tenant}.tt.omtrdc.net`;
+            if (environment === 'stage') {
+              edgeHost = 'mboxedge1.tt-stage1.omtrdc.net';
+            }
+
+            if (customEdgeHost && customEdgeHost !== '') {
+              edgeHost = customEdgeHost;
+            }
+
             if ((window as any).adobe && (window as any).adobe.target) {
               (window as any).adobe.target.init(window, document, {
                 clientCode: tenant,
                 imsOrgId: org,
-                serverDomain: `${tenant}.tt.omtrdc.net`,
+                serverDomain: edgeHost,
                 trackingServer: analyticsReportingServer,
                 crossDomain: 'disabled',
                 timeout: 5000,
@@ -59,14 +72,17 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 tenant,
                 org,
                 analyticsReportingServer,
-                reportSuite
+                reportSuite,
+                mboxParams,
+                environment,
+                edgeHost
               };
 
             } else {
               console.error('Adobe Target is not available on this page.');
             }
           },
-          args: [tenant, org, analyticsReportingServer, reportSuite, extensionId],
+          args: [tenant, org, analyticsReportingServer, reportSuite, extensionId, mboxParams, environment, customEdgeHost],
         }, (injectionResults) => {
           // Handle the results of the injected script
           const [result] = injectionResults;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 const STORAGE_KEY = "target-debug-extension";
 
@@ -8,6 +8,9 @@ const App: React.FC = () => {
   const [org, setOrg] = useState<string>("");
   const [analyticsReportingServer, setAnalyticsReportingServer] = useState<string>("");
   const [mboxName, setMboxName] = useState<string>("");
+  const [mboxParams, setMboxParams] = useState<string>("{}"); // JSON parameters input
+  const [environment, setEnvironment] = useState<string>("prod"); // Default to prod
+  const [customEdgeHost, setCustomEdgeHost] = useState<string>(""); // State for custom edge host
 
   useEffect(() => {
     // Load saved values from localStorage
@@ -19,42 +22,70 @@ const App: React.FC = () => {
         setOrg(parsedData.org || "");
         setAnalyticsReportingServer(parsedData.analyticsReportingServer || "");
         setAnalyticsReportSuite(parsedData.analyticsReportSuite || "");
+        setEnvironment(parsedData.environment || "prod"); // Default to prod
+        setCustomEdgeHost(parsedData.customEdgeHost || ""); // Load customEdgeHost from storage
+
+        // Ensure mboxParams is always a valid JSON string
+        setMboxParams(
+          parsedData.mboxParams ? JSON.stringify(parsedData.mboxParams, null, 2) : "{}"
+        );
       } catch (error) {
         console.error("Error parsing localStorage data:", error);
+        localStorage.removeItem(STORAGE_KEY); // Clear corrupted storage
       }
     }
   }, []);
 
   useEffect(() => {
-    // Save values to localStorage whenever they change
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({
-      tenant,
-      org,
-      analyticsReportingServer,
-      analyticsReportSuite
-    }));
-  }, [tenant, org, analyticsReportingServer, analyticsReportSuite]);
-
-  const handleStartDebugging = (): void => {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      if (tabs.length > 0 && tabs[0].id !== undefined) {
-        chrome.tabs.sendMessage(tabs[0].id, {
-          type: 'INIT_EXTENSION',
+    try {
+      // Ensure mboxParams is valid before saving
+      const parsedParams = JSON.parse(mboxParams);
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({
           tenant,
           org,
           analyticsReportingServer,
-          analyticsReportSuite
-        });
-      }
-    });
+          analyticsReportSuite,
+          environment,
+          mboxParams: parsedParams,
+          customEdgeHost, // Save customEdgeHost to localStorage
+        })
+      );
+    } catch (error) {
+      console.error("Invalid JSON in mboxParams, not saving:", error);
+    }
+  }, [tenant, org, analyticsReportingServer, analyticsReportSuite, environment, mboxParams, customEdgeHost]);
+
+  const handleStartDebugging = (): void => {
+    try {
+      const parsedParams = JSON.parse(mboxParams); // Validate JSON
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        if (tabs.length > 0 && tabs[0].id !== undefined) {
+          chrome.tabs.sendMessage(tabs[0].id, {
+            type: "INIT_EXTENSION",
+            tenant,
+            org,
+            analyticsReportingServer,
+            analyticsReportSuite,
+            environment, // Include environment in the payload
+            mboxParams: parsedParams, // Send parsed JSON params
+            customEdgeHost, // Send customEdgeHost to content script
+          });
+        }
+      });
+    } catch (error) {
+      console.error("Invalid JSON in mboxParams:", error);
+      alert("Invalid JSON in JSON Parameters. Please fix it before debugging.");
+    }
   };
 
   const handleAddMboxName = (): void => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       if (tabs.length > 0 && tabs[0].id !== undefined) {
         chrome.tabs.sendMessage(tabs[0].id, {
-          type: 'ADD_MBOX',
-          mboxName
+          type: "ADD_MBOX",
+          mboxName,
         });
       }
     });
@@ -106,12 +137,40 @@ const App: React.FC = () => {
       </label>
       <br />
       <label>
+        Environment:
+        <select value={environment} onChange={(e) => setEnvironment(e.target.value)}>
+          <option value="prod">Production</option>
+          <option value="stage">Staging</option>
+        </select>
+      </label>
+      <br />
+      <label>
         MboxName:
         <input
           type="text"
           value={mboxName}
           onChange={(e) => setMboxName(e.target.value)}
           placeholder="Enter MboxName"
+        />
+      </label>
+      <br />
+      <label>
+        JSON Parameters:
+        <textarea
+          value={mboxParams}
+          onChange={(e) => setMboxParams(e.target.value)}
+          placeholder="Enter JSON Parameters"
+          style={{ width: "100px", height: "100px" }}
+        />
+      </label>
+      <br />
+      <label>
+        Custom Edge Host:
+        <input
+          type="text"
+          value={customEdgeHost}
+          onChange={(e) => setCustomEdgeHost(e.target.value)}
+          placeholder="Enter Custom Edge Host"
         />
       </label>
       <br />

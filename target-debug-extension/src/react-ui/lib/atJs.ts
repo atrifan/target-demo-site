@@ -193,6 +193,17 @@ export const generateViewsWithConversions = (uniqueVisitors: boolean, number: st
         mcId = getQueryParameter("MCID") || getMcId();
       }
 
+      let parameters = {};
+
+      if(window.extension_data.mboxParams) {
+        parameters = window.extension_data.mboxParams
+      }
+
+      const mboxParams: any = mboxes.length > 0 ? mboxes.map((mboxName, idx) => {
+        const element = document.getElementsByClassName(`mbox-name-${mboxName}`)[0];
+        return JSON.parse(element.getAttribute('data-mboxparams') || '{}');
+      }) : {}
+
       window.adobe.target?.getOffers({
         request: {
           mid: {
@@ -209,6 +220,10 @@ export const generateViewsWithConversions = (uniqueVisitors: boolean, number: st
               return {
                 index: idx,
                 name: mboxName,
+                parameters: {
+                  ...parameters,
+                  ...mboxParams[idx]
+                },
                 profileParameters: {
                   "user.422": `${profileData.displayName}-${Date.now()}`,
                   "user.country": profileData.country,
@@ -219,8 +234,7 @@ export const generateViewsWithConversions = (uniqueVisitors: boolean, number: st
               }
             }) : undefined,
             pageLoad: mboxes.length == 0 ? {
-              parameters: {
-              },
+              parameters: parameters,
               profileParameters: {
                 "user.422": `${profileData.displayName}-${Date.now()}`,
                 "user.country": profileData.country,

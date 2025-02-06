@@ -1,7 +1,14 @@
+const head = document.head || document.getElementsByTagName("head")[0];
+
+if (!head) {
+  console.error("No <head> tag found. Cannot inject scripts.");
+}
+
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'INIT_EXTENSION') {
     console.log(message);
-    const { tenant, org, analyticsReportingServer, analyticsReportSuite } = message;
+    const { tenant, org, analyticsReportingServer, analyticsReportSuite, mboxParams, environment, customEdgeHost } = message;
 
     // Ensure the data is available
     if (!tenant || !org) {
@@ -27,6 +34,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           org: org,
           analyticsReportingServer: analyticsReportingServer,
           reportSuite: analyticsReportSuite,
+          mboxParams: mboxParams,
+          environment: environment,
+          customEdgeHost: customEdgeHost
         }, (response) => {
           console.log(`Response from background.ts: ${response}`);
           const scriptNames = ["AppMeasurement.js"];
@@ -82,28 +92,140 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 });
 
-// Add a click event listener to the document to capture click events
-document.addEventListener('click', (event) => {
-  if (mboxName) {
-    event.preventDefault();
-    event.stopPropagation();
-    const mboxDiv = document.createElement('div');
-    mboxDiv.setAttribute('mbox-name', mboxName);
-    mboxDiv.className = `mbox-name-${mboxName}`;
-    mboxDiv.style.position = 'absolute';
-    mboxDiv.style.top = `${event.clientY}px`;
-    mboxDiv.style.left = `${event.clientX}px`;
-    mboxDiv.style.padding = '10px';
-    mboxDiv.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
-    mboxDiv.style.border = '1px solid #ccc';
-    mboxDiv.style.zIndex = '400';
-    mboxDiv.innerText = `MboxName: ${mboxName}`;
+let lastHoveredElement: any = null;
+let inModal = false;
 
-    // Append the div to the body
-    document.body.appendChild(mboxDiv);
-    mboxName = "";  // Reset the mboxName
+document.addEventListener("mouseover", (event) => {
+  if (!mboxName || inModal) return;
+
+  if (lastHoveredElement) {
+    lastHoveredElement.style.outline = ""; // Reset previous element
   }
+
+  lastHoveredElement = event.target;
+  lastHoveredElement.style.outline = "2px solid red"; // Highlight element
 });
+
+// Add a click event listener to the document to capture click events
+// Handle click to open modal and process mbox assignment
+document.addEventListener("click", (event) => {
+  if (!mboxName) return;
+  inModal = true;
+
+  event.preventDefault();
+  event.stopImmediatePropagation();
+
+  const targetElement = lastHoveredElement || event.target;
+
+  // Remove outline to prevent further visual changes
+  targetElement.style.outline = "";
+
+  // Check if modal already exists
+  let existingModal = document.getElementById("jsonInputModal");
+  if (existingModal) return;
+
+  // Create the modal
+  const modal = document.createElement("div");
+  modal.id = "jsonInputModal";
+  modal.style.position = "fixed";
+  modal.style.top = "50%";
+  modal.style.left = "50%";
+  modal.style.transform = "translate(-50%, -50%)";
+  modal.style.padding = "20px";
+  modal.style.backgroundColor = "white";
+  modal.style.border = "1px solid #ccc";
+  modal.style.boxShadow = "0px 4px 6px rgba(0, 0, 0, 0.1)";
+  modal.style.zIndex = "1000";
+  modal.style.display = "flex";
+  modal.style.flexDirection = "column";
+  modal.style.alignItems = "center";
+
+  // Modal title
+  const title = document.createElement("h3");
+  title.innerText = "Parameters";
+  modal.appendChild(title);
+
+  // JSON input textarea
+  const textarea = document.createElement("textarea");
+  textarea.style.width = "300px";
+  textarea.style.height = "100px";
+  textarea.placeholder = "Enter JSON parameters here...";
+  textarea.value = "{}";
+  modal.appendChild(textarea);
+
+  // Save button (styled as a red div)
+  const saveButton = document.createElement("div");
+  saveButton.innerText = "Save";
+  saveButton.style.marginTop = "10px";
+  saveButton.style.padding = "10px 20px";
+  saveButton.style.backgroundColor = "red";
+  saveButton.style.color = "white";
+  saveButton.style.cursor = "pointer";
+  saveButton.style.textAlign = "center";
+  saveButton.style.borderRadius = "5px";
+  saveButton.style.width = "80px";
+
+  modal.appendChild(saveButton);
+
+  // Append modal to body
+  document.body.appendChild(modal);
+
+  // Prevent click propagation inside modal
+  modal.addEventListener("click", (e) => e.stopPropagation());
+
+  // Save button click handler
+  saveButton.addEventListener("click", () => {
+    let jsonParams = {};
+    try {
+      jsonParams = JSON.parse(textarea.value);
+    } catch (e) {
+      alert("Invalid JSON");
+      return;
+    }
+
+    // Remove modal from DOM
+    document.body.removeChild(modal);
+
+    // Update the target element
+    targetElement.setAttribute("mbox-name", mboxName);
+    targetElement.setAttribute("data-mboxparams", JSON.stringify(jsonParams));
+
+    // Append or update class with mbox-name-{mboxName}
+    const classToAdd = `mbox-name-${mboxName}`;
+
+    if (targetElement.className) {
+      // If class attribute exists, append the new class if not already present
+      if (!targetElement.classList.contains(classToAdd)) {
+        targetElement.classList.add(classToAdd);
+      }
+    } else {
+      // If class attribute does not exist, create it with the new value
+      targetElement.setAttribute("class", classToAdd);
+    }
+
+    targetElement.style.outline = "2px solid red"
+
+    // Reset mboxName so the process can be repeated
+    mboxName = '';
+    inModal = false;
+  });
+});
+
+function generateProductViewPlaceholder() {
+  return {
+    "entity.id": "{{entityId}}"
+  }
+}
+
+function generateProductBuyPlaceholder() {
+  return {
+    orderId: `${Date.now()}-{{entityId}}`,
+    orderTotal: '{{productValue}}',
+    productPurchaseId: '{{entityId}}'
+  }
+}
+
+
 
 
 function injectScripts(scriptNames: string[], scriptIds: string[]): Promise<boolean>[] {
@@ -115,11 +237,25 @@ function injectScripts(scriptNames: string[], scriptIds: string[]): Promise<bool
 
   // Remove existing scripts if present
   document.querySelectorAll("script").forEach((script) => {
+    // if (script.src && script.src.includes('launch')) {
+    //   console.log(`Removing existing script: ${script.src}`);
+    //   script.remove();
+    // }
+    // if (script.src && script.src.includes('bizible')) {
+    //   console.log(`Removing existing script: ${script.src}`);
+    //   script.remove();
+    // }
+    // if (script.src && script.src.includes('adobetm')) {
+    //   console.log(`Removing existing script: ${script.src}`);
+    //   script.remove();
+    // }
     if (script.src && scriptNames.some((name) => script.src.includes(name))) {
       console.log(`Removing existing script: ${script.src}`);
       script.remove();
     }
   });
+
+
 
   // Inject the other required scripts
   const loadedScripts: Promise<boolean>[] = [];

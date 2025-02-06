@@ -80,12 +80,22 @@ const App: React.FC<XperienceProps> = ({displayName, country, hobby, age}) => {
 
     const mboxElements = document.querySelectorAll('[mbox-name]');
     const mboxValues = Array.from(mboxElements).map((element) => element.getAttribute('mbox-name'));
+    let parameters = {};
+
+    if(window.extension_data.mboxParams) {
+      parameters = window.extension_data.mboxParams
+    }
 
     let counter = 0;
-    const mboxes = mboxValues.map((mbox) => {
+    const mboxes = mboxValues.map((mbox, idx) => {
+      const mboxParams = JSON.parse(mboxElements[idx].getAttribute('data-mboxparams') || '{}');
       return {
-        index: counter++,
+        index: idx,
         name: mbox,
+        parameters: {
+          ...parameters,
+          ...mboxParams
+        },
         profileParameters: {
           "user.422": displayName,
           "user.country": country,
@@ -98,8 +108,7 @@ const App: React.FC<XperienceProps> = ({displayName, country, hobby, age}) => {
     let deliveryRequest: any = {
       execute: {
         pageLoad: {
-          parameters: {
-          },
+          parameters: parameters,
           profileParameters: {
             "user.422": displayName,
             "user.country": country,
@@ -136,21 +145,26 @@ const App: React.FC<XperienceProps> = ({displayName, country, hobby, age}) => {
             console.log(response);
             const mboxes: any[] = response.execute.mboxes;
             let count = 1;
-
-            mboxes.forEach(el => {
-              addCampaignId(el?.options?.[0]?.responseTokens?.["activity.id"])
-              window.adobe.target?.applyOffers({
-                selector: `.mbox-name-${el.name}`,
-                response: {
-                  execute: {
-                    mboxes: [el]
+            if (mboxes && mboxes.length > 0) {
+              mboxes.forEach(el => {
+                addCampaignId(el?.options?.[0]?.responseTokens?.["activity.id"])
+                window.adobe.target?.applyOffers({
+                  selector: `.mbox-name-${el.name}`,
+                  response: {
+                    execute: {
+                      mboxes: [el]
+                    }
                   }
-                }
-              }).then((e) => {
-              });
+                }).then((e) => {
+                });
 
-              count += 1;
-            });
+                count += 1;
+              });
+            } else {
+              window.adobe.target?.applyOffers({
+                response: response
+              });
+            }
           })
           .catch(error => {
             console.log("Error fetching or applying offers:", error);
