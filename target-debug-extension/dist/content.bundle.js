@@ -430,6 +430,50 @@ ___CSS_LOADER_EXPORT___.push([module.id, `/* Modal.css */
 
 /***/ }),
 
+/***/ "./node_modules/css-loader/dist/cjs.js!./src/react-ui/components/ProductUtil.css":
+/*!***************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./src/react-ui/components/ProductUtil.css ***!
+  \***************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ "./node_modules/css-loader/dist/runtime/sourceMaps.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `#react-root .group {
+    margin-top: 10px;
+}
+
+#react-root .generate-btn {
+    background: #4caf50;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+#react-root .generate-btn:hover {
+    background: #45a049;
+}
+`, "",{"version":3,"sources":["webpack://./src/react-ui/components/ProductUtil.css"],"names":[],"mappings":"AAAA;IACI,gBAAgB;AACpB;;AAEA;IACI,mBAAmB;IACnB,YAAY;IACZ,iBAAiB;IACjB,YAAY;IACZ,kBAAkB;IAClB,eAAe;IACf,eAAe;AACnB;;AAEA;IACI,mBAAmB;AACvB","sourcesContent":["#react-root .group {\n    margin-top: 10px;\n}\n\n#react-root .generate-btn {\n    background: #4caf50;\n    color: white;\n    padding: 8px 12px;\n    border: none;\n    border-radius: 5px;\n    cursor: pointer;\n    margin-top: 5px;\n}\n\n#react-root .generate-btn:hover {\n    background: #45a049;\n}\n"],"sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/dist/cjs.js!./src/react-ui/components/TrafficGenerator.css":
 /*!********************************************************************************************!*\
   !*** ./node_modules/css-loader/dist/cjs.js!./src/react-ui/components/TrafficGenerator.css ***!
@@ -743,6 +787,24 @@ ___CSS_LOADER_EXPORT___.push([module.id, `/* Floating Refresh Button */
     transition: transform 0.2s ease, background-color 0.3s ease;
 }
 
+#react-root .floating-product-button {
+    position: fixed;
+    bottom: 240px; /* Positioned above the profile button */
+    left: 20px; /* Same alignment with the refresh button */
+    width: 50px;
+    height: 50px;
+    background-color: red; /* Traffic Generator button background color */
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    z-index: 1000;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
 /* Hover Effects for Traffic Generator Button */
 #react-root .floating-traffic-button:hover {
     transform: scale(1.1);
@@ -756,7 +818,19 @@ ___CSS_LOADER_EXPORT___.push([module.id, `/* Floating Refresh Button */
     pointer-events: none;
 }
 
-`, "",{"version":3,"sources":["webpack://./src/react-ui/components/UtilityFloater.css"],"names":[],"mappings":"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","sourcesContent":["/* Floating Refresh Button */\n#react-root .floating-refresh-button {\n    position: fixed;\n    bottom: 20px;\n    left: 20px;\n    width: 50px;\n    height: 50px;\n    background-color: #007bff;\n    color: white;\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);\n    cursor: pointer;\n    z-index: 1000;\n    transition: transform 0.2s ease, background-color 0.3s ease;\n}\n\n#react-root .floating-refresh-button:hover {\n    transform: scale(1.1);\n    background-color: #0056b3;\n}\n\n#react-root .floating-refresh-button img {\n    width: 24px;\n    height: 24px;\n    pointer-events: none;\n}\n\n/* Floating Forward Button */\n#react-root .floating-forward-button {\n    position: fixed;\n    bottom: 240px; /* Positioned above the back button */\n    left: 20px;\n    width: 50px;\n    height: 50px;\n    background-color: #4caf50; /* Forward button background color */\n    color: white;\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);\n    cursor: pointer;\n    z-index: 1000;\n    transition: transform 0.2s ease, background-color 0.3s ease;\n}\n\n/* Hover Effects for Forward Button */\n#react-root .floating-forward-button:hover {\n    transform: scale(1.1);\n    background-color: #388e3c; /* Darker shade on hover */\n}\n\n/* Forward Icon Styling */\n#react-root .floating-forward-button img {\n    width: 24px;\n    height: 24px;\n    pointer-events: none;\n}\n\n/* Floating Back Button */\n#react-root .floating-back-button {\n    position: fixed;\n    bottom: 160px; /* Positioned above the profile button */\n    left: 20px;\n    width: 50px;\n    height: 50px;\n    background-color: #ff5722; /* Back button background color */\n    color: white;\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);\n    cursor: pointer;\n    z-index: 1000;\n    transition: transform 0.2s ease, background-color 0.3s ease;\n}\n\n/* Hover Effects for Back Button */\n#react-root .floating-back-button:hover {\n    transform: scale(1.1);\n    background-color: #e64a19; /* Darker shade on hover */\n}\n\n/* Back Icon Styling */\n#react-root .floating-back-button img {\n    width: 24px;\n    height: 24px;\n    pointer-events: none;\n}\n\n/* Floating Profile Button */\n#react-root .floating-profile-button {\n    position: fixed;\n    bottom: 90px; /* Position it above the refresh button */\n    left: 20px; /* Same alignment with the refresh button */\n    width: 50px;\n    height: 50px;\n    background-color: #28a745;\n    color: white;\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);\n    cursor: pointer;\n    z-index: 1000;\n    transition: transform 0.2s ease, background-color 0.3s ease;\n}\n\n#react-root .floating-profile-button:hover {\n    transform: scale(1.1);\n    background-color: #1e7e34;\n}\n\n#react-root .floating-profile-button img {\n    width: 24px;\n    height: 24px;\n    pointer-events: none;\n}\n\n/* Profile Modal */\n#react-root .profile-modal {\n    position: fixed;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, 0.6);\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    z-index: 1001;\n}\n\n#react-root .profile-modal-content {\n    background: black;\n    padding: 20px;\n    border-radius: 16px;\n    width: 90%;\n    max-width: 600px;\n    text-align: left;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);\n    color: white;\n    position: relative;\n}\n\n#react-root .json-block {\n    background: #1e1e1e;\n    color: #00ff00;\n    padding: 10px;\n    border-radius: 8px;\n    max-height: 300px; /* Limit height */\n    overflow-y: auto; /* Enable scroll */\n    font-family: monospace;\n    font-size: 0.9em;\n    white-space: pre-wrap;\n    word-break: break-word;\n}\n\n/* Close Button */\n#react-root .close-button {\n    background-color: #ff5722;\n    color: white;\n    border: none;\n    border-radius: 8px;\n    padding: 10px 20px;\n    cursor: pointer;\n    margin-top: 10px;\n    font-size: 0.9em;\n    display: block;\n    margin-left: auto;\n    margin-right: auto;\n}\n\n#react-root .close-button:hover {\n    background-color: #e64a19;\n}\n\n/* Floating Traffic Generator Button */\n#react-root .floating-traffic-button {\n    position: fixed;\n    bottom: 160px; /* Positioned above the profile button */\n    left: 20px; /* Same alignment with the refresh button */\n    width: 50px;\n    height: 50px;\n    background-color: #ffc107; /* Traffic Generator button background color */\n    color: white;\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);\n    cursor: pointer;\n    z-index: 1000;\n    transition: transform 0.2s ease, background-color 0.3s ease;\n}\n\n/* Hover Effects for Traffic Generator Button */\n#react-root .floating-traffic-button:hover {\n    transform: scale(1.1);\n    background-color: #e0a800; /* Darker shade on hover */\n}\n\n/* Traffic Generator Icon Styling */\n#react-root .floating-traffic-button img {\n    width: 24px;\n    height: 24px;\n    pointer-events: none;\n}\n\n"],"sourceRoot":""}]);
+#react-root .floating-product-button img {
+    width: 24px;
+    height: 24px;
+    pointer-events: none;
+}
+
+
+/* Hover Effects for Traffic Generator Button */
+#react-root .floating-product-button:hover {
+    transform: scale(1.1);
+    background-color: darkred; /* Darker shade on hover */
+}
+`, "",{"version":3,"sources":["webpack://./src/react-ui/components/UtilityFloater.css"],"names":[],"mappings":"AAAA,4BAA4B;AAC5B;IACI,eAAe;IACf,YAAY;IACZ,UAAU;IACV,WAAW;IACX,YAAY;IACZ,yBAAyB;IACzB,YAAY;IACZ,kBAAkB;IAClB,aAAa;IACb,mBAAmB;IACnB,uBAAuB;IACvB,wCAAwC;IACxC,eAAe;IACf,aAAa;IACb,2DAA2D;AAC/D;;AAEA;IACI,qBAAqB;IACrB,yBAAyB;AAC7B;;AAEA;IACI,WAAW;IACX,YAAY;IACZ,oBAAoB;AACxB;;AAEA,4BAA4B;AAC5B;IACI,eAAe;IACf,aAAa,EAAE,qCAAqC;IACpD,UAAU;IACV,WAAW;IACX,YAAY;IACZ,yBAAyB,EAAE,oCAAoC;IAC/D,YAAY;IACZ,kBAAkB;IAClB,aAAa;IACb,mBAAmB;IACnB,uBAAuB;IACvB,wCAAwC;IACxC,eAAe;IACf,aAAa;IACb,2DAA2D;AAC/D;;AAEA,qCAAqC;AACrC;IACI,qBAAqB;IACrB,yBAAyB,EAAE,0BAA0B;AACzD;;AAEA,yBAAyB;AACzB;IACI,WAAW;IACX,YAAY;IACZ,oBAAoB;AACxB;;AAEA,yBAAyB;AACzB;IACI,eAAe;IACf,aAAa,EAAE,wCAAwC;IACvD,UAAU;IACV,WAAW;IACX,YAAY;IACZ,yBAAyB,EAAE,iCAAiC;IAC5D,YAAY;IACZ,kBAAkB;IAClB,aAAa;IACb,mBAAmB;IACnB,uBAAuB;IACvB,wCAAwC;IACxC,eAAe;IACf,aAAa;IACb,2DAA2D;AAC/D;;AAEA,kCAAkC;AAClC;IACI,qBAAqB;IACrB,yBAAyB,EAAE,0BAA0B;AACzD;;AAEA,sBAAsB;AACtB;IACI,WAAW;IACX,YAAY;IACZ,oBAAoB;AACxB;;AAEA,4BAA4B;AAC5B;IACI,eAAe;IACf,YAAY,EAAE,yCAAyC;IACvD,UAAU,EAAE,2CAA2C;IACvD,WAAW;IACX,YAAY;IACZ,yBAAyB;IACzB,YAAY;IACZ,kBAAkB;IAClB,aAAa;IACb,mBAAmB;IACnB,uBAAuB;IACvB,wCAAwC;IACxC,eAAe;IACf,aAAa;IACb,2DAA2D;AAC/D;;AAEA;IACI,qBAAqB;IACrB,yBAAyB;AAC7B;;AAEA;IACI,WAAW;IACX,YAAY;IACZ,oBAAoB;AACxB;;AAEA,kBAAkB;AAClB;IACI,eAAe;IACf,MAAM;IACN,OAAO;IACP,WAAW;IACX,YAAY;IACZ,oCAAoC;IACpC,aAAa;IACb,uBAAuB;IACvB,mBAAmB;IACnB,aAAa;AACjB;;AAEA;IACI,iBAAiB;IACjB,aAAa;IACb,mBAAmB;IACnB,UAAU;IACV,gBAAgB;IAChB,gBAAgB;IAChB,wCAAwC;IACxC,YAAY;IACZ,kBAAkB;AACtB;;AAEA;IACI,mBAAmB;IACnB,cAAc;IACd,aAAa;IACb,kBAAkB;IAClB,iBAAiB,EAAE,iBAAiB;IACpC,gBAAgB,EAAE,kBAAkB;IACpC,sBAAsB;IACtB,gBAAgB;IAChB,qBAAqB;IACrB,sBAAsB;AAC1B;;AAEA,iBAAiB;AACjB;IACI,yBAAyB;IACzB,YAAY;IACZ,YAAY;IACZ,kBAAkB;IAClB,kBAAkB;IAClB,eAAe;IACf,gBAAgB;IAChB,gBAAgB;IAChB,cAAc;IACd,iBAAiB;IACjB,kBAAkB;AACtB;;AAEA;IACI,yBAAyB;AAC7B;;AAEA,sCAAsC;AACtC;IACI,eAAe;IACf,aAAa,EAAE,wCAAwC;IACvD,UAAU,EAAE,2CAA2C;IACvD,WAAW;IACX,YAAY;IACZ,yBAAyB,EAAE,8CAA8C;IACzE,YAAY;IACZ,kBAAkB;IAClB,aAAa;IACb,mBAAmB;IACnB,uBAAuB;IACvB,wCAAwC;IACxC,eAAe;IACf,aAAa;IACb,2DAA2D;AAC/D;;AAEA;IACI,eAAe;IACf,aAAa,EAAE,wCAAwC;IACvD,UAAU,EAAE,2CAA2C;IACvD,WAAW;IACX,YAAY;IACZ,qBAAqB,EAAE,8CAA8C;IACrE,YAAY;IACZ,kBAAkB;IAClB,aAAa;IACb,mBAAmB;IACnB,uBAAuB;IACvB,wCAAwC;IACxC,eAAe;IACf,aAAa;IACb,2DAA2D;AAC/D;;AAEA,+CAA+C;AAC/C;IACI,qBAAqB;IACrB,yBAAyB,EAAE,0BAA0B;AACzD;;AAEA,mCAAmC;AACnC;IACI,WAAW;IACX,YAAY;IACZ,oBAAoB;AACxB;;AAEA;IACI,WAAW;IACX,YAAY;IACZ,oBAAoB;AACxB;;;AAGA,+CAA+C;AAC/C;IACI,qBAAqB;IACrB,yBAAyB,EAAE,0BAA0B;AACzD","sourcesContent":["/* Floating Refresh Button */\n#react-root .floating-refresh-button {\n    position: fixed;\n    bottom: 20px;\n    left: 20px;\n    width: 50px;\n    height: 50px;\n    background-color: #007bff;\n    color: white;\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);\n    cursor: pointer;\n    z-index: 1000;\n    transition: transform 0.2s ease, background-color 0.3s ease;\n}\n\n#react-root .floating-refresh-button:hover {\n    transform: scale(1.1);\n    background-color: #0056b3;\n}\n\n#react-root .floating-refresh-button img {\n    width: 24px;\n    height: 24px;\n    pointer-events: none;\n}\n\n/* Floating Forward Button */\n#react-root .floating-forward-button {\n    position: fixed;\n    bottom: 240px; /* Positioned above the back button */\n    left: 20px;\n    width: 50px;\n    height: 50px;\n    background-color: #4caf50; /* Forward button background color */\n    color: white;\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);\n    cursor: pointer;\n    z-index: 1000;\n    transition: transform 0.2s ease, background-color 0.3s ease;\n}\n\n/* Hover Effects for Forward Button */\n#react-root .floating-forward-button:hover {\n    transform: scale(1.1);\n    background-color: #388e3c; /* Darker shade on hover */\n}\n\n/* Forward Icon Styling */\n#react-root .floating-forward-button img {\n    width: 24px;\n    height: 24px;\n    pointer-events: none;\n}\n\n/* Floating Back Button */\n#react-root .floating-back-button {\n    position: fixed;\n    bottom: 160px; /* Positioned above the profile button */\n    left: 20px;\n    width: 50px;\n    height: 50px;\n    background-color: #ff5722; /* Back button background color */\n    color: white;\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);\n    cursor: pointer;\n    z-index: 1000;\n    transition: transform 0.2s ease, background-color 0.3s ease;\n}\n\n/* Hover Effects for Back Button */\n#react-root .floating-back-button:hover {\n    transform: scale(1.1);\n    background-color: #e64a19; /* Darker shade on hover */\n}\n\n/* Back Icon Styling */\n#react-root .floating-back-button img {\n    width: 24px;\n    height: 24px;\n    pointer-events: none;\n}\n\n/* Floating Profile Button */\n#react-root .floating-profile-button {\n    position: fixed;\n    bottom: 90px; /* Position it above the refresh button */\n    left: 20px; /* Same alignment with the refresh button */\n    width: 50px;\n    height: 50px;\n    background-color: #28a745;\n    color: white;\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);\n    cursor: pointer;\n    z-index: 1000;\n    transition: transform 0.2s ease, background-color 0.3s ease;\n}\n\n#react-root .floating-profile-button:hover {\n    transform: scale(1.1);\n    background-color: #1e7e34;\n}\n\n#react-root .floating-profile-button img {\n    width: 24px;\n    height: 24px;\n    pointer-events: none;\n}\n\n/* Profile Modal */\n#react-root .profile-modal {\n    position: fixed;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, 0.6);\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    z-index: 1001;\n}\n\n#react-root .profile-modal-content {\n    background: black;\n    padding: 20px;\n    border-radius: 16px;\n    width: 90%;\n    max-width: 600px;\n    text-align: left;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);\n    color: white;\n    position: relative;\n}\n\n#react-root .json-block {\n    background: #1e1e1e;\n    color: #00ff00;\n    padding: 10px;\n    border-radius: 8px;\n    max-height: 300px; /* Limit height */\n    overflow-y: auto; /* Enable scroll */\n    font-family: monospace;\n    font-size: 0.9em;\n    white-space: pre-wrap;\n    word-break: break-word;\n}\n\n/* Close Button */\n#react-root .close-button {\n    background-color: #ff5722;\n    color: white;\n    border: none;\n    border-radius: 8px;\n    padding: 10px 20px;\n    cursor: pointer;\n    margin-top: 10px;\n    font-size: 0.9em;\n    display: block;\n    margin-left: auto;\n    margin-right: auto;\n}\n\n#react-root .close-button:hover {\n    background-color: #e64a19;\n}\n\n/* Floating Traffic Generator Button */\n#react-root .floating-traffic-button {\n    position: fixed;\n    bottom: 160px; /* Positioned above the profile button */\n    left: 20px; /* Same alignment with the refresh button */\n    width: 50px;\n    height: 50px;\n    background-color: #ffc107; /* Traffic Generator button background color */\n    color: white;\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);\n    cursor: pointer;\n    z-index: 1000;\n    transition: transform 0.2s ease, background-color 0.3s ease;\n}\n\n#react-root .floating-product-button {\n    position: fixed;\n    bottom: 240px; /* Positioned above the profile button */\n    left: 20px; /* Same alignment with the refresh button */\n    width: 50px;\n    height: 50px;\n    background-color: red; /* Traffic Generator button background color */\n    color: white;\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);\n    cursor: pointer;\n    z-index: 1000;\n    transition: transform 0.2s ease, background-color 0.3s ease;\n}\n\n/* Hover Effects for Traffic Generator Button */\n#react-root .floating-traffic-button:hover {\n    transform: scale(1.1);\n    background-color: #e0a800; /* Darker shade on hover */\n}\n\n/* Traffic Generator Icon Styling */\n#react-root .floating-traffic-button img {\n    width: 24px;\n    height: 24px;\n    pointer-events: none;\n}\n\n#react-root .floating-product-button img {\n    width: 24px;\n    height: 24px;\n    pointer-events: none;\n}\n\n\n/* Hover Effects for Traffic Generator Button */\n#react-root .floating-product-button:hover {\n    transform: scale(1.1);\n    background-color: darkred; /* Darker shade on hover */\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -1180,7 +1254,131 @@ ___CSS_LOADER_EXPORT___.push([module.id, `/* Global Styles */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
-`, "",{"version":3,"sources":["webpack://./src/react-ui/styles.css"],"names":[],"mappings":"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","sourcesContent":["/* Global Styles */\n#react-root h1, h2, h3 {\n    color: #343a40;\n}\n\n/* Centered Header Styles */\n#react-root header {\n    background-color: #007bff;\n    color: white;\n    padding: 20px;\n    display: flex;\n    justify-content: space-between;\n    flex-direction: column;\n    align-items: center;\n    position: relative;\n}\n\n/* Navigation Styles */\n#react-root nav {\n    margin: 10px 0;\n    display: flex;\n    gap: 15px;\n}\n\n/* Unified Link and Dropdown Button Styles */\n#react-root a, .dropdown-btn, .dropdown-content a {\n    color: white;\n    font-weight: bold;\n    text-decoration: none;\n    cursor: pointer;\n    padding: 10px 15px;\n    background-color: #007bff;\n    display: inline-block;\n    border-radius: 5px;\n}\n\n/* Hover effect for all navigation links and dropdown items */\n#react-root a:hover, .dropdown-btn:hover, .dropdown-content a:hover {\n    background-color: #0056b3;\n    text-decoration: none;\n}\n\n/* Dropdown Menu Styles */\n#react-root .dropdown {\n    position: relative;\n}\n\n#react-root .dropdown-btn {\n    background-color: #007bff;\n    color: white;\n    cursor: pointer;\n    padding: 10px 15px;\n    border-radius: 5px;\n}\n\n/* Dropdown content styling */\n#react-root .dropdown-content {\n    display: none;\n    position: absolute;\n    background-color: #007bff;\n    padding: 0;\n    top: 100%;\n    left: 0;\n    min-width: 200px;\n    z-index: 1;\n    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);\n    border-radius: 5px;\n}\n\n/* Show dropdown on hover */\n#react-root .dropdown:hover .dropdown-content {\n    display: block;\n}\n\n/* Dropdown items styling */\n#react-root .dropdown-content a {\n    display: block;\n    padding: 10px 15px;\n    color: white;\n    font-weight: normal;\n    background-color: #007bff;\n    border-radius: 0; /* Remove border-radius for inner items to keep consistency */\n    text-align: left;\n    width: 100%; /* Make each item span the full width */\n}\n\n/* Highlight the whole row on hover */\n#react-root .dropdown-content a:hover {\n    background-color: #0056b3;\n}\n\n/* Nested Dropdown Styles */\n#react-root .dropdown-content .dropdown {\n    position: relative;\n    width: 100%; /* Make nested dropdown take full width */\n}\n\n#react-root .dropdown-content .dropdown-content {\n    top: 0;\n    left: 100%;\n    min-width: 200px;\n    padding: 0;\n}\n\n/* Full-width effect for nested dropdown items */\n#react-root .dropdown-content .dropdown-content a {\n    width: 100%; /* Ensure nested dropdown items also span the full width */\n    padding: 10px 15px;\n    box-sizing: border-box;\n}\n\n/* Main Content Styles */\n#react-root main {\n    max-width: 800px;\n    margin: 20px auto;\n    padding: 20px;\n    background: white;\n    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);\n    border-radius: 8px;\n}\n\n#react-root h2 {\n    margin-top: 0;\n}\n\n/* List Styles */\n#react-root ul {\n    list-style-type: none;\n    padding: 0;\n}\n\n#react-root ul li {\n    margin: 10px 0;\n}\n\n/* Form Styles */\n#react-root form {\n    display: flex;\n    flex-direction: column;\n}\n\n#react-root input, textarea {\n    padding: 10px;\n    margin: 10px 0;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n}\n\n#react-root button {\n    padding: 10px;\n    background-color: #007bff;\n    color: white;\n    border: none;\n    border-radius: 4px;\n    cursor: pointer;\n}\n\n#react-root button:hover {\n    background-color: #0056b3;\n}\n\n/* Footer Styles */\n#react-root footer {\n    text-align: center;\n    padding: 20px;\n    background-color: #343a40;\n    color: white;\n    position: relative;\n    bottom: 0;\n    width: 100%;\n}\n\n/* Stock List Styles */\n#react-root .stocks-list {\n    display: flex;\n    flex-direction: column;\n    gap: 1rem;\n}\n\n#react-root .stock-card {\n    border: 1px solid #ccc;\n    border-radius: 5px;\n    padding: 10px;\n    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);\n    width: 150px;\n    text-align: center;\n}\n\n#react-root .small {\n    font-size: 0.9rem;\n    padding: 5px;\n}\n\n/* Card container styling */\n.experience-container {\n    background-color: #f9f9f9;\n    border: 1px solid #ddd;\n    border-radius: 8px;\n    padding: 20px;\n    max-width: 300px;\n    margin: 20px auto;\n    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);\n}\n\n/* Content inside the container */\n.experience-container .content {\n    font-weight: bold;\n    font-size: 1.2em;\n    color: #333;\n    margin-bottom: 10px;\n}\n\n/* Ensure each span element starts on a new line */\n.experience-container span {\n    display: block;\n    margin-bottom: 6px;\n    color: #555;\n}\n\n/* Style for the button */\n.experience-container .conversion {\n    display: inline-block;\n    background-color: #4CAF50;\n    color: white;\n    padding: 10px 15px;\n    border-radius: 5px;\n    text-align: center;\n    cursor: pointer;\n    font-weight: bold;\n    margin-top: 15px;\n}\n\n.experience-container .conversion:hover:not(.clicked) {\n    background-color: #45a049; /* Apply hover background only if the element is not clicked */\n}\n\n.experience-container .conversion.clicked {\n    background-color: #d3d3d3; /* Gray background to indicate inactivity */\n    color: #888;               /* Lighter text color */\n    cursor: not-allowed;\n    opacity: 0.6;\n}\n\n/* Modal Styles */\n/* Modal Overlay */\n#react-root .modal {\n    position: fixed;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: transparent; /* Fully transparent overlay */\n    display: flex;\n    justify-content: center;\n    align-items: flex-end; /* Align the modal card at the bottom */\n    z-index: 1000; /* Ensure it's above other elements */\n    pointer-events: none; /* Make overlay clicks pass through */\n}\n\n/* Modal Content (Card) */\n#react-root .modal-content {\n    background-color: rgb(51,51,51);\n    color: white;\n    width: 90%; /* Wider design */\n    max-width: 600px; /* Limit the maximum width */\n    padding: 20px 30px;\n    border-radius: 16px 16px 0 0; /* Rounded corners at the top */\n    text-align: center;\n    box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow above */\n    pointer-events: auto; /* Allow interaction with the modal */\n    animation: slideUp 0.3s ease-out; /* Smooth entrance animation */\n}\n\n#react-root .modal-content h3 {\n    color: white;\n}\n/* Entrance Animation */\n#react-root @keyframes slideUp {\n    from {\n        transform: translateY(100%);\n    }\n    to {\n        transform: translateY(0);\n    }\n}\n\n\n#react-root .progress-bar-container {\n    background-color: #e0e0e0;\n    border-radius: 10px;\n    overflow: hidden;\n    height: 20px;\n}\n\n#react-root .progress-bar {\n    border-radius: 10px 0 0 10px;\n}\n\n#react-root .mbox-name-target-demo-site-ap-mbox-1 {\n    border-radius: 5px;\n    border: 2px solid red;\n}\n\n#react-root .mbox-name-target-demo-site-ap-mbox-2 {\n    border-radius: 5px;\n    border: 2px solid green;\n}\n\n#react-root .mbox-name-target-demo-site-ap-mbox-3 {\n    border-radius: 5px;\n    border: 2px solid blue;\n}\n\n/* Floating Refresh Button */\n#react-root floating-refresh-button {\n    position: fixed;\n    bottom: 20px;\n    left: 20px;\n    width: 50px;\n    height: 50px;\n    background-color: #007bff;\n    color: white;\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);\n    cursor: pointer;\n    z-index: 1000;\n    transition: transform 0.2s ease, background-color 0.3s ease;\n}\n\n#react-root .floating-refresh-button:hover {\n    transform: scale(1.1);\n    background-color: #0056b3;\n}\n\n#react-root .floating-refresh-button img {\n    width: 24px;\n    height: 24px;\n    pointer-events: none;\n}\n\n/* Floating Profile Button */\n#react-root .floating-profile-button {\n    position: fixed;\n    bottom: 20px;\n    left: 90px; /* Offset from refresh button */\n    width: 50px;\n    height: 50px;\n    background-color: #28a745; /* Green background */\n    color: white;\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);\n    cursor: pointer;\n    z-index: 1000;\n    transition: transform 0.2s ease, background-color 0.3s ease;\n}\n\n#react-root .floating-profile-button:hover {\n    transform: scale(1.1);\n    background-color: #1e7e34;\n}\n\n#react-root .floating-profile-button img {\n    width: 24px;\n    height: 24px;\n    pointer-events: none;\n}\n\n/* Profile Modal */\n#react-root .profile-modal {\n    position: fixed;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent overlay */\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    z-index: 1001;\n}\n\n#react-root .profile-modal-content {\n    background: white;\n    padding: 20px;\n    border-radius: 8px;\n    width: 90%;\n    max-width: 400px;\n    text-align: center;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);\n}\n\n"],"sourceRoot":""}]);
+/* General Styles */
+.product-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
+    gap: 16px;
+    padding: 20px;
+    background-color: #f8f8f8;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.product-container h2 {
+    grid-column: 1 / -1; /* Span across all columns */
+    text-align: center;
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 10px;
+    font-weight: bold;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #ddd;
+}
+
+/* Product Styles */
+.product {
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    max-width: 100%; /* Allows flexibility */
+    width: 100%; /* Ensures it adapts */
+}
+
+.product:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Ensure full width in modal-container */
+.modal-container .product {
+    width: 100%;
+}
+
+/* Image Styles */
+.product .view {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+}
+
+.product .view img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.product:hover .view img {
+    transform: scale(1.05);
+}
+
+/* Text Content Styles */
+.product .name,
+.product .message,
+.product .category {
+    padding: 8px;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.product .name {
+    font-weight: bold;
+    color: #333;
+}
+
+.product .name a {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.product .name a:hover {
+    color: #0073e6;
+}
+
+.product .message {
+    color: #666;
+    background-color: #f1f1f1;
+    flex-grow: 1;
+    max-height: 200px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.product .category {
+    font-size: 0.85rem;
+    color: #555;
+    background-color: #e1e1e1;
+    border-top: 1px solid #ddd;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .product-container {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns on tablets */
+    }
+}
+
+@media (max-width: 480px) {
+    .product-container {
+        grid-template-columns: 1fr; /* 1 column on mobile */
+    }
+}
+
+
+
+
+
+
+
+
+`, "",{"version":3,"sources":["webpack://./src/react-ui/styles.css"],"names":[],"mappings":"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","sourcesContent":["/* Global Styles */\n#react-root h1, h2, h3 {\n    color: #343a40;\n}\n\n/* Centered Header Styles */\n#react-root header {\n    background-color: #007bff;\n    color: white;\n    padding: 20px;\n    display: flex;\n    justify-content: space-between;\n    flex-direction: column;\n    align-items: center;\n    position: relative;\n}\n\n/* Navigation Styles */\n#react-root nav {\n    margin: 10px 0;\n    display: flex;\n    gap: 15px;\n}\n\n/* Unified Link and Dropdown Button Styles */\n#react-root a, .dropdown-btn, .dropdown-content a {\n    color: white;\n    font-weight: bold;\n    text-decoration: none;\n    cursor: pointer;\n    padding: 10px 15px;\n    background-color: #007bff;\n    display: inline-block;\n    border-radius: 5px;\n}\n\n/* Hover effect for all navigation links and dropdown items */\n#react-root a:hover, .dropdown-btn:hover, .dropdown-content a:hover {\n    background-color: #0056b3;\n    text-decoration: none;\n}\n\n/* Dropdown Menu Styles */\n#react-root .dropdown {\n    position: relative;\n}\n\n#react-root .dropdown-btn {\n    background-color: #007bff;\n    color: white;\n    cursor: pointer;\n    padding: 10px 15px;\n    border-radius: 5px;\n}\n\n/* Dropdown content styling */\n#react-root .dropdown-content {\n    display: none;\n    position: absolute;\n    background-color: #007bff;\n    padding: 0;\n    top: 100%;\n    left: 0;\n    min-width: 200px;\n    z-index: 1;\n    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);\n    border-radius: 5px;\n}\n\n/* Show dropdown on hover */\n#react-root .dropdown:hover .dropdown-content {\n    display: block;\n}\n\n/* Dropdown items styling */\n#react-root .dropdown-content a {\n    display: block;\n    padding: 10px 15px;\n    color: white;\n    font-weight: normal;\n    background-color: #007bff;\n    border-radius: 0; /* Remove border-radius for inner items to keep consistency */\n    text-align: left;\n    width: 100%; /* Make each item span the full width */\n}\n\n/* Highlight the whole row on hover */\n#react-root .dropdown-content a:hover {\n    background-color: #0056b3;\n}\n\n/* Nested Dropdown Styles */\n#react-root .dropdown-content .dropdown {\n    position: relative;\n    width: 100%; /* Make nested dropdown take full width */\n}\n\n#react-root .dropdown-content .dropdown-content {\n    top: 0;\n    left: 100%;\n    min-width: 200px;\n    padding: 0;\n}\n\n/* Full-width effect for nested dropdown items */\n#react-root .dropdown-content .dropdown-content a {\n    width: 100%; /* Ensure nested dropdown items also span the full width */\n    padding: 10px 15px;\n    box-sizing: border-box;\n}\n\n/* Main Content Styles */\n#react-root main {\n    max-width: 800px;\n    margin: 20px auto;\n    padding: 20px;\n    background: white;\n    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);\n    border-radius: 8px;\n}\n\n#react-root h2 {\n    margin-top: 0;\n}\n\n/* List Styles */\n#react-root ul {\n    list-style-type: none;\n    padding: 0;\n}\n\n#react-root ul li {\n    margin: 10px 0;\n}\n\n/* Form Styles */\n#react-root form {\n    display: flex;\n    flex-direction: column;\n}\n\n#react-root input, textarea {\n    padding: 10px;\n    margin: 10px 0;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n}\n\n#react-root button {\n    padding: 10px;\n    background-color: #007bff;\n    color: white;\n    border: none;\n    border-radius: 4px;\n    cursor: pointer;\n}\n\n#react-root button:hover {\n    background-color: #0056b3;\n}\n\n/* Footer Styles */\n#react-root footer {\n    text-align: center;\n    padding: 20px;\n    background-color: #343a40;\n    color: white;\n    position: relative;\n    bottom: 0;\n    width: 100%;\n}\n\n/* Stock List Styles */\n#react-root .stocks-list {\n    display: flex;\n    flex-direction: column;\n    gap: 1rem;\n}\n\n#react-root .stock-card {\n    border: 1px solid #ccc;\n    border-radius: 5px;\n    padding: 10px;\n    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);\n    width: 150px;\n    text-align: center;\n}\n\n#react-root .small {\n    font-size: 0.9rem;\n    padding: 5px;\n}\n\n/* Card container styling */\n.experience-container {\n    background-color: #f9f9f9;\n    border: 1px solid #ddd;\n    border-radius: 8px;\n    padding: 20px;\n    max-width: 300px;\n    margin: 20px auto;\n    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);\n}\n\n/* Content inside the container */\n.experience-container .content {\n    font-weight: bold;\n    font-size: 1.2em;\n    color: #333;\n    margin-bottom: 10px;\n}\n\n/* Ensure each span element starts on a new line */\n.experience-container span {\n    display: block;\n    margin-bottom: 6px;\n    color: #555;\n}\n\n/* Style for the button */\n.experience-container .conversion {\n    display: inline-block;\n    background-color: #4CAF50;\n    color: white;\n    padding: 10px 15px;\n    border-radius: 5px;\n    text-align: center;\n    cursor: pointer;\n    font-weight: bold;\n    margin-top: 15px;\n}\n\n.experience-container .conversion:hover:not(.clicked) {\n    background-color: #45a049; /* Apply hover background only if the element is not clicked */\n}\n\n.experience-container .conversion.clicked {\n    background-color: #d3d3d3; /* Gray background to indicate inactivity */\n    color: #888;               /* Lighter text color */\n    cursor: not-allowed;\n    opacity: 0.6;\n}\n\n/* Modal Styles */\n/* Modal Overlay */\n#react-root .modal {\n    position: fixed;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: transparent; /* Fully transparent overlay */\n    display: flex;\n    justify-content: center;\n    align-items: flex-end; /* Align the modal card at the bottom */\n    z-index: 1000; /* Ensure it's above other elements */\n    pointer-events: none; /* Make overlay clicks pass through */\n}\n\n/* Modal Content (Card) */\n#react-root .modal-content {\n    background-color: rgb(51,51,51);\n    color: white;\n    width: 90%; /* Wider design */\n    max-width: 600px; /* Limit the maximum width */\n    padding: 20px 30px;\n    border-radius: 16px 16px 0 0; /* Rounded corners at the top */\n    text-align: center;\n    box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow above */\n    pointer-events: auto; /* Allow interaction with the modal */\n    animation: slideUp 0.3s ease-out; /* Smooth entrance animation */\n}\n\n#react-root .modal-content h3 {\n    color: white;\n}\n/* Entrance Animation */\n#react-root @keyframes slideUp {\n    from {\n        transform: translateY(100%);\n    }\n    to {\n        transform: translateY(0);\n    }\n}\n\n\n#react-root .progress-bar-container {\n    background-color: #e0e0e0;\n    border-radius: 10px;\n    overflow: hidden;\n    height: 20px;\n}\n\n#react-root .progress-bar {\n    border-radius: 10px 0 0 10px;\n}\n\n#react-root .mbox-name-target-demo-site-ap-mbox-1 {\n    border-radius: 5px;\n    border: 2px solid red;\n}\n\n#react-root .mbox-name-target-demo-site-ap-mbox-2 {\n    border-radius: 5px;\n    border: 2px solid green;\n}\n\n#react-root .mbox-name-target-demo-site-ap-mbox-3 {\n    border-radius: 5px;\n    border: 2px solid blue;\n}\n\n/* Floating Refresh Button */\n#react-root floating-refresh-button {\n    position: fixed;\n    bottom: 20px;\n    left: 20px;\n    width: 50px;\n    height: 50px;\n    background-color: #007bff;\n    color: white;\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);\n    cursor: pointer;\n    z-index: 1000;\n    transition: transform 0.2s ease, background-color 0.3s ease;\n}\n\n#react-root .floating-refresh-button:hover {\n    transform: scale(1.1);\n    background-color: #0056b3;\n}\n\n#react-root .floating-refresh-button img {\n    width: 24px;\n    height: 24px;\n    pointer-events: none;\n}\n\n/* Floating Profile Button */\n#react-root .floating-profile-button {\n    position: fixed;\n    bottom: 20px;\n    left: 90px; /* Offset from refresh button */\n    width: 50px;\n    height: 50px;\n    background-color: #28a745; /* Green background */\n    color: white;\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);\n    cursor: pointer;\n    z-index: 1000;\n    transition: transform 0.2s ease, background-color 0.3s ease;\n}\n\n#react-root .floating-profile-button:hover {\n    transform: scale(1.1);\n    background-color: #1e7e34;\n}\n\n#react-root .floating-profile-button img {\n    width: 24px;\n    height: 24px;\n    pointer-events: none;\n}\n\n/* Profile Modal */\n#react-root .profile-modal {\n    position: fixed;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent overlay */\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    z-index: 1001;\n}\n\n#react-root .profile-modal-content {\n    background: white;\n    padding: 20px;\n    border-radius: 8px;\n    width: 90%;\n    max-width: 400px;\n    text-align: center;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);\n}\n\n/* General Styles */\n.product-container {\n    display: grid;\n    grid-template-columns: repeat(3, 1fr); /* 3 equal columns */\n    gap: 16px;\n    padding: 20px;\n    background-color: #f8f8f8;\n    max-width: 100%;\n    margin: 0 auto;\n}\n\n.product-container h2 {\n    grid-column: 1 / -1; /* Span across all columns */\n    text-align: center;\n    font-size: 1.2rem;\n    color: #333;\n    margin-bottom: 10px;\n    font-weight: bold;\n    padding-bottom: 10px;\n    border-bottom: 2px solid #ddd;\n}\n\n/* Product Styles */\n.product {\n    background-color: #fff;\n    border-radius: 8px;\n    overflow: hidden;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);\n    transition: transform 0.3s ease, box-shadow 0.3s ease;\n    display: flex;\n    flex-direction: column;\n    max-width: 100%; /* Allows flexibility */\n    width: 100%; /* Ensures it adapts */\n}\n\n.product:hover {\n    transform: translateY(-5px);\n    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);\n}\n\n/* Ensure full width in modal-container */\n.modal-container .product {\n    width: 100%;\n}\n\n/* Image Styles */\n.product .view {\n    width: 100%;\n    height: auto;\n    overflow: hidden;\n}\n\n.product .view img {\n    width: 100%;\n    height: 100%;\n    object-fit: cover;\n    transition: transform 0.3s ease;\n}\n\n.product:hover .view img {\n    transform: scale(1.05);\n}\n\n/* Text Content Styles */\n.product .name,\n.product .message,\n.product .category {\n    padding: 8px;\n    font-size: 0.9rem;\n    text-align: center;\n}\n\n.product .name {\n    font-weight: bold;\n    color: #333;\n}\n\n.product .name a {\n    color: #333;\n    text-decoration: none;\n    transition: color 0.3s ease;\n}\n\n.product .name a:hover {\n    color: #0073e6;\n}\n\n.product .message {\n    color: #666;\n    background-color: #f1f1f1;\n    flex-grow: 1;\n    max-height: 200px;\n    display: -webkit-box;\n    -webkit-line-clamp: 3;\n    -webkit-box-orient: vertical;\n}\n\n.product .category {\n    font-size: 0.85rem;\n    color: #555;\n    background-color: #e1e1e1;\n    border-top: 1px solid #ddd;\n}\n\n/* Responsive Design */\n@media (max-width: 768px) {\n    .product-container {\n        grid-template-columns: repeat(2, 1fr); /* 2 columns on tablets */\n    }\n}\n\n@media (max-width: 480px) {\n    .product-container {\n        grid-template-columns: 1fr; /* 1 column on mobile */\n    }\n}\n\n\n\n\n\n\n\n\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -42220,6 +42418,61 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
+/***/ "./src/react-ui/components/ProductUtil.css":
+/*!*************************************************!*\
+  !*** ./src/react-ui/components/ProductUtil.css ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/styleDomAPI.js */ "./node_modules/style-loader/dist/runtime/styleDomAPI.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/insertBySelector.js */ "./node_modules/style-loader/dist/runtime/insertBySelector.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js */ "./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/insertStyleElement.js */ "./node_modules/style-loader/dist/runtime/insertStyleElement.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ProductUtil_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js!./ProductUtil.css */ "./node_modules/css-loader/dist/cjs.js!./src/react-ui/components/ProductUtil.css");
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+var options = {};
+
+options.styleTagTransform = (_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default());
+options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
+
+      options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
+    
+options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
+options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ProductUtil_css__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+
+
+
+
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ProductUtil_css__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ProductUtil_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ProductUtil_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+
+
+/***/ }),
+
 /***/ "./src/react-ui/components/TrafficGenerator.css":
 /*!******************************************************!*\
   !*** ./src/react-ui/components/TrafficGenerator.css ***!
@@ -42751,14 +43004,14 @@ const App = ({ displayName, country, hobby, age }) => {
     const [refreshKey, setRefreshKey] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0);
     const [selectedProduct, setSelectedProduct] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
     const [searchParams, setSearchParams] = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_8__.useSearchParams)();
-    const handlePersonaSave = () => {
+    const handlePersonaSave = (providedMcId, providedTntId) => {
         // Increment the refresh key to trigger re-render
         const token = (0,_lib_atJs__WEBPACK_IMPORTED_MODULE_3__.generateToken)();
         // updateQueryParams('mboxSession', `${token}`);
         //new tntId
-        const pcToken = (0,_lib_atJs__WEBPACK_IMPORTED_MODULE_3__.getNewCookiePCValue)((0,_lib_atJs__WEBPACK_IMPORTED_MODULE_3__.generateToken)());
+        const pcToken = providedTntId || (0,_lib_atJs__WEBPACK_IMPORTED_MODULE_3__.getNewCookiePCValue)((0,_lib_atJs__WEBPACK_IMPORTED_MODULE_3__.generateToken)());
         // updateQueryParams("PC", `${pcToken}`);
-        const mcId = (0,_lib_atJs__WEBPACK_IMPORTED_MODULE_3__.generateToken)();
+        const mcId = providedMcId || (0,_lib_atJs__WEBPACK_IMPORTED_MODULE_3__.generateToken)();
         setMcId(mcId);
         setTntId(`${pcToken}`);
         const newParams = new URLSearchParams(searchParams);
@@ -42780,11 +43033,20 @@ const App = ({ displayName, country, hobby, age }) => {
         };
         const mboxElements = document.querySelectorAll('[mbox-name]');
         const mboxValues = Array.from(mboxElements).map((element) => element.getAttribute('mbox-name'));
+        let parameters = {};
+        if (window.extension_data.mboxParams) {
+            parameters = window.extension_data.mboxParams;
+        }
         let counter = 0;
-        const mboxes = mboxValues.map((mbox) => {
+        const mboxes = mboxValues.map((mbox, idx) => {
+            const mboxParams = JSON.parse(mboxElements[idx].getAttribute('data-mboxparams') || '{}');
             return {
-                index: counter++,
+                index: idx,
                 name: mbox,
+                parameters: {
+                    ...parameters,
+                    ...mboxParams
+                },
                 profileParameters: {
                     "user.422": displayName,
                     "user.country": country,
@@ -42796,7 +43058,7 @@ const App = ({ displayName, country, hobby, age }) => {
         let deliveryRequest = {
             execute: {
                 pageLoad: {
-                    parameters: {},
+                    parameters: parameters,
                     profileParameters: {
                         "user.422": displayName,
                         "user.country": country,
@@ -42832,19 +43094,26 @@ const App = ({ displayName, country, hobby, age }) => {
                     console.log(response);
                     const mboxes = response.execute.mboxes;
                     let count = 1;
-                    mboxes.forEach(el => {
-                        addCampaignId(el?.options?.[0]?.responseTokens?.["activity.id"]);
-                        window.adobe.target?.applyOffers({
-                            selector: `.mbox-name-${el.name}`,
-                            response: {
-                                execute: {
-                                    mboxes: [el]
+                    if (mboxes && mboxes.length > 0) {
+                        mboxes.forEach(el => {
+                            addCampaignId(el?.options?.[0]?.responseTokens?.["activity.id"]);
+                            window.adobe.target?.applyOffers({
+                                selector: `.mbox-name-${el.name}`,
+                                response: {
+                                    execute: {
+                                        mboxes: [el]
+                                    }
                                 }
-                            }
-                        }).then((e) => {
+                            }).then((e) => {
+                            });
+                            count += 1;
                         });
-                        count += 1;
-                    });
+                    }
+                    else {
+                        window.adobe.target?.applyOffers({
+                            response: response
+                        });
+                    }
                 })
                     .catch(error => {
                     console.log("Error fetching or applying offers:", error);
@@ -43134,7 +43403,8 @@ const ModelExplorer = ({ campaignIds, tenant }) => {
     const [expanded, setExpanded] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({});
     const [postResponses, setPostResponses] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({});
     const containerRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
-    const lambdaUrl = "https://xmw3bsgzoi.execute-api.us-west-2.amazonaws.com/default/zeusUtil";
+    const environment = window.extension_data.environment || "prod";
+    const lambdaUrl = `https://xmw3bsgzoi.execute-api.us-west-2.amazonaws.com/default/zeusUtil?${environment}=true`;
     (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
         if (!campaignIds.length)
             return;
@@ -43182,7 +43452,7 @@ const ModelExplorer = ({ campaignIds, tenant }) => {
     };
     const handlePost = async (modelId) => {
         try {
-            const response = await axios__WEBPACK_IMPORTED_MODULE_4__["default"].get(`${lambdaUrl}?model_id=${modelId}`, {
+            const response = await axios__WEBPACK_IMPORTED_MODULE_4__["default"].get(`${lambdaUrl}&model_id=${modelId}`, {
                 headers: {
                     "Content-Type": "application/json",
                     Accept: "application/json",
@@ -43317,6 +43587,159 @@ const usePersona = () => {
 
 /***/ }),
 
+/***/ "./src/react-ui/components/ProductUtil.tsx":
+/*!*************************************************!*\
+  !*** ./src/react-ui/components/ProductUtil.tsx ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _ProductUtil_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ProductUtil.css */ "./src/react-ui/components/ProductUtil.css");
+
+
+const generateProductViewPlaceholder = (entityId) => ({
+    "entity.id": entityId,
+});
+const generateProductBuyPlaceholder = (entityId, productValue) => ({
+    orderId: `${Date.now()}-${entityId}`,
+    orderTotal: productValue,
+    productPurchaseId: entityId,
+});
+const _generateEvent = (type, entityId, productValue, count, setCurrent, onClose) => {
+    let interval = setInterval(() => {
+        if (count <= 0) {
+            clearInterval(interval);
+            onClose();
+            return;
+        }
+        const requestPayload = type === "views"
+            ? generateProductViewPlaceholder(entityId)
+            : generateProductBuyPlaceholder(entityId, productValue);
+        window.adobe.target
+            ?.getOffers({
+            request: {
+                id: {
+                    marketingCloudVisitorId: "mcId",
+                },
+                execute: {
+                    pageLoad: {
+                        parameters: requestPayload,
+                    },
+                },
+            },
+        })
+            .then((response) => {
+            window.adobe.target?.applyOffers({ response });
+        })
+            .finally(() => {
+            setCurrent(count - 1);
+        });
+        count -= 1;
+    }, 100);
+};
+const ProductUtil = ({ mcId, tntId, isOpen, onClose }) => {
+    const [entityId, setEntityId] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)("");
+    const [productValue, setProductValue] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)("100");
+    const [views, setViews] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1);
+    const [buys, setBuys] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1);
+    const [current, setCurrent] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0);
+    if (!isOpen)
+        return null; // Prevent rendering when closed
+    return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "profile-modal" },
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "profile-modal-content" },
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", { className: "close-button", onClick: onClose }, "Close"),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", null, "Product Utility"),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", null, "Entity ID:"),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { value: entityId, onChange: (e) => setEntityId(e.target.value) }),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", null, "Product Value:"),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { value: productValue, onChange: (e) => setProductValue(e.target.value) }),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "group" },
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", null, "Number of Views:"),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { type: "number", value: views, onChange: (e) => setViews(Number(e.target.value)) }),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", { className: "generate-btn", onClick: () => _generateEvent("views", entityId, productValue, views, setCurrent, onClose) }, "Generate Views")),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "group" },
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", null, "Number of Buys:"),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { type: "number", value: buys, onChange: (e) => setBuys(Number(e.target.value)) }),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", { className: "generate-btn", onClick: () => _generateEvent("buys", entityId, productValue, buys, setCurrent, onClose) }, "Generate Buys")))));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ProductUtil);
+
+
+/***/ }),
+
+/***/ "./src/react-ui/components/ProfileModal.tsx":
+/*!**************************************************!*\
+  !*** ./src/react-ui/components/ProfileModal.tsx ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+
+
+const ProfileModal = ({ mcId, tntId, isOpen, onClose, handlePersonaSave }) => {
+    const [profileData, setProfileData] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
+    const [loading, setLoading] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+    const [inputMcId, setInputMcId] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(mcId);
+    const [inputTntId, setInputTntId] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(tntId);
+    const fetchProfileData = async () => {
+        setLoading(true);
+        try {
+            const lambdaUrl = "https://xmw3bsgzoi.execute-api.us-west-2.amazonaws.com/default/zeusUtil";
+            const admin = window.extension_data.admin || "admin3";
+            const tenant = window.extension_data.tenant || "bullseye";
+            const response = await axios__WEBPACK_IMPORTED_MODULE_1__["default"].get(`${lambdaUrl}?token=true&admin=${admin}&client=${tenant}&mcId=${mcId}&tntId=${tntId}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+                withCredentials: false,
+            });
+            setProfileData(response.data);
+        }
+        catch (error) {
+            console.error("Error fetching profile data:", error);
+            setProfileData({ error: "Failed to fetch profile data." });
+        }
+        finally {
+            setLoading(false);
+        }
+    };
+    react__WEBPACK_IMPORTED_MODULE_0___default().useEffect(() => {
+        if (isOpen) {
+            fetchProfileData();
+        }
+    }, [isOpen, mcId, tntId]);
+    if (!isOpen)
+        return null;
+    return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "profile-modal" },
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "profile-modal-content" },
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", null, "User Profile"),
+            "McId: ",
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { type: "text", value: inputMcId, onChange: (e) => setInputMcId(e.target.value), placeholder: "Enter mcId" }),
+            "TntId: ",
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { type: "text", value: inputTntId, onChange: (e) => setInputTntId(e.target.value), placeholder: "Enter tntId" }),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", { onClick: () => { handlePersonaSave(inputMcId, inputTntId); fetchProfileData(); } }, "Impersonate"),
+            loading ? react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Loading...") : react__WEBPACK_IMPORTED_MODULE_0___default().createElement("pre", { className: "json-block" }, JSON.stringify(profileData, null, 2)),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", { onClick: onClose, className: "close-button" }, "Close"))));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ProfileModal);
+
+
+/***/ }),
+
 /***/ "./src/react-ui/components/TrafficGenerator.tsx":
 /*!******************************************************!*\
   !*** ./src/react-ui/components/TrafficGenerator.tsx ***!
@@ -43405,62 +43828,61 @@ const GeneratorComponent = ({ displayName, country, hobby, age, experienceIndex,
         }
         return () => document.removeEventListener('click', handleClickOutside);
     }, [showTooltip]);
-    return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "modal-container" },
-        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "modal-traffic" },
-            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "content" },
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", { onClick: () => setTrafficModalOpen(false), className: "close-button" }, "Close"),
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "checkbox-container" },
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", null,
-                        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { type: "checkbox", checked: uniqueVisitors, onChange: () => setUniqueVisitors(!uniqueVisitors) }),
-                        "Unique Visitors")),
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "checkbox-container" },
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", null,
-                        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { type: "checkbox", checked: isTargetCheckbox, onChange: () => setIsTargetCheckbox(!isTargetCheckbox) }),
-                        "Is Target Reporting")),
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "section" },
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h4", null, "Generate Views without Conversions"),
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { type: "number", placeholder: "Enter number of views", id: "viewsWithoutConversions" }),
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", { onClick: () => {
-                            const number = document.getElementById('viewsWithoutConversions')?.value;
-                            generateViews(number);
-                        } }, "Generate Views")),
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "section" },
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h4", null, "Generate Views with Conversions"),
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { type: "number", placeholder: "Enter number of views", id: "viewsWithConversions" }),
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", { onClick: () => {
-                            const number = document.getElementById('viewsWithConversions')?.value;
-                            generateConversions(number);
-                        } }, "Generate Views with Conversions"),
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null,
-                        "for experience ",
-                        experienceIndex === -100 ? 'All' : experienceIndex + 1)),
-                showExperienceIndex && (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "section" },
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h4", null, "Target Experience Conversions"),
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { type: "number", placeholder: "Target experienceId", id: "experienceId" }),
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", { onClick: () => {
-                            const number = document.getElementById('experienceId')?.value;
-                            changeExperienceId(number);
-                        } }, "Save Targeted Experience"))),
-                selectAlgorithm && (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "section" },
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h4", null, "Change Algorithm Id"),
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { type: "number", placeholder: "Change algorithmId", id: "algorithmId" }),
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", { onClick: () => {
-                            const number = document.getElementById('algorithmId')?.value;
-                            changeAlgorithmId(number);
-                        } }, "Save Algorithm ID"))),
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "section" },
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h4", null, "Event"),
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { type: "text", value: event, onChange: (e) => setEvent(e.target.value), placeholder: "Enter event (default: click)" })),
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "section" },
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h4", null, "Mboxes (comma separated)"),
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { type: "text", value: mboxesInput, onChange: (e) => setMboxesInput(e.target.value), placeholder: "Enter mboxes" })),
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "section" },
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h4", null, "Set Revenue Value"),
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { type: "number", placeholder: "Change revenue value", id: "revenue" }),
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", { onClick: () => {
-                            const number = document.getElementById('revenue')?.value;
-                            setRevenueValue(number.length > 0 ? parseFloat(number) : 1);
-                        } }, "Save Revenue Value"))))));
+    return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "profile-modal" },
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "profile-modal-content" },
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", { onClick: () => setTrafficModalOpen(false), className: "close-button" }, "Close"),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "checkbox-container" },
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", null,
+                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { type: "checkbox", checked: uniqueVisitors, onChange: () => setUniqueVisitors(!uniqueVisitors) }),
+                    "Unique Visitors")),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "checkbox-container" },
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", null,
+                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { type: "checkbox", checked: isTargetCheckbox, onChange: () => setIsTargetCheckbox(!isTargetCheckbox) }),
+                    "Is Target Reporting")),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "section" },
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h4", null, "Generate Views without Conversions"),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { type: "number", placeholder: "Enter number of views", id: "viewsWithoutConversions" }),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", { onClick: () => {
+                        const number = document.getElementById('viewsWithoutConversions')?.value;
+                        generateViews(number);
+                    } }, "Generate Views")),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "section" },
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h4", null, "Generate Views with Conversions"),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { type: "number", placeholder: "Enter number of views", id: "viewsWithConversions" }),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", { onClick: () => {
+                        const number = document.getElementById('viewsWithConversions')?.value;
+                        generateConversions(number);
+                    } }, "Generate Views with Conversions"),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null,
+                    "for experience ",
+                    experienceIndex === -100 ? 'All' : experienceIndex + 1)),
+            showExperienceIndex && (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "section" },
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h4", null, "Target Experience Conversions"),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { type: "number", placeholder: "Target experienceId", id: "experienceId" }),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", { onClick: () => {
+                        const number = document.getElementById('experienceId')?.value;
+                        changeExperienceId(number);
+                    } }, "Save Targeted Experience"))),
+            selectAlgorithm && (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "section" },
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h4", null, "Change Algorithm Id"),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { type: "number", placeholder: "Change algorithmId", id: "algorithmId" }),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", { onClick: () => {
+                        const number = document.getElementById('algorithmId')?.value;
+                        changeAlgorithmId(number);
+                    } }, "Save Algorithm ID"))),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "section" },
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h4", null, "Event"),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { type: "text", value: event, onChange: (e) => setEvent(e.target.value), placeholder: "Enter event (default: click)" })),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "section" },
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h4", null, "Mboxes (comma separated)"),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { type: "text", value: mboxesInput, onChange: (e) => setMboxesInput(e.target.value), placeholder: "Enter mboxes" })),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "section" },
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h4", null, "Set Revenue Value"),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { type: "number", placeholder: "Change revenue value", id: "revenue" }),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", { onClick: () => {
+                        const number = document.getElementById('revenue')?.value;
+                        setRevenueValue(number.length > 0 ? parseFloat(number) : 1);
+                    } }, "Save Revenue Value")))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (GeneratorComponent);
 
@@ -43481,89 +43903,49 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _UtilityFloater_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./UtilityFloater.css */ "./src/react-ui/components/UtilityFloater.css");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
 /* harmony import */ var _TrafficGenerator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./TrafficGenerator */ "./src/react-ui/components/TrafficGenerator.tsx");
 /* harmony import */ var _HitsModal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./HitsModal */ "./src/react-ui/components/HitsModal.tsx");
+/* harmony import */ var _ProfileModal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ProfileModal */ "./src/react-ui/components/ProfileModal.tsx");
+/* harmony import */ var _ProductUtil__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ProductUtil */ "./src/react-ui/components/ProductUtil.tsx");
 
 
 
 
- // Import the TrafficGenerator component
+
+
 const UtilityFloater = ({ handlePersonaSave, mcId, tntId, displayName, country, hobby, age, experienceIndex, setExperienceIndex, setTotal, setCurrent, setModalVisible, }) => {
     const [isProfileModalOpen, setProfileModalOpen] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
-    const [isTrafficModalOpen, setTrafficModalOpen] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false); // State for Traffic Modal
-    const [profileData, setProfileData] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
-    const [loading, setLoading] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
-    const [event, setEvent] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('click'); // Default event is click
-    const [isTrafficModalVisible, setTrafficModalVisible] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+    const [isTrafficModalOpen, setTrafficModalOpen] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+    const [isProductUtilOpen, setProductUtilOpen] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
     const [trafficData, setTrafficData] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({});
     const [testDuration, setTestDuration] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0);
-    const [mboxes, setMboxes] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''); // Default mbox
-    const [isTarget, setIsTarget] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true); // Default checkbox value
-    const [isAlgorithm, setIsAlgorithm] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false); // Default checkbox value
-    const [selectAlgorithm, setSelectAlgorithm] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false); // Default selectAlgorithm value
-    const [algorithmId, setAlgorithmId] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1); // Default to empty string to handle unset state
+    const [mboxes, setMboxes] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
+    const [isTrafficModalVisible, setTrafficModalVisible] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+    const [algorithmId, setAlgorithmId] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1);
     const [reportingServer, setReportingServer] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(window.extension_data?.analyticsReportingServer || null);
-    // Function to extract mboxes from DOM
     const extractMboxesFromDOM = () => {
         const mboxElements = document.querySelectorAll('[mbox-name]');
         const mboxValues = Array.from(mboxElements).map((element) => element.getAttribute('mbox-name'));
-        console.log("mboxes: ", mboxValues);
-        setMboxes(mboxValues.join(',')); // Join them into a string
-    };
-    (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-        // Extract mboxes on component mount
-    }, [mcId, tntId]);
-    const openProfileModal = async () => {
-        setProfileModalOpen((prevState) => !prevState);
-        setLoading(true);
-        try {
-            // Fetch profile data from a remote endpoint
-            const lambdaUrl = "https://xmw3bsgzoi.execute-api.us-west-2.amazonaws.com/default/zeusUtil";
-            try {
-                let response = await axios__WEBPACK_IMPORTED_MODULE_4__["default"].get(`${lambdaUrl}?token=true&admin=admin3&client=bullseye&mcId=${mcId}&tntId=${tntId}`, {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Accept: "application/json",
-                    },
-                    withCredentials: false,
-                });
-                setProfileData(response.data);
-            }
-            catch (error) {
-                console.error("Error fetching models from Lambda:", error);
-            }
-        }
-        catch (error) {
-            console.error('Error fetching profile data:', error);
-            setProfileData({ error: 'Failed to fetch profile data.' });
-        }
-        finally {
-            setLoading(false);
-        }
+        setMboxes(mboxValues.join(','));
     };
     const openTrafficModal = () => {
         extractMboxesFromDOM();
         setTrafficModalOpen((prevState) => !prevState);
     };
-    const closeProfileModal = () => setProfileModalOpen(false);
-    const closeTrafficModal = () => setTrafficModalOpen(false); // Function to close Traffic Modal
     return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null,
-        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "floating-refresh-button", onClick: handlePersonaSave },
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "floating-refresh-button", onClick: () => handlePersonaSave() },
             react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", { src: "https://cdn-icons-png.freepik.com/256/10152/10152078.png?semt=ais_hybrid", alt: "Refresh" })),
-        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "floating-profile-button", onClick: openProfileModal },
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "floating-profile-button", onClick: () => setProfileModalOpen(true) },
             react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", { src: "https://cdn-icons-png.freepik.com/256/847/847969.png", alt: "Profile" })),
         react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "floating-traffic-button", onClick: openTrafficModal },
-            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", { src: "https://cdn-icons-png.flaticon.com/512/17076/17076762.png" // Replace with your own traffic icon
-                , alt: "Traffic Generator" })),
-        isProfileModalOpen && (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "profile-modal" },
-            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "profile-modal-content" },
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", null, "User Profile"),
-                loading ? (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Loading...")) : (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("pre", { className: "json-block" }, JSON.stringify(profileData, null, 2))),
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", { onClick: closeProfileModal, className: "close-button" }, "Close")))),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", { src: "https://cdn-icons-png.flaticon.com/512/17076/17076762.png", alt: "Traffic Generator" })),
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "floating-product-button", onClick: () => setProductUtilOpen(true) },
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", { src: "https://cdn-icons-png.freepik.com/256/12783/12783710.png?semt=ais_hybrid", alt: "Product Util" })),
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ProfileModal__WEBPACK_IMPORTED_MODULE_4__["default"], { mcId: mcId, tntId: tntId, isOpen: isProfileModalOpen, onClose: () => setProfileModalOpen(false), handlePersonaSave: handlePersonaSave }),
         isTrafficModalOpen && (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "traffic-modal" },
             react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "traffic-modal-content" },
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_TrafficGenerator__WEBPACK_IMPORTED_MODULE_2__["default"], { displayName: displayName, country: country, hobby: hobby, age: age, experienceIndex: experienceIndex, setExperienceIndex: setExperienceIndex, showExperienceIndex: true, isTarget: isTarget, conversionEvent: event, setTotal: setTotal, setCurrent: setCurrent, setModalVisible: setModalVisible, setTrafficModalOpen: setTrafficModalOpen, mboxes: mboxes, algorithmId: algorithmId, setAlgorithmId: setAlgorithmId, selectAlgorithm: true, reportingServer: reportingServer, setTrafficData: setTrafficData, setTestDuration: setTestDuration, setTrafficModalVisible: setTrafficModalVisible })))),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_TrafficGenerator__WEBPACK_IMPORTED_MODULE_2__["default"], { displayName: displayName, country: country, hobby: hobby, age: age, experienceIndex: experienceIndex, setExperienceIndex: setExperienceIndex, showExperienceIndex: true, isTarget: true, conversionEvent: "click", setTotal: setTotal, setCurrent: setCurrent, setModalVisible: setModalVisible, setTrafficModalOpen: setTrafficModalOpen, mboxes: mboxes, algorithmId: algorithmId, setAlgorithmId: setAlgorithmId, selectAlgorithm: true, reportingServer: reportingServer, setTrafficData: setTrafficData, setTestDuration: setTestDuration, setTrafficModalVisible: setTrafficModalVisible })))),
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ProductUtil__WEBPACK_IMPORTED_MODULE_5__["default"], { mcId: mcId, tntId: tntId, isOpen: isProductUtilOpen, onClose: () => setProductUtilOpen(false) }),
         react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_HitsModal__WEBPACK_IMPORTED_MODULE_3__["default"], { data: trafficData, testDuration: testDuration, visible: isTrafficModalVisible, setVisible: setTrafficModalVisible })));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (UtilityFloater);
@@ -43752,6 +44134,14 @@ const generateViewsWithConversions = (uniqueVisitors, number, setTotal, setCurre
             else {
                 mcId = getQueryParameter("MCID") || (0,_visitor__WEBPACK_IMPORTED_MODULE_0__["default"])();
             }
+            let parameters = {};
+            if (window.extension_data.mboxParams) {
+                parameters = window.extension_data.mboxParams;
+            }
+            const mboxParams = mboxes.length > 0 ? mboxes.map((mboxName, idx) => {
+                const element = document.getElementsByClassName(`mbox-name-${mboxName}`)[0];
+                return JSON.parse(element.getAttribute('data-mboxparams') || '{}');
+            }) : {};
             window.adobe.target?.getOffers({
                 request: {
                     mid: {
@@ -43768,6 +44158,10 @@ const generateViewsWithConversions = (uniqueVisitors, number, setTotal, setCurre
                             return {
                                 index: idx,
                                 name: mboxName,
+                                parameters: {
+                                    ...parameters,
+                                    ...mboxParams[idx]
+                                },
                                 profileParameters: {
                                     "user.422": `${profileData.displayName}-${Date.now()}`,
                                     "user.country": profileData.country,
@@ -43778,7 +44172,7 @@ const generateViewsWithConversions = (uniqueVisitors, number, setTotal, setCurre
                             };
                         }) : undefined,
                         pageLoad: mboxes.length == 0 ? {
-                            parameters: {},
+                            parameters: parameters,
                             profileParameters: {
                                 "user.422": `${profileData.displayName}-${Date.now()}`,
                                 "user.country": profileData.country,

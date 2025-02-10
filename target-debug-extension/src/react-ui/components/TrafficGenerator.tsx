@@ -164,9 +164,8 @@ const GeneratorComponent: React.FC<GeneratorComponentProps> = ({
   }, [showTooltip]);
 
   return (
-    <div className="modal-container">
-      <div className="modal-traffic">
-        <div className="content">
+    <div className="profile-modal">
+        <div className="profile-modal-content">
           <button onClick={() => setTrafficModalOpen(false)} className="close-button">Close</button>
           {/* Event Input */}
 
@@ -291,7 +290,6 @@ const GeneratorComponent: React.FC<GeneratorComponentProps> = ({
             </button>
           </div>
         </div>
-      </div>
     </div>
   );
 };

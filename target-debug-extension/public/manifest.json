@@ -5,6 +5,7 @@
   "description": "A Chrome extension for debugging target-based functionality.",
   "permissions": [
     "activeTab",
+    "webRequest",
     "storage",
     "tabs",
     "scripting"
@@ -34,11 +35,14 @@
   },
   "host_permissions": [
     "http://*/*",
-    "https://*/*"
+    "https://*/*",
+    "<all_urls>"
   ],
   "content_security_policy": {
     "script-src": "'self'",
-    "object-src": "'self'"
+    "object-src": "'self';",
+    "extension_pages": "script-src 'self'; object-src 'self'",
+    "connect-src": "'self' https://*.omtrdc.net;"
   },
   "web_accessible_resources": [
     {

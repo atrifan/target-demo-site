@@ -8,7 +8,7 @@ if (!head) {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'INIT_EXTENSION') {
     console.log(message);
-    const { tenant, org, analyticsReportingServer, analyticsReportSuite, mboxParams, environment, customEdgeHost } = message;
+    const { tenant, org, analyticsReportingServer, analyticsReportSuite, mboxParams, environment, customEdgeHost, admin } = message;
 
     // Ensure the data is available
     if (!tenant || !org) {
@@ -36,7 +36,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           reportSuite: analyticsReportSuite,
           mboxParams: mboxParams,
           environment: environment,
-          customEdgeHost: customEdgeHost
+          customEdgeHost: customEdgeHost,
+          admin: admin
         }, (response) => {
           console.log(`Response from background.ts: ${response}`);
           const scriptNames = ["AppMeasurement.js"];
@@ -210,22 +211,6 @@ document.addEventListener("click", (event) => {
     inModal = false;
   });
 });
-
-function generateProductViewPlaceholder() {
-  return {
-    "entity.id": "{{entityId}}"
-  }
-}
-
-function generateProductBuyPlaceholder() {
-  return {
-    orderId: `${Date.now()}-{{entityId}}`,
-    orderTotal: '{{productValue}}',
-    productPurchaseId: '{{entityId}}'
-  }
-}
-
-
 
 
 function injectScripts(scriptNames: string[], scriptIds: string[]): Promise<boolean>[] {

@@ -48,16 +48,16 @@ const App: React.FC<XperienceProps> = ({displayName, country, hobby, age}) => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const handlePersonaSave = () => {
+  const handlePersonaSave = (providedMcId?: string, providedTntId?: string) => {
 
     // Increment the refresh key to trigger re-render
     const token = generateToken();
     // updateQueryParams('mboxSession', `${token}`);
     //new tntId
-    const pcToken = getNewCookiePCValue(generateToken());
+    const pcToken = providedTntId || getNewCookiePCValue(generateToken());
     // updateQueryParams("PC", `${pcToken}`);
 
-    const mcId = generateToken();
+    const mcId = providedMcId || generateToken();
     setMcId(mcId);
     setTntId(`${pcToken}`);
     const newParams = new URLSearchParams(searchParams);

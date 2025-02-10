@@ -1,0 +1,17 @@
+#react-root .group {
+    margin-top: 10px;
+}
+
+#react-root .generate-btn {
+    background: #4caf50;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+#react-root .generate-btn:hover {
+    background: #45a049;
+}

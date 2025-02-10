@@ -199,6 +199,24 @@
     transition: transform 0.2s ease, background-color 0.3s ease;
 }
 
+#react-root .floating-product-button {
+    position: fixed;
+    bottom: 240px; /* Positioned above the profile button */
+    left: 20px; /* Same alignment with the refresh button */
+    width: 50px;
+    height: 50px;
+    background-color: red; /* Traffic Generator button background color */
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    z-index: 1000;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
 /* Hover Effects for Traffic Generator Button */
 #react-root .floating-traffic-button:hover {
     transform: scale(1.1);
@@ -212,3 +230,15 @@
     pointer-events: none;
 }
 
+#react-root .floating-product-button img {
+    width: 24px;
+    height: 24px;
+    pointer-events: none;
+}
+
+
+/* Hover Effects for Traffic Generator Button */
+#react-root .floating-product-button:hover {
+    transform: scale(1.1);
+    background-color: darkred; /* Darker shade on hover */
+}

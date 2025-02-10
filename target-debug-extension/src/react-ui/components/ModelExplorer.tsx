@@ -14,9 +14,9 @@ const ModelExplorer: React.FC<Props> = ({ campaignIds, tenant }) => {
   const [expanded, setExpanded] = useState<{ [key: string]: boolean }>({});
   const [postResponses, setPostResponses] = useState<{ [key: string]: any }>({});
   const containerRef = useRef<HTMLDivElement | null>(null);
-
+  const environment = window.extension_data.environment || "prod";
   const lambdaUrl =
-    "https://xmw3bsgzoi.execute-api.us-west-2.amazonaws.com/default/zeusUtil";
+    `https://xmw3bsgzoi.execute-api.us-west-2.amazonaws.com/default/zeusUtil?${environment}=true`;
 
   useEffect(() => {
     if (!campaignIds.length) return;
@@ -73,7 +73,7 @@ const ModelExplorer: React.FC<Props> = ({ campaignIds, tenant }) => {
 
   const handlePost = async (modelId: string) => {
     try {
-      const response = await axios.get(`${lambdaUrl}?model_id=${modelId}`, {
+      const response = await axios.get(`${lambdaUrl}&model_id=${modelId}`, {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",

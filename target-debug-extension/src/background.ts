@@ -9,7 +9,7 @@ chrome.runtime.onInstalled.addListener(() => {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'executeAdobeTargetScript') {
     console.log(message);
-    const { tenant, org, analyticsReportingServer, reportSuite, mboxParams, environment, customEdgeHost } = message;
+    const { tenant, org, analyticsReportingServer, reportSuite, mboxParams, environment, customEdgeHost, admin } = message;
 
     console.log(mboxParams)
 
@@ -21,7 +21,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         chrome.scripting.executeScript({
           target: { tabId: tabId },
           world: 'MAIN', // Runs in the page’s main execution context
-          func: (tenant, org, analyticsReportingServer, reportSuite, extensionId, mboxParams, environment, customEdgeHost) => {
+          func: (tenant, org, analyticsReportingServer, reportSuite, extensionId, mboxParams, environment, customEdgeHost, admin) => {
             let edgeHost = `${tenant}.tt.omtrdc.net`;
             if (environment === 'stage') {
               edgeHost = 'mboxedge1.tt-stage1.omtrdc.net';
@@ -75,14 +75,15 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 reportSuite,
                 mboxParams,
                 environment,
-                edgeHost
+                edgeHost,
+                admin
               };
 
             } else {
               console.error('Adobe Target is not available on this page.');
             }
           },
-          args: [tenant, org, analyticsReportingServer, reportSuite, extensionId, mboxParams, environment, customEdgeHost],
+          args: [tenant, org, analyticsReportingServer, reportSuite, extensionId, mboxParams, environment, customEdgeHost, admin],
         }, (injectionResults) => {
           // Handle the results of the injected script
           const [result] = injectionResults;

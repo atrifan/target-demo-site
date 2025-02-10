@@ -9260,7 +9260,7 @@ if (window.adobe && window.adobe.target) {
   window.adobe.target.init(window, document, {
     clientCode: window.extension_data.tenant,
     imsOrgId: window.extension_data.org,
-    serverDomain: `${window.extension_data.tenant}.tt.omtrdc.net`,
+    serverDomain: window.extension_data.edgeHost,
     trackingServer: window.extension_data.analyticsReportingServer,
     crossDomain: 'disabled',
     timeout: 5000,

@@ -8,6 +8,7 @@ const App: React.FC = () => {
   const [org, setOrg] = useState<string>("");
   const [analyticsReportingServer, setAnalyticsReportingServer] = useState<string>("");
   const [mboxName, setMboxName] = useState<string>("");
+  const [admin, setAdmin] = useState<string>("");
   const [mboxParams, setMboxParams] = useState<string>("{}"); // JSON parameters input
   const [environment, setEnvironment] = useState<string>("prod"); // Default to prod
   const [customEdgeHost, setCustomEdgeHost] = useState<string>(""); // State for custom edge host
@@ -24,11 +25,11 @@ const App: React.FC = () => {
         setAnalyticsReportSuite(parsedData.analyticsReportSuite || "");
         setEnvironment(parsedData.environment || "prod"); // Default to prod
         setCustomEdgeHost(parsedData.customEdgeHost || ""); // Load customEdgeHost from storage
-
         // Ensure mboxParams is always a valid JSON string
         setMboxParams(
           parsedData.mboxParams ? JSON.stringify(parsedData.mboxParams, null, 2) : "{}"
         );
+        setAdmin(parsedData.admin || "");
       } catch (error) {
         console.error("Error parsing localStorage data:", error);
         localStorage.removeItem(STORAGE_KEY); // Clear corrupted storage
@@ -50,12 +51,13 @@ const App: React.FC = () => {
           environment,
           mboxParams: parsedParams,
           customEdgeHost, // Save customEdgeHost to localStorage
+          admin
         })
       );
     } catch (error) {
       console.error("Invalid JSON in mboxParams, not saving:", error);
     }
-  }, [tenant, org, analyticsReportingServer, analyticsReportSuite, environment, mboxParams, customEdgeHost]);
+  }, [tenant, org, analyticsReportingServer, analyticsReportSuite, environment, mboxParams, customEdgeHost, admin]);
 
   const handleStartDebugging = (): void => {
     try {
@@ -71,6 +73,7 @@ const App: React.FC = () => {
             environment, // Include environment in the payload
             mboxParams: parsedParams, // Send parsed JSON params
             customEdgeHost, // Send customEdgeHost to content script
+            admin
           });
         }
       });
@@ -105,7 +108,7 @@ const App: React.FC = () => {
           placeholder="Enter Tenant ID"
         />
       </label>
-      <br />
+      <br/>
       <label>
         Org:
         <input
@@ -115,7 +118,7 @@ const App: React.FC = () => {
           placeholder="Enter Org ID"
         />
       </label>
-      <br />
+      <br/>
       <label>
         Analytics Reporting Server:
         <input
@@ -125,7 +128,7 @@ const App: React.FC = () => {
           placeholder="Enter Reporting Server"
         />
       </label>
-      <br />
+      <br/>
       <label>
         Analytics Report Suite:
         <input
@@ -135,7 +138,7 @@ const App: React.FC = () => {
           placeholder="Enter Report Suite"
         />
       </label>
-      <br />
+      <br/>
       <label>
         Environment:
         <select value={environment} onChange={(e) => setEnvironment(e.target.value)}>
@@ -143,7 +146,16 @@ const App: React.FC = () => {
           <option value="stage">Staging</option>
         </select>
       </label>
-      <br />
+      <label>
+        Admin:
+        <input
+          type="text"
+          value={admin}
+          onChange={(e) => setAdmin(e.target.value)}
+          placeholder="Enter Admin"
+        />
+      </label>
+      <br/>
       <label>
         MboxName:
         <input
@@ -153,7 +165,7 @@ const App: React.FC = () => {
           placeholder="Enter MboxName"
         />
       </label>
-      <br />
+      <br/>
       <label>
         JSON Parameters:
         <textarea
@@ -163,7 +175,7 @@ const App: React.FC = () => {
           style={{ width: "100px", height: "100px" }}
         />
       </label>
-      <br />
+      <br/>
       <label>
         Custom Edge Host:
         <input
@@ -173,7 +185,7 @@ const App: React.FC = () => {
           placeholder="Enter Custom Edge Host"
         />
       </label>
-      <br />
+      <br/>
       <button onClick={handleStartDebugging} disabled={isStartDebuggingDisabled}>
         Start Debugging
       </button>
