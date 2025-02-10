@@ -43601,31 +43601,48 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _ProductUtil_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ProductUtil.css */ "./src/react-ui/components/ProductUtil.css");
+/* harmony import */ var _lib_atJs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../lib/atJs */ "./src/react-ui/lib/atJs.ts");
 
 
-const generateProductViewPlaceholder = (entityId) => ({
-    "entity.id": entityId,
-});
-const generateProductBuyPlaceholder = (entityId, productValue) => ({
-    orderId: `${Date.now()}-${entityId}`,
-    orderTotal: productValue,
-    productPurchaseId: entityId,
-});
-const _generateEvent = (type, entityId, productValue, count, setCurrent, onClose) => {
-    let interval = setInterval(() => {
-        if (count <= 0) {
+
+const getNewCookiePCValue = (token) => {
+    return `cookie-${token}`;
+};
+const updateQueryParams = (key, value) => {
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set(key, value);
+    window.history.replaceState({}, '', `${window.location.pathname}?${urlParams}`);
+};
+const generate = (entityId, unique, views, type, setCurrent, onClose, productValue) => {
+    let mcId;
+    if (unique) {
+        mcId = `${(0,_lib_atJs__WEBPACK_IMPORTED_MODULE_2__.generateToken)(2)}-${(0,_lib_atJs__WEBPACK_IMPORTED_MODULE_2__.generateToken)(2)}`;
+        updateQueryParams("MCID", mcId);
+        updateQueryParams("PC", getNewCookiePCValue((0,_lib_atJs__WEBPACK_IMPORTED_MODULE_2__.generateToken)()));
+        updateQueryParams("mboxSession", (0,_lib_atJs__WEBPACK_IMPORTED_MODULE_2__.generateToken)());
+    }
+    else {
+        mcId = window.location.search.includes("MCID") ? new URLSearchParams(window.location.search).get("MCID") : "";
+    }
+    const interval = setInterval(() => {
+        if (views <= 0) {
             clearInterval(interval);
             onClose();
             return;
         }
         const requestPayload = type === "views"
-            ? generateProductViewPlaceholder(entityId)
-            : generateProductBuyPlaceholder(entityId, productValue);
+            ? { "entity.id": entityId }
+            : {
+                orderId: `${Date.now()}-${entityId}`,
+                orderTotal: `${productValue}`,
+                productPurchaseId: entityId,
+            };
+        console.log("requestPayload", requestPayload);
         window.adobe.target
             ?.getOffers({
             request: {
                 id: {
-                    marketingCloudVisitorId: "mcId",
+                    marketingCloudVisitorId: mcId,
                 },
                 execute: {
                     pageLoad: {
@@ -43638,10 +43655,14 @@ const _generateEvent = (type, entityId, productValue, count, setCurrent, onClose
             window.adobe.target?.applyOffers({ response });
         })
             .finally(() => {
-            setCurrent(count - 1);
+            setCurrent(views - 1);
+            if (views === 1) {
+                clearInterval(interval);
+                onClose();
+            }
         });
-        count -= 1;
-    }, 100);
+        views -= 1;
+    }, 300);
 };
 const ProductUtil = ({ mcId, tntId, isOpen, onClose }) => {
     const [entityId, setEntityId] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)("");
@@ -43649,6 +43670,7 @@ const ProductUtil = ({ mcId, tntId, isOpen, onClose }) => {
     const [views, setViews] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1);
     const [buys, setBuys] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1);
     const [current, setCurrent] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0);
+    const [isUnique, setIsUnique] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true); // Added isUnique state
     if (!isOpen)
         return null; // Prevent rendering when closed
     return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "profile-modal" },
@@ -43662,11 +43684,14 @@ const ProductUtil = ({ mcId, tntId, isOpen, onClose }) => {
             react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "group" },
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", null, "Number of Views:"),
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { type: "number", value: views, onChange: (e) => setViews(Number(e.target.value)) }),
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", { className: "generate-btn", onClick: () => _generateEvent("views", entityId, productValue, views, setCurrent, onClose) }, "Generate Views")),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", { className: "generate-btn", onClick: () => generate(entityId, isUnique, views, "views", setCurrent, onClose) }, "Generate Views")),
             react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "group" },
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", null, "Number of Buys:"),
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { type: "number", value: buys, onChange: (e) => setBuys(Number(e.target.value)) }),
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", { className: "generate-btn", onClick: () => _generateEvent("buys", entityId, productValue, buys, setCurrent, onClose) }, "Generate Buys")))));
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", { className: "generate-btn", onClick: () => generate(entityId, isUnique, buys, "buys", setCurrent, onClose, productValue) }, "Generate Buys")),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "group" },
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", null, "Unique:"),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { type: "checkbox", checked: isUnique, onChange: () => setIsUnique(!isUnique) })))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ProductUtil);
 

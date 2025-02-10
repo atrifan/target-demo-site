@@ -7,6 +7,7 @@ declare global {
     AppMeasurement: any;
     s_gi: (any) => void;
     extension_data: any;
+    alloy: any;
     adobe: {
       target?: {
         triggerView: (viewName: string) => void;
