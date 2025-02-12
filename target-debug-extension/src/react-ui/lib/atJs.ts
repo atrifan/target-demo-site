@@ -206,6 +206,9 @@ export const generateViewsWithConversions = (uniqueVisitors: boolean, number: st
 
       window.adobe.target?.getOffers({
         request: {
+          property: {
+            token: window.extension_data.atProperty,
+          },
           mid: {
             marketingCloudVisitorId: mcId,
           },
@@ -229,18 +232,22 @@ export const generateViewsWithConversions = (uniqueVisitors: boolean, number: st
                   "user.country": profileData.country,
                   "user.hobby": profileData.hobby,
                   "user.age": profileData.age,
-                  "brand.bought": "offline"
+                  "brand.bought": "offline",
+                  ...window.extension_data.profileParameters
                 }
               }
             }) : undefined,
             pageLoad: mboxes.length == 0 ? {
-              parameters: parameters,
+              parameters: {
+                ...parameters
+              },
               profileParameters: {
                 "user.422": `${profileData.displayName}-${Date.now()}`,
                 "user.country": profileData.country,
                 "user.hobby": profileData.hobby,
                 "user.age": profileData.age,
-                "brand.bought": "offline"
+                "brand.bought": "offline",
+                ...window.extension_data.profileParameters
               }
             } : undefined
           }
@@ -318,7 +325,8 @@ export function generateNotificationRequest(el: any, type: string, profileData?:
       "user.country": profileData.country,
       "user.hobby": profileData.hobby,
       "user.age": profileData.age,
-      "brand.bought": "offline"
+      "brand.bought": "offline",
+      ...window.extension_data.profileParameters
     }: undefined,
     order: el.order,
     product: el.product

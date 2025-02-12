@@ -100,26 +100,36 @@ const App: React.FC<XperienceProps> = ({displayName, country, hobby, age}) => {
           "user.422": displayName,
           "user.country": country,
           "user.hobby": hobby,
-          "user.age": age
+          "user.age": age,
+          ...window.extension_data.profileParameters
         }
       }
     });
 
     let deliveryRequest: any = {
+      property: {
+        token: window.extension_data.atProperty,
+      },
       execute: {
         pageLoad: {
-          parameters: parameters,
+          parameters: {
+            ...parameters
+          },
           profileParameters: {
             "user.422": displayName,
             "user.country": country,
             "user.hobby": hobby,
-            "user.age": age
+            "user.age": age,
+            ...window.extension_data.profileParameters
           }
         }
       }
     }
     if (mboxes.length > 0) {
       deliveryRequest = {
+        property: {
+          token: window.extension_data.atProperty,
+        },
         execute: {
           mboxes: mboxes
         }
@@ -133,8 +143,18 @@ const App: React.FC<XperienceProps> = ({displayName, country, hobby, age}) => {
     AtJs().then(() => {
       console.log(" loaded at.js" , window.adobe);
       if (window.adobe && window.adobe.target) {
+        console.log({
+          request: {
+            property: deliveryRequest.property,
+            id: {
+              marketingCloudVisitorId: mcIdToUse,
+            },
+            execute: deliveryRequest.execute
+          }
+        });
         window.adobe.target.getOffers({
           request: {
+            property: deliveryRequest.property,
             id: {
               marketingCloudVisitorId: mcIdToUse,
             },

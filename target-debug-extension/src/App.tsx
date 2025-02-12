@@ -12,6 +12,8 @@ const App: React.FC = () => {
   const [mboxParams, setMboxParams] = useState<string>("{}"); // JSON parameters input
   const [environment, setEnvironment] = useState<string>("prod"); // Default to prod
   const [customEdgeHost, setCustomEdgeHost] = useState<string>(""); // State for custom edge host
+  const [profileParameters, setProfileParameters] = useState<string>("{}");
+  const [atProperty, setAtProperty] = useState<string>("");
 
   useEffect(() => {
     // Load saved values from localStorage
@@ -25,10 +27,15 @@ const App: React.FC = () => {
         setAnalyticsReportSuite(parsedData.analyticsReportSuite || "");
         setEnvironment(parsedData.environment || "prod"); // Default to prod
         setCustomEdgeHost(parsedData.customEdgeHost || ""); // Load customEdgeHost from storage
+        setAtProperty(parsedData.atProperty || "");
+
         // Ensure mboxParams is always a valid JSON string
         setMboxParams(
           parsedData.mboxParams ? JSON.stringify(parsedData.mboxParams, null, 2) : "{}"
         );
+        setProfileParameters(
+          parsedData.profileParameters ? JSON.stringify(parsedData.profileParameters, null, 2) : "{}"
+        )
         setAdmin(parsedData.admin || "");
       } catch (error) {
         console.error("Error parsing localStorage data:", error);
@@ -41,6 +48,7 @@ const App: React.FC = () => {
     try {
       // Ensure mboxParams is valid before saving
       const parsedParams = JSON.parse(mboxParams);
+      const parsedProfileParams = JSON.parse(profileParameters);
       localStorage.setItem(
         STORAGE_KEY,
         JSON.stringify({
@@ -51,17 +59,20 @@ const App: React.FC = () => {
           environment,
           mboxParams: parsedParams,
           customEdgeHost, // Save customEdgeHost to localStorage
-          admin
+          admin,
+          profileParameters: parsedProfileParams,
+          atProperty
         })
       );
     } catch (error) {
       console.error("Invalid JSON in mboxParams, not saving:", error);
     }
-  }, [tenant, org, analyticsReportingServer, analyticsReportSuite, environment, mboxParams, customEdgeHost, admin]);
+  }, [tenant, org, analyticsReportingServer, analyticsReportSuite, environment, mboxParams, customEdgeHost, admin, profileParameters, atProperty]);
 
   const handleStartDebugging = (): void => {
     try {
       const parsedParams = JSON.parse(mboxParams); // Validate JSON
+      const parsedProfileParams = JSON.parse(profileParameters);
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         if (tabs.length > 0 && tabs[0].id !== undefined) {
           chrome.tabs.sendMessage(tabs[0].id, {
@@ -73,7 +84,9 @@ const App: React.FC = () => {
             environment, // Include environment in the payload
             mboxParams: parsedParams, // Send parsed JSON params
             customEdgeHost, // Send customEdgeHost to content script
-            admin
+            admin,
+            profileParameters: parsedProfileParams,
+            atProperty
           });
         }
       });
@@ -146,6 +159,7 @@ const App: React.FC = () => {
           <option value="stage">Staging</option>
         </select>
       </label>
+      <br/>
       <label>
         Admin:
         <input
@@ -153,6 +167,16 @@ const App: React.FC = () => {
           value={admin}
           onChange={(e) => setAdmin(e.target.value)}
           placeholder="Enter Admin"
+        />
+      </label>
+      <br/>
+      <label>
+        at_property:
+        <input
+          type="text"
+          value={atProperty}
+          onChange={(e) => setAtProperty(e.target.value)}
+          placeholder="Enter at_property"
         />
       </label>
       <br/>
@@ -172,6 +196,16 @@ const App: React.FC = () => {
           value={mboxParams}
           onChange={(e) => setMboxParams(e.target.value)}
           placeholder="Enter JSON Parameters"
+          style={{ width: "100px", height: "100px" }}
+        />
+      </label>
+      <br/>
+      <label>
+        Profile Parameters:
+        <textarea
+          value={profileParameters}
+          onChange={(e) => setProfileParameters(e.target.value)}
+          placeholder="Enter Profile Parameters"
           style={{ width: "100px", height: "100px" }}
         />
       </label>

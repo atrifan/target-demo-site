@@ -8,7 +8,7 @@ if (!head) {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'INIT_EXTENSION') {
     console.log(message);
-    const { tenant, org, analyticsReportingServer, analyticsReportSuite, mboxParams, environment, customEdgeHost, admin } = message;
+    const { tenant, org, analyticsReportingServer, analyticsReportSuite, mboxParams, environment, customEdgeHost, admin, profileParameters, atProperty } = message;
 
     // Ensure the data is available
     if (!tenant || !org) {
@@ -28,6 +28,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         console.log((window as any).adobe);
 
         // Send a message to background.ts with the required parameters
+        console.log("PROFILE: ", profileParameters);
         chrome.runtime.sendMessage({
           action: 'executeAdobeTargetScript',
           tenant: tenant,
@@ -37,7 +38,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           mboxParams: mboxParams,
           environment: environment,
           customEdgeHost: customEdgeHost,
-          admin: admin
+          admin: admin,
+          profileParameters: profileParameters,
+          atProperty: atProperty
         }, (response) => {
           console.log(`Response from background.ts: ${response}`);
           const scriptNames = ["AppMeasurement.js"];

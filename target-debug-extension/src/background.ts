@@ -9,9 +9,7 @@ chrome.runtime.onInstalled.addListener(() => {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'executeAdobeTargetScript') {
     console.log(message);
-    const { tenant, org, analyticsReportingServer, reportSuite, mboxParams, environment, customEdgeHost, admin } = message;
-
-    console.log(mboxParams)
+    const { tenant, org, analyticsReportingServer, reportSuite, mboxParams, environment, customEdgeHost, admin, profileParameters, atProperty } = message;
 
     // Get the tabId (you'll need to get it from the sender if necessary)
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -21,7 +19,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         chrome.scripting.executeScript({
           target: { tabId: tabId },
           world: 'MAIN', // Runs in the page’s main execution context
-          func: (tenant, org, analyticsReportingServer, reportSuite, extensionId, mboxParams, environment, customEdgeHost, admin) => {
+          func: (tenant, org, analyticsReportingServer, reportSuite, extensionId, mboxParams, environment, customEdgeHost, admin, profileParameters, atProperty) => {
             let edgeHost = `${tenant}.tt.omtrdc.net`;
             if (environment === 'stage') {
               edgeHost = 'mboxedge1.tt-stage1.omtrdc.net';
@@ -76,14 +74,16 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 mboxParams,
                 environment,
                 edgeHost,
-                admin
+                admin,
+                profileParameters,
+                atProperty
               };
 
             } else {
               console.error('Adobe Target is not available on this page.');
             }
           },
-          args: [tenant, org, analyticsReportingServer, reportSuite, extensionId, mboxParams, environment, customEdgeHost, admin],
+          args: [tenant, org, analyticsReportingServer, reportSuite, extensionId, mboxParams, environment, customEdgeHost, admin, profileParameters, atProperty],
         }, (injectionResults) => {
           // Handle the results of the injected script
           const [result] = injectionResults;
