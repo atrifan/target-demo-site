@@ -209,7 +209,7 @@ export const generateViewsWithConversions = (uniqueVisitors: boolean, number: st
           property: {
             token: window.extension_data.atProperty,
           },
-          mid: {
+          id: {
             marketingCloudVisitorId: mcId,
           },
           experienceCloud: {
