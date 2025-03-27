@@ -86,6 +86,14 @@ const Product: React.FC<ProductProps> = ({ product, onSelectProduct, mcId }) => 
         </div>
       </div>
 
+      <div className="similarity-section image-similarity">
+        <h2>Image similarity</h2>
+        <div className="similar-products">
+          Image Similarity
+        </div>
+      </div>
+
+
       <div className="similarity-section">
         <h2>Product List</h2>
         <Products onSelectProduct={onSelectProduct} providedEntityId={product?.entityId}/>
