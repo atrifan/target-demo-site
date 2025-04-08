@@ -420,7 +420,7 @@ export function sendNotificationAnalytics(tntA :string|undefined, el: any, algor
       tntaData = `${revenueEvent[0]}|0,${tntaData}`;
     }
 
-    let viewsLink = `https://${reportingServer}/b/ss/atetrifandemo/0/TA-1.0?pe=tnt&tnta=${tntaData}&mid=${mcId}&c.a.target.sessionid=${el.analytics.payload["session-id"]}`
+    let viewsLink = `https://${reportingServer}/b/ss/${window.extension_data.reportSuite || 'atetrifandemo' }/0/TA-1.0?pe=tnt&tnta=${tntaData}&mid=${mcId}&c.a.target.sessionid=${el.analytics.payload["session-id"]}`
     fetch(viewsLink, {
       method: "GET",
       headers: {
@@ -437,7 +437,7 @@ export function sendNotificationAnalytics(tntA :string|undefined, el: any, algor
 
       if(conversion && conversionEvent && (el.options[0].responseTokens["experience.id"] == experienceIndex ||
         (experienceIndex == -100 || experienceIndex == undefined))) {
-        viewsLink = `https://${reportingServer}/b/ss/atetrifandemo/0/TA-1.0?pe=tnt&tnta=${revenueEvent[0]}|32767,${revenueEvent[0]}|${conversionEvent?.replace("event","")}|${conversionValue}&mid=${mcId}&c.a.target.sessionid=${el.analytics.payload["session-id"]}&events=${conversionEvent}=${conversionValue}`
+        viewsLink = `https://${reportingServer}/b/ss/${window.extension_data.reportSuite || 'atetrifandemo' }/0/TA-1.0?pe=tnt&tnta=${revenueEvent[0]}|32767,${revenueEvent[0]}|${conversionEvent?.replace("event","")}|${conversionValue}&mid=${mcId}&c.a.target.sessionid=${el.analytics.payload["session-id"]}&events=${conversionEvent}=${conversionValue}`
         setTimeout(()=>{
           fetch(viewsLink, {
             method: "GET",
