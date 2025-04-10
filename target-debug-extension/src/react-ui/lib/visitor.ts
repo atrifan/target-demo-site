@@ -1,7 +1,7 @@
 export default function getMcId() {
   const visitor = window.Visitor?.getInstance(window.extension_data.org || "011B56B451AE49A90A490D4D@AdobeOrg", {
-    trackingServer: window.extension_data.analyticsReportingServer || "adobetargeteng.d1.sc.omtrdc.net",      // Replace with your tracking server
-    trackingServerSecure: window.extension_data.analyticsReportingServer || "adobetargeteng.d1.sc.omtrdc.net",  // Optional, for HTTPS
+    trackingServer: window.extension_data.analyticsReportingServer || `${window.extension_data.tenant}.com.sc.omtrdc.net`,      // Replace with your tracking server
+    trackingServerSecure: window.extension_data.analyticsReportingServer || `${window.extension_data.tenant}.com.ssl.sc.omtrdc.net`,  // Optional, for HTTPS
   });
   const mcId = visitor.getMarketingCloudVisitorID();
   console.log(mcId);
@@ -10,8 +10,8 @@ export default function getMcId() {
 
 export function getSdId() {
   const visitor = window.Visitor?.getInstance(window.extension_data.org || "011B56B451AE49A90A490D4D@AdobeOrg", {
-    trackingServer: window.extension_data.analyticsReportingServer || "adobetargeteng.d1.sc.omtrdc.net",      // Replace with your tracking server
-    trackingServerSecure: window.extension_data.analyticsReportingServer || "adobetargeteng.d1.sc.omtrdc.net",  // Optional, for HTTPS
+    trackingServer: window.extension_data.analyticsReportingServer || `${window.extension_data.tenant}.com.sc.omtrdc.net`,      // Replace with your tracking server
+    trackingServerSecure: window.extension_data.analyticsReportingServer || `${window.extension_data.tenant}.com.ssl.sc.omtrdc.net`,  // Optional, for HTTPS
   });
   const sdId = visitor.getSupplementalDataID();
   console.log(sdId);

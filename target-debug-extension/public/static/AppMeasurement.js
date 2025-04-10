@@ -34,7 +34,7 @@ s.linkTrackEvents="None"
  changes to how your visitor data is collected.  Changes should only be
  made when instructed to do so by your account manager.*/
 s.visitorNamespace = window.extension_data.tenant
-s.trackingServer = window.extension_data.analyticsReportingServer
+s.trackingServer = window.extension_data.analyticsReportingServer.startsWith('s') ? window.extension_data.analyticsReportingServer.slice(1) : window.extension_data.analyticsReportingServer
 s.trackingServerSecure = window.extension_data.analyticsReportingServer
 
 /*

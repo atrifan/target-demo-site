@@ -214,7 +214,8 @@ export const generateViewsWithConversions = (uniqueVisitors: boolean, number: st
           },
           experienceCloud: {
             analytics: {
-              trackingServer: reportingServer,
+              trackingServer: reportingServer || `${window.extension_data.tenant}.com.sc.omtrdc.net`,
+              trackingServerSecure: reportingServer || `${window.extension_data.tenant}.com.ssl.sc.omtrdc.net`,
               logging: !isTarget ? "client_side" : "server_side"
             }
           },
