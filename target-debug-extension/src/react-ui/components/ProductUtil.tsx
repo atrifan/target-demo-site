@@ -86,7 +86,6 @@ const ProductUtil: React.FC<ProductUtilProps> = ({ mcId, tntId, isOpen, onClose,
                   index: idx,
                   name: mboxName,
                   parameters: {
-                    ...parameters,
                     ...requestPayload
                   },
                   profileParameters: {
@@ -96,7 +95,7 @@ const ProductUtil: React.FC<ProductUtilProps> = ({ mcId, tntId, isOpen, onClose,
               }) : undefined,
               pageLoad: mboxesToSend.length == 0 ? {
                 parameters: {
-                  ...parameters
+                  ...requestPayload
                 },
                 profileParameters: {
                   ...window.extension_data.profileParameters
