@@ -55,6 +55,11 @@ const UtilityFloater: React.FC<UtilityFloaterProps> = ({
     setTrafficModalOpen((prevState) => !prevState);
   };
 
+  const openProductUtil = () => {
+    extractMboxesFromDOM();
+    setProductUtilOpen((prevState) => !prevState);
+  }
+
   return (
     <>
       {/* Refresh Button */}
@@ -73,7 +78,7 @@ const UtilityFloater: React.FC<UtilityFloaterProps> = ({
       </div>
 
       {/* Product Utility Button */}
-      <div className="floating-product-button" onClick={() => setProductUtilOpen(true)}>
+      <div className="floating-product-button" onClick={openProductUtil}>
         <img src="https://cdn-icons-png.freepik.com/256/12783/12783710.png?semt=ais_hybrid" alt="Product Util" />
       </div>
 
@@ -118,12 +123,15 @@ const UtilityFloater: React.FC<UtilityFloaterProps> = ({
       )}
 
       {/* Product Utility Modal */}
-      <ProductUtil
-        mcId={mcId}
-        tntId={tntId}
-        isOpen={isProductUtilOpen}
-        onClose={() => setProductUtilOpen(false)}
-      />
+      {isProductUtilOpen && (
+        <ProductUtil
+          mcId={mcId}
+          tntId={tntId}
+          isOpen={isProductUtilOpen}
+          onClose={() => setProductUtilOpen(false)}
+          mboxes={mboxes}
+        />
+      )}
 
       {/* Hits Modal */}
       <HitsModal
