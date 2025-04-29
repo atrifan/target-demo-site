@@ -6,7 +6,7 @@ import ProfileModal from './ProfileModal';
 import ProductUtil from './ProductUtil';
 
 interface UtilityFloaterProps {
-  handlePersonaSave: (providedMcId?: string, providedTntId?: string) => void;
+  handlePersonaSave: (providedMcId?: string, providedTntId?: string, mboxSession?: string) => void;
   mcId: string;
   tntId: string;
   displayName: string;
@@ -60,26 +60,33 @@ const UtilityFloater: React.FC<UtilityFloaterProps> = ({
     setProductUtilOpen((prevState) => !prevState);
   }
 
+  const params = new URLSearchParams(window.location.search);
+  const mboxSession = params.get("mboxSession") || undefined;
+
   return (
     <>
       {/* Refresh Button */}
+      <div className="floating-refresh-button-inplace" onClick={() => handlePersonaSave(undefined, tntId, mboxSession)}>
+        <img src="https://cdn-icons-png.freepik.com/256/10152/10152078.png?semt=ais_hybrid" alt="Refresh Same client"/>
+      </div>
+
       <div className="floating-refresh-button" onClick={() => handlePersonaSave()}>
-        <img src="https://cdn-icons-png.freepik.com/256/10152/10152078.png?semt=ais_hybrid" alt="Refresh" />
+        <img src="https://cdn-icons-png.freepik.com/256/10152/10152078.png?semt=ais_hybrid" alt="Refresh"/>
       </div>
 
       {/* Profile Button */}
       <div className="floating-profile-button" onClick={() => setProfileModalOpen(true)}>
-        <img src="https://cdn-icons-png.freepik.com/256/847/847969.png" alt="Profile" />
+        <img src="https://cdn-icons-png.freepik.com/256/847/847969.png" alt="Profile"/>
       </div>
 
       {/* Traffic Generator Button */}
       <div className="floating-traffic-button" onClick={openTrafficModal}>
-        <img src="https://cdn-icons-png.flaticon.com/512/17076/17076762.png" alt="Traffic Generator" />
+        <img src="https://cdn-icons-png.flaticon.com/512/17076/17076762.png" alt="Traffic Generator"/>
       </div>
 
       {/* Product Utility Button */}
       <div className="floating-product-button" onClick={openProductUtil}>
-        <img src="https://cdn-icons-png.freepik.com/256/12783/12783710.png?semt=ais_hybrid" alt="Product Util" />
+        <img src="https://cdn-icons-png.freepik.com/256/12783/12783710.png?semt=ais_hybrid" alt="Product Util"/>
       </div>
 
       {/* Profile Modal */}

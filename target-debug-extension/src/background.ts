@@ -23,6 +23,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             let edgeHost = `${tenant}.tt.omtrdc.net`;
             if (environment === 'stage') {
               edgeHost = 'mboxedge1.tt-stage1.omtrdc.net';
+            } else if(environment === 'qe') {
+              edgeHost = 'mboxedge2.tt-qe5.omtrdc.net';
             }
 
             if (customEdgeHost && customEdgeHost !== '') {

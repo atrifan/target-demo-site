@@ -157,6 +157,7 @@ const App: React.FC = () => {
         <select value={environment} onChange={(e) => setEnvironment(e.target.value)}>
           <option value="prod">Production</option>
           <option value="stage">Staging</option>
+          <option value="qe">QE</option>
         </select>
       </label>
       <br/>
