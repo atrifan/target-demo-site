@@ -18,11 +18,18 @@ export function getSdId() {
   return sdId;
 }
 
-export function trackEvent(event: string, mcId: string, sdId: string = window.s.visitor.getSupplementalDataID()) {
+export function trackEvent(event: string, mcId: string, sdId: string = window.s.visitor.getSupplementalDataID(), obj: any = {}) {
   console.log(window.s.supplementalDataID);
   window.s.account = window.extension_data.reportSuite || "atetrifandemo";
   window.s.events = event;
   window.s.marketingCloudVisitorID = mcId;
   window.s.supplementalDataID = sdId;
+
+  if (obj) {
+    Object.keys(obj).forEach((key) => {
+      window.s[key] = obj[key];
+    });
+  }
+
   window.s.t();
 }

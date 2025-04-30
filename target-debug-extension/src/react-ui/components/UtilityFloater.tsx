@@ -135,6 +135,9 @@ const UtilityFloater: React.FC<UtilityFloaterProps> = ({
           mcId={mcId}
           tntId={tntId}
           isOpen={isProductUtilOpen}
+          setTotal={setTotal}
+          setCurrent={setCurrent}
+          setModalVisible={setModalVisible}
           onClose={() => setProductUtilOpen(false)}
           mboxes={mboxes}
         />
