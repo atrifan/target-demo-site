@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./App.css";
 
 const STORAGE_KEY = "target-debug-extension";
 
@@ -6,6 +7,7 @@ const App: React.FC = () => {
   const [tenant, setTenant] = useState<string>("");
   const [analyticsReportSuite, setAnalyticsReportSuite] = useState<string>("");
   const [org, setOrg] = useState<string>("");
+  const [dataStreamId, setDataStreamId] = useState<string>("");
   const [analyticsReportingServer, setAnalyticsReportingServer] = useState<string>("");
   const [mboxName, setMboxName] = useState<string>("");
   const [admin, setAdmin] = useState<string>("");
@@ -14,6 +16,8 @@ const App: React.FC = () => {
   const [customEdgeHost, setCustomEdgeHost] = useState<string>(""); // State for custom edge host
   const [profileParameters, setProfileParameters] = useState<string>("{}");
   const [atProperty, setAtProperty] = useState<string>("");
+  const [sdkType, setSdkType] = useState<string>("atjs"); // NEW STATE
+
 
   useEffect(() => {
     // Load saved values from localStorage
@@ -28,6 +32,8 @@ const App: React.FC = () => {
         setEnvironment(parsedData.environment || "prod"); // Default to prod
         setCustomEdgeHost(parsedData.customEdgeHost || ""); // Load customEdgeHost from storage
         setAtProperty(parsedData.atProperty || "");
+        setDataStreamId(parsedData.dataStreamId || "");
+        setSdkType(parsedData.sdkType || "atjs"); // Load sdkType from storage
 
         // Ensure mboxParams is always a valid JSON string
         setMboxParams(
@@ -61,13 +67,15 @@ const App: React.FC = () => {
           customEdgeHost, // Save customEdgeHost to localStorage
           admin,
           profileParameters: parsedProfileParams,
-          atProperty
+          atProperty,
+          sdkType,
+          dataStreamId
         })
       );
     } catch (error) {
       console.error("Invalid JSON in mboxParams, not saving:", error);
     }
-  }, [tenant, org, analyticsReportingServer, analyticsReportSuite, environment, mboxParams, customEdgeHost, admin, profileParameters, atProperty]);
+  }, [tenant, org, analyticsReportingServer, analyticsReportSuite, environment, mboxParams, customEdgeHost, admin, profileParameters, atProperty, sdkType, dataStreamId]);
 
   const handleStartDebugging = (): void => {
     try {
@@ -86,7 +94,9 @@ const App: React.FC = () => {
             customEdgeHost, // Send customEdgeHost to content script
             admin,
             profileParameters: parsedProfileParams,
-            atProperty
+            atProperty,
+            sdkType,
+            dataStreamId
           });
         }
       });
@@ -107,11 +117,35 @@ const App: React.FC = () => {
     });
   };
 
-  const isStartDebuggingDisabled = !(tenant && org);
+  const isStartDebuggingDisabled = !(tenant && org && sdkType === "atjs") &&
+    !(dataStreamId && sdkType === "websdk");
 
   return (
     <div className="App">
-      <h1>Target Debug Extension</h1>
+      <h3>Target Debug Extension</h3>
+      <label>
+        SDK Type:
+        <div className="radio-options">
+          <label className="radio-item">
+            <span>atjs</span>
+            <input
+              type="radio"
+              value="atjs"
+              checked={sdkType === "atjs"}
+              onChange={(e) => setSdkType(e.target.value)}
+            />
+          </label>
+          <label className="radio-item">
+            <span>websdk</span>
+            <input
+              type="radio"
+              value="websdk"
+              checked={sdkType === "websdk"}
+              onChange={(e) => setSdkType(e.target.value)}
+            />
+          </label>
+        </div>
+      </label>
       <label>
         Tenant:
         <input
@@ -121,7 +155,6 @@ const App: React.FC = () => {
           placeholder="Enter Tenant ID"
         />
       </label>
-      <br/>
       <label>
         Org:
         <input
@@ -131,7 +164,15 @@ const App: React.FC = () => {
           placeholder="Enter Org ID"
         />
       </label>
-      <br/>
+      <label>
+        DataStream Id:
+        <input
+          type="text"
+          value={dataStreamId}
+          onChange={(e) => setDataStreamId(e.target.value)}
+          placeholder="Enter DataStream Id"
+        />
+      </label>
       <label>
         Analytics Reporting Server:
         <input
@@ -141,7 +182,6 @@ const App: React.FC = () => {
           placeholder="Enter Reporting Server"
         />
       </label>
-      <br/>
       <label>
         Analytics Report Suite:
         <input
@@ -151,7 +191,6 @@ const App: React.FC = () => {
           placeholder="Enter Report Suite"
         />
       </label>
-      <br/>
       <label>
         Environment:
         <select value={environment} onChange={(e) => setEnvironment(e.target.value)}>
@@ -160,7 +199,6 @@ const App: React.FC = () => {
           <option value="qe">QE</option>
         </select>
       </label>
-      <br/>
       <label>
         Admin:
         <input
@@ -170,7 +208,6 @@ const App: React.FC = () => {
           placeholder="Enter Admin"
         />
       </label>
-      <br/>
       <label>
         at_property:
         <input
@@ -180,7 +217,6 @@ const App: React.FC = () => {
           placeholder="Enter at_property"
         />
       </label>
-      <br/>
       <label>
         MboxName:
         <input
@@ -190,27 +226,22 @@ const App: React.FC = () => {
           placeholder="Enter MboxName"
         />
       </label>
-      <br/>
       <label>
         JSON Parameters:
         <textarea
           value={mboxParams}
           onChange={(e) => setMboxParams(e.target.value)}
           placeholder="Enter JSON Parameters"
-          style={{ width: "100px", height: "100px" }}
         />
       </label>
-      <br/>
       <label>
         Profile Parameters:
         <textarea
           value={profileParameters}
           onChange={(e) => setProfileParameters(e.target.value)}
           placeholder="Enter Profile Parameters"
-          style={{ width: "100px", height: "100px" }}
         />
       </label>
-      <br/>
       <label>
         Custom Edge Host:
         <input
@@ -220,7 +251,6 @@ const App: React.FC = () => {
           placeholder="Enter Custom Edge Host"
         />
       </label>
-      <br/>
       <button onClick={handleStartDebugging} disabled={isStartDebuggingDisabled}>
         Start Debugging
       </button>

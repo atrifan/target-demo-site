@@ -1,38 +1,89 @@
 .App {
-  text-align: center;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f9f9fb;
+  padding: 16px;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 420px;
+  box-sizing: border-box;
+  color: #2c2c2c;
+  font-size: 13px; /* Smaller base font */
+  line-height: 1.4;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.App h3 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 6px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+label {
+  display: block;
+  margin: 6px 0 2px; /* tighter spacing */
+  font-weight: 600;
+  font-size: 12px;
+  color: #444;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 6px 8px;
+  font-size: 13px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+
+textarea {
+  min-height: 100px;
+  font-family: monospace;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #0077cc;
+  outline: none;
+}
+
+.radio-options {
   display: flex;
-  flex-direction: column;
+  gap: 16px; /* space between atjs and websdk */
+  margin-top: 4px;
+}
+
+.radio-item {
+  display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  font-size: 13px;
+  gap: 4px; /* space between text and radio circle */
+}
+
+
+button {
+  margin-top: 12px; /* reduced spacing above */
+  margin-right: 8px; /* space between buttons if multiple on one line */
+  padding: 6px 10px; /* slightly smaller padding */
+  font-size: 13px;
+  font-weight: 600;
+  border: none;
+  border-radius: 4px;
+  background-color: #0077cc;
   color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
 }
 
-.App-link {
-  color: #61dafb;
+button:hover:not(:disabled) {
+  background-color: #005fa3;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
