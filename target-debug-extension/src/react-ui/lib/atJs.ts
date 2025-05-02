@@ -127,7 +127,7 @@ export default async function AtJs(targetPageParams?: any) {
       }
 
 
-      requestScriptInjection(["at.js"], ["at-js"], resolve, reject);
+      requestScriptInjection(["at.js", "mcid.js"], ["at-js", "mcjs"], resolve, reject);
     }
   })
 }

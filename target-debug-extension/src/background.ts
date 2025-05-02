@@ -9,7 +9,7 @@ chrome.runtime.onInstalled.addListener(() => {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'executeAdobeTargetScript') {
     console.log(message);
-    const { tenant, org, analyticsReportingServer, reportSuite, mboxParams, environment, customEdgeHost, admin, profileParameters, atProperty } = message;
+    const { tenant, org, analyticsReportingServer, reportSuite, mboxParams, environment, customEdgeHost, admin, profileParameters, atProperty, sdkType, dataStreamId } = message;
 
     // Get the tabId (you'll need to get it from the sender if necessary)
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -19,7 +19,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         chrome.scripting.executeScript({
           target: { tabId: tabId },
           world: 'MAIN', // Runs in the page’s main execution context
-          func: (tenant, org, analyticsReportingServer, reportSuite, extensionId, mboxParams, environment, customEdgeHost, admin, profileParameters, atProperty) => {
+          func: (tenant, org, analyticsReportingServer, reportSuite, extensionId, mboxParams, environment, customEdgeHost, admin, profileParameters, atProperty, sdkType, dataStreamId) => {
             let edgeHost = `${tenant}.tt.omtrdc.net`;
             if (environment === 'stage') {
               edgeHost = 'mboxedge1.tt-stage1.omtrdc.net';
@@ -31,13 +31,27 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
               edgeHost = customEdgeHost;
             }
 
-            if ((window as any).adobe && (window as any).adobe.target) {
+            (window as any).extension_data = {
+              tenant,
+              org,
+              analyticsReportingServer,
+              reportSuite,
+              mboxParams,
+              environment,
+              edgeHost,
+              admin,
+              profileParameters,
+              atProperty,
+              sdkType,
+              dataStreamId
+            };
+            if (sdkType === "atjs" && (window as any).adobe && (window as any).adobe.target) {
               (window as any).adobe.target.init(window, document, {
                 clientCode: tenant,
                 imsOrgId: org,
                 serverDomain: edgeHost,
                 trackingServer: analyticsReportingServer || `${tenant}.com.sc.omtrdc.net`,
-                trackingServerSecure: analyticsReportingServer || `${tenant}.com.ssl.sc.omtrdc.net` ,
+                trackingServerSecure: analyticsReportingServer || `${tenant}.com.ssl.sc.omtrdc.net`,
                 crossDomain: 'disabled',
                 timeout: 5000,
                 globalMboxName: 'target-global-mbox',
@@ -69,24 +83,17 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 aepSandboxId: null,
                 aepSandboxName: null,
               });
-              (window as any).extension_data = {
-                tenant,
-                org,
-                analyticsReportingServer,
-                reportSuite,
-                mboxParams,
-                environment,
-                edgeHost,
-                admin,
-                profileParameters,
-                atProperty
-              };
-
+            } else if (sdkType === "websdk" && (window as any).adobe && (window as any).adobe.target) {
+              window.alloy("configure", {
+                datastreamId: dataStreamId,
+                orgId: org,
+                debugEnabled: true
+              });
             } else {
               console.error('Adobe Target is not available on this page.');
             }
           },
-          args: [tenant, org, analyticsReportingServer, reportSuite, extensionId, mboxParams, environment, customEdgeHost, admin, profileParameters, atProperty],
+          args: [tenant, org, analyticsReportingServer, reportSuite, extensionId, mboxParams, environment, customEdgeHost, admin, profileParameters, atProperty, sdkType, dataStreamId],
         }, (injectionResults) => {
           // Handle the results of the injected script
           const [result] = injectionResults;

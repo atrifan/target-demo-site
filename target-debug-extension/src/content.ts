@@ -8,19 +8,24 @@ if (!head) {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'INIT_EXTENSION') {
     console.log(message);
-    const { tenant, org, analyticsReportingServer, analyticsReportSuite, mboxParams, environment, customEdgeHost, admin, profileParameters, atProperty } = message;
+    const { tenant, org, analyticsReportingServer, analyticsReportSuite, mboxParams, environment, customEdgeHost, admin, profileParameters, atProperty, sdkType, dataStreamId } = message;
 
+    console.log(`#### -- ${sdkType} -- ####`);
     // Ensure the data is available
-    if (!tenant || !org) {
-      console.error('Missing required extension data');
+    if ((!tenant || !org) && sdkType === "atjs") {
+      console.error('Missing required extension data for atjs');
+      return;
+    }
+
+    if (!dataStreamId && sdkType === "websdk") {
+      console.error('Missing required extension data for websdk');
       return;
     }
 
     // Initialize Adobe Target or other logic here
-    const scriptNames = ["at.js", "mcid.js"];
-    const scriptIds = ["at-js", "mcjs"];
+    const scriptNames = sdkType === "atjs" ? ["at.js", "mcid.js"] : ["alloy.js", "mcid.js", "enforce_alloy.js"];
+    const scriptIds = sdkType === "atjs" ? ["at-js", "mcjs"] : ["alloy-js", "mcjs", "enforce-alloy"];
     const loadedScripts = injectScripts(scriptNames, scriptIds);
-
 
     Promise.all(loadedScripts)
       .then(() => {
@@ -40,7 +45,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           customEdgeHost: customEdgeHost,
           admin: admin,
           profileParameters: profileParameters,
-          atProperty: atProperty
+          atProperty: atProperty,
+          sdkType: sdkType,
+          dataStreamId: dataStreamId
         }, (response) => {
           console.log(`Response from background.ts: ${response}`);
           const scriptNames = ["AppMeasurement.js"];
@@ -225,20 +232,26 @@ function injectScripts(scriptNames: string[], scriptIds: string[]): Promise<bool
 
   // Remove existing scripts if present
   document.querySelectorAll("script").forEach((script) => {
-    // if (script.src && script.src.includes('launch')) {
-    //   console.log(`Removing existing script: ${script.src}`);
-    //   script.remove();
-    // }
-    // if (script.src && script.src.includes('bizible')) {
-    //   console.log(`Removing existing script: ${script.src}`);
-    //   script.remove();
-    // }
-    // if (script.src && script.src.includes('adobetm')) {
-    //   console.log(`Removing existing script: ${script.src}`);
-    //   script.remove();
-    // }
+    if (script.src && script.src.includes('launch')) {
+      console.log(`Removing existing script: ${script.src}`);
+      script.remove();
+    }
+    if (script.src && script.src.includes('bizible')) {
+      console.log(`Removing existing script: ${script.src}`);
+      script.remove();
+    }
+    if (script.src && script.src.includes('adobetm')) {
+      console.log(`Removing existing script: ${script.src}`);
+      script.remove();
+    }
+
     if (script.src && scriptNames.some((name) => script.src.includes(name))) {
       console.log(`Removing existing script: ${script.src}`);
+      script.remove();
+    }
+
+    if (script.id && scriptIds.includes(script.id)) {
+      console.log(`Removing existing script: ${script.id}`);
       script.remove();
     }
   });
