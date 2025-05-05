@@ -87,7 +87,15 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
               window.alloy("configure", {
                 datastreamId: dataStreamId,
                 orgId: org,
-                debugEnabled: true
+                debugEnabled: true,
+                /**
+                 * You could also override the Target environment ID here (if needed) under com_adobe_target.environmentId, or disable/enable Target entirely with com_adobe_target.enabled.
+                 */
+                edgeConfigOverrides: {
+                  com_adobe_target: {
+                    propertyToken: atProperty
+                  }
+                }
               });
             } else {
               console.error('Adobe Target is not available on this page.');

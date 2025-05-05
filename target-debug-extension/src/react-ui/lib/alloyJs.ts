@@ -68,10 +68,19 @@ const requestScriptInjection = (scriptNames: string[], scriptIds: string[], reso
     if (event.data.requestId === requestId) { // Ensure it's the correct response
       console.log(event);
     if (window.extension_data.sdkType === "websdk" && (window as any).alloy) {
+
         window.alloy("configure", {
           datastreamId: window.extension_data.dataStreamId,
           orgId: window.extension_data.org,
-          debugEnabled: true
+          debugEnabled: true,
+          edgeConfigOverrides: {
+            /**
+             * You could also override the Target environment ID here (if needed) under com_adobe_target.environmentId, or disable/enable Target entirely with com_adobe_target.enabled.
+             */
+            com_adobe_target: {
+              propertyToken: window.extension_data.atProperty
+            }
+          }
         }).then((configureData: any) => {
           console.log("Alloy.js configured successfully:", configureData);
           resolve(true);
@@ -221,13 +230,22 @@ export const generateViewsWithConversions = async (
       ...window.extension_data.profileParameters
     };
 
-    const decisionScopes = mboxes.map(m => `__view__:${m}`);
+    let parameters = {};
+
+    if(window.extension_data.mboxParams) {
+      parameters = window.extension_data.mboxParams
+    }
 
     // sendEvent → get propositions
 
+    const mboxParams: any = mboxes.length > 0 ? mboxes.map((mboxName, idx) => {
+      const element = document.getElementsByClassName(`mbox-name-${mboxName}`)[0];
+      return JSON.parse(element.getAttribute('data-mboxparams') || '{}');
+    }) : {}
+
     const resp = await window.alloy!('sendEvent', {
-      renderDecisions: false,
-      decisionScopes,
+      renderDecisions: true,
+      decisionScopes: mboxes.length > 0 ? mboxes : ["__view__"],
       xdm: {
         profile: xdmProfile,
         identityMap: {
@@ -237,15 +255,41 @@ export const generateViewsWithConversions = async (
       data: {
         __adobe: {
           target: {
-            parameters: {...window.extension_data.profileParameters},
+            parameters: parameters,
             profileParameters: xdmProfile,
+            mboxes: mboxes.map((name, index) => ({
+              id: index,
+              name,
+              parameters: {
+                ...parameters,
+                ...(mboxParams[index] || {})
+              }
+            }))
           }
         }
       }
     });
 
     // apply personalization to page
-    await window.alloy!('applyPropositions', { propositions: resp.propositions });
+    //await window.alloy!('applyPropositions', { propositions: resp.propositions });
+    resp.propositions.forEach((proposition: any) => {
+      // Extract the scope and the content
+      const { scope, items } = proposition;
+
+      // Loop through all items in the proposition
+      items.forEach((item: any) => {
+        // Get the content data from the item
+        const content = item.data.content;
+
+        // Find elements with the class "mbox-name-${scope}"
+        const targetElements = document.querySelectorAll(`.mbox-name-${scope}`);
+
+        // Loop through all matching elements and set their innerHTML
+        targetElements.forEach(element => {
+          element.innerHTML = content;
+        });
+      });
+    });
 
     // track views + optionally notify analytics/target
     const promises: Promise<boolean>[] = [];

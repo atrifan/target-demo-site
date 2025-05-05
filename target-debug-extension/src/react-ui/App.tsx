@@ -176,7 +176,10 @@ const App: React.FC<XperienceProps> = ({displayName, country, hobby, age}) => {
     };
 
     // 4) Per-mbox parameters mapping (object of mboxName → params)
-    const perMboxParams: Record<string, Record<string, string>> = window.extension_data.mboxParamsByName || {};
+    const mboxParams: any = mboxNames.length > 0 ? mboxNames.map((mboxName, idx) => {
+      const element = document.getElementsByClassName(`mbox-name-${mboxName}`)[0];
+      return JSON.parse(element.getAttribute('data-mboxparams') || '{}');
+    }) : {}
 
     // 5) Resolve MCID
     const mcIdToUse = mcId.length > 0 ? mcId : getQueryParameter('MCID') || getMcId();
@@ -185,6 +188,7 @@ const App: React.FC<XperienceProps> = ({displayName, country, hobby, age}) => {
     const deliveryRequest = {
       decisionScopes: mboxNames.length > 0 ? mboxNames : ["__view__"],
       xdm: {
+        profile: profileParams,
         identityMap: {
           ECID: [{ id: mcIdToUse, authenticatedState: "ambiguous" }]
         }
@@ -194,11 +198,12 @@ const App: React.FC<XperienceProps> = ({displayName, country, hobby, age}) => {
           target: {
             parameters: baseParams,
             profileParameters: profileParams,
-            mboxes: mboxNames.map((name) => ({
+            mboxes: mboxNames.map((name, index) => ({
+              id: index,
               name,
               parameters: {
                 ...baseParams,
-                ...(perMboxParams[name] || {})
+                ...(mboxParams[index] || {})
               }
             }))
           }
