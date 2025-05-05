@@ -242,7 +242,7 @@ const App: React.FC<XperienceProps> = ({displayName, country, hobby, age}) => {
         });
       });
     }
-  }, [mcId, tntId]);
+  }, [mcId, tntId, refreshKey]);
   return (
     <div>
       <Header refreshOnSave={handlePersonaSave}/>

@@ -147,8 +147,8 @@ export default async function AlloyJs(initParams?: () => any): Promise<void> {
       }
 
 
-      const scriptNames = ['alloy.js','mcid.js','enforce_alloy.js'];
-      const scriptIds   = ['alloy-js','mcjs', 'enforce-alloy'];
+      const scriptNames = ['enforce_alloy.js','alloy.js','mcid.js'];
+      const scriptIds   = ['enforce-alloy','alloy-js','mcjs'];
 
       requestScriptInjection(scriptNames, scriptIds, resolve, reject);
     }

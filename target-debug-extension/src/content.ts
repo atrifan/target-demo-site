@@ -23,8 +23,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
 
     // Initialize Adobe Target or other logic here
-    const scriptNames = sdkType === "atjs" ? ["at.js", "mcid.js"] : ["alloy.js", "mcid.js", "enforce_alloy.js"];
-    const scriptIds = sdkType === "atjs" ? ["at-js", "mcjs"] : ["alloy-js", "mcjs", "enforce-alloy"];
+    const scriptNames = sdkType === "atjs" ? ["at.js", "mcid.js"] : ["enforce_alloy.js", "alloy.js", "mcid.js"];
+    const scriptIds = sdkType === "atjs" ? ["at-js", "mcjs"] : ["enforce-alloy", "alloy-js", "mcjs"];
     const loadedScripts = injectScripts(scriptNames, scriptIds);
 
     Promise.all(loadedScripts)

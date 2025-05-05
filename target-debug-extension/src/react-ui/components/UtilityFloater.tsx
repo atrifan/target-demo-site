@@ -66,7 +66,7 @@ const UtilityFloater: React.FC<UtilityFloaterProps> = ({
   return (
     <>
       {/* Refresh Button */}
-      <div className="floating-refresh-button-inplace" onClick={() => handlePersonaSave(undefined, tntId, mboxSession)}>
+      <div className="floating-refresh-button-inplace" onClick={() => handlePersonaSave(mcId, tntId, mboxSession)}>
         <img src="https://cdn-icons-png.freepik.com/256/10152/10152078.png?semt=ais_hybrid" alt="Refresh Same client"/>
       </div>
 
