@@ -83,7 +83,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 aepSandboxId: null,
                 aepSandboxName: null,
               });
-            } else if (sdkType === "websdk" && (window as any).adobe && (window as any).adobe.target) {
+            } else if (sdkType === "websdk" && (window as any).alloy) {
               window.alloy("configure", {
                 datastreamId: dataStreamId,
                 orgId: org,

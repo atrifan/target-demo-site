@@ -82,7 +82,7 @@ const Products: React.FC<ProductsProps> = ({ onSelectProduct, providedEntityId, 
     const interval = setInterval(() => {
       let mcId: any;
       if (unique) {
-        mcId = `${generateToken(2)}-${generateToken(2)}`;
+        mcId = `${generateToken(38)}`;
         updateQueryParams("MCID", mcId);
         updateQueryParams("PC", getNewCookiePCValue(generateToken()));
         updateQueryParams('mboxSession', generateToken());

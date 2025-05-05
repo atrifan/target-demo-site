@@ -203,17 +203,22 @@ document.addEventListener("click", (event) => {
 
     // Append or update class with mbox-name-{mboxName}
     const classToAdd = `mbox-name-${mboxName}`;
+    const idToAdd = `${mboxName}`;
 
     if (targetElement.className) {
       // If class attribute exists, append the new class if not already present
       if (!targetElement.classList.contains(classToAdd)) {
         targetElement.classList.add(classToAdd);
+        targetElement.classList.add(idToAdd);
       }
     } else {
       // If class attribute does not exist, create it with the new value
-      targetElement.setAttribute("class", classToAdd);
+      targetElement.setAttribute("class", `${classToAdd} ${idToAdd}`);
     }
 
+    targetElement.setAttribute('data-mbox', idToAdd);
+    targetElement.setAttribute('data-personalization-id', idToAdd);
+    targetElement.id = idToAdd;
     targetElement.style.outline = "2px solid red"
 
     // Reset mboxName so the process can be repeated

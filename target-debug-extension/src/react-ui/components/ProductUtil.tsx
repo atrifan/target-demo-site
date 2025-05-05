@@ -57,7 +57,7 @@ const ProductUtil: React.FC<ProductUtilProps> = ({ mcId, tntId, isOpen, onClose,
 
     const interval = setInterval(() => {
       if (unique) {
-        mcId = `${generateToken(2)}-${generateToken(2)}`;
+        mcId = `${generateToken(38)}`;
         sessionId = generateToken();
         updateQueryParams("MCID", mcId);
         updateQueryParams("PC", getNewCookiePCValue(generateToken()));

@@ -31,11 +31,22 @@ export function updateQueryParams(key: string, value?: string) {
   window.history.pushState({}, '', `${url.pathname}?${params.toString()}`);
 }
 
-export function generateToken(size: number=4) {
-    const array = new Uint32Array(size);  // Adjust size as needed
-    window.crypto.getRandomValues(array);
-    return Array.from(array, dec => dec.toString(16)).join('');
+export function generateToken(length: number = 32): string {
+  const digits: string[] = [];
+  const array = new Uint8Array(length);
+  window.crypto.getRandomValues(array);
+
+  // Ensure the first digit is never '0'
+  digits.push(((array[0] % 9) + 1).toString()); // Map byte to 1-9 to avoid 0 as the first digit
+
+  for (let i = 1; i < length; i++) {
+    digits.push((array[i] % 10).toString()); // Map byte to 0–9
+  }
+
+  return digits.join('');
 }
+
+
 
 function injectScripts(scriptNames: string[], scriptIds: string[]): Promise<boolean>[] {
   const head = document.head || document.getElementsByTagName("head")[0];
@@ -79,6 +90,45 @@ const requestScriptInjection = (scriptNames: string[], scriptIds: string[], reso
     if (event.source !== window || event.data.type !== "INJECT_SCRIPT_RESPONSE") return;
     if (event.data.requestId === requestId) { // Ensure it's the correct response
       console.log(event);
+      if (window.extension_data.sdkType === "atjs" && (window as any).adobe && (window as any).adobe.target) {
+        (window as any).adobe.target.init(window, document, {
+          clientCode: window.extension_data.tenant,
+          imsOrgId: window.extension_data.org,
+          serverDomain: window.extension_data.edgeHost,
+          trackingServer: window.extension_data.analyticsReportingServer || `${window.extension_data.tenant}.com.sc.omtrdc.net`,
+          trackingServerSecure: window.extension_data.analyticsReportingServer || `${window.extension_data.tenant}.com.ssl.sc.omtrdc.net`,
+          crossDomain: 'disabled',
+          timeout: 5000,
+          globalMboxName: 'target-global-mbox',
+          version: '2.11.5',
+          defaultContentHiddenStyle: 'visibility: hidden;',
+          defaultContentVisibleStyle: 'visibility: visible;',
+          bodyHiddenStyle: 'body {opacity: 0 !important}',
+          bodyHidingEnabled: true,
+          deviceIdLifetime: 63244800000,
+          sessionIdLifetime: 1860000,
+          selectorsPollingTimeout: 5000,
+          visitorApiTimeout: 2000,
+          overrideMboxEdgeServer: false,
+          overrideMboxEdgeServerTimeout: 1860000,
+          optoutEnabled: false,
+          optinEnabled: false,
+          secureOnly: false,
+          supplementalDataIdParamTimeout: 30,
+          authoringScriptUrl: '//cdn.tt.omtrdc.net/cdn/target-vec.js',
+          urlSizeLimit: 2048,
+          endpoint: '/rest/v1/delivery',
+          pageLoadEnabled: true,
+          viewsEnabled: true,
+          analyticsLogging: 'server_side',
+          serverState: {},
+          decisioningMethod: 'server-side',
+          legacyBrowserSupport: false,
+          allowHighEntropyClientHints: false,
+          aepSandboxId: null,
+          aepSandboxName: null,
+        });
+      }
       resolve(true);
       window.removeEventListener("message", handleMessage); // Clean up
     }
@@ -115,7 +165,16 @@ export default async function AtJs(targetPageParams?: any) {
       const oldScript = document.getElementById("at-js");
       const oldAppService = document.getElementById("app-service");
       const mcjs = document.getElementById("mcjs");
+      const oldScriptAlloy = document.getElementById("alloy-js");
+      const oldEnforceAlloy = document.getElementById("enforce-alloy");
       //if oldScript is present than delete it
+
+      if (oldScriptAlloy) {
+        oldScriptAlloy.remove();
+      }
+      if (oldEnforceAlloy) {
+        oldEnforceAlloy.remove();
+      }
       if (oldScript) {
         oldScript.remove();
       }
@@ -167,6 +226,38 @@ export function getQueryParameter(param: string) {
   return urlParams.get(param);
 }
 
+export async function getAndApplyOffers(deliveryRequest: any, mcIdToUse: string, addCampaignId: (id: string) => void): Promise<void> {
+    if (!window.adobe?.target) {
+    console.error("AT.js not available.");
+    return;
+  }
+
+  try {
+    const response = await window.adobe.target.getOffers({
+      request: {
+        property: deliveryRequest.property,
+        id: { marketingCloudVisitorId: mcIdToUse },
+        execute: deliveryRequest.execute
+      }
+    });
+
+    const mboxes = response?.execute?.mboxes || [];
+    if (mboxes.length > 0) {
+      for (const mbox of mboxes) {
+        addCampaignId(mbox?.options?.[0]?.responseTokens?.["activity.id"]);
+        await window.adobe.target.applyOffers({
+          selector: `.mbox-name-${mbox.name}`,
+          response: { execute: { mboxes: [mbox] } }
+        });
+      }
+    } else {
+      await window.adobe.target.applyOffers({ response });
+    }
+  } catch (error) {
+    console.error("AT.js get/apply offers error:", error);
+  }
+}
+
 export const generateViewsWithConversions = (uniqueVisitors: boolean, number: string, setTotal: any, setCurrent: any, setModalVisible: any, reportingServer: string, profileData: ProfileData, mboxes: string[], tntA?: string, conversion: boolean = false,
                                              conversionEvent?: string, conversionValue: number = 1, algorithmId: number=-1000, isTarget = false, experienceIndex?: number): Promise<{[key: string]: number}> => {
 
@@ -185,7 +276,7 @@ export const generateViewsWithConversions = (uniqueVisitors: boolean, number: st
       //I don't care about this if not unique it will take current query params
       let mcId: any;
       if (uniqueVisitors) {
-        mcId = `${generateToken(2)}-${generateToken(2)}`;
+        mcId = `${generateToken(38)}`;
         updateQueryParams("MCID", mcId);
         updateQueryParams("PC", getNewCookiePCValue(generateToken()));
         updateQueryParams('mboxSession', generateToken());
@@ -311,7 +402,7 @@ export const generateViewsWithConversions = (uniqueVisitors: boolean, number: st
 
 export function generateNotificationRequest(el: any, type: string, profileData?: ProfileData, useMbox: boolean = true) {
   const result = {
-    id: generateToken(4),
+    id: generateToken(),
     type: type,
     timestamp: Date.now(),
     mbox: useMbox ? {
