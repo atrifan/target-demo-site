@@ -82,6 +82,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 allowHighEntropyClientHints: false,
                 aepSandboxId: null,
                 aepSandboxName: null,
+                silentInit: true
               });
             } else if (sdkType === "websdk" && (window as any).alloy) {
               window.alloy("configure", {

@@ -171,14 +171,14 @@ const Header: React.FC<{ refreshOnSave: () => void }> = ({ refreshOnSave }) => {
           )}
         </div>
 
-          {/*<div className="cart-icon">*/}
-          {/*  <img*/}
-          {/*    src="https://d1nhio0ox7pgb.cloudfront.net/_img/g_collection_png/standard/512x512/shopping_cart.png"*/}
-          {/*    alt="Cart Icon"*/}
-          {/*    className="cart-image"*/}
-          {/*  />*/}
-          {/*  <div className="cart-bubble">{itemsInCart}</div>*/}
-          {/*</div>*/}
+        {/*<div className="cart-icon">*/}
+        {/*  <img*/}
+        {/*    src="https://d1nhio0ox7pgb.cloudfront.net/_img/g_collection_png/standard/512x512/shopping_cart.png"*/}
+        {/*    alt="Cart Icon"*/}
+        {/*    className="cart-image"*/}
+        {/*  />*/}
+        {/*  <div className="cart-bubble">{itemsInCart}</div>*/}
+        {/*</div>*/}
       </div>
     </header>
   );

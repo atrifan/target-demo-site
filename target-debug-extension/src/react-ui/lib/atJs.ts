@@ -127,6 +127,7 @@ const requestScriptInjection = (scriptNames: string[], scriptIds: string[], reso
           allowHighEntropyClientHints: false,
           aepSandboxId: null,
           aepSandboxName: null,
+          silentInit: true
         });
       }
       resolve(true);
@@ -186,7 +187,7 @@ export default async function AtJs(targetPageParams?: any) {
       }
 
 
-      requestScriptInjection(["at.js", "mcid.js"], ["at-js", "mcjs"], resolve, reject);
+      requestScriptInjection(["mcid.js", "at.js"], ["mcjs", "at-js"], resolve, reject);
     }
   })
 }

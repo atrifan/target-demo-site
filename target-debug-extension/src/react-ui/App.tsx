@@ -51,6 +51,7 @@ const App: React.FC<XperienceProps> = ({displayName, country, hobby, age}) => {
 
   const handlePersonaSave = (providedMcId?: string, providedTntId?: string, mboxSession?: string) => {
 
+    console.log("persona save");
     Sdk(window.extension_data.sdkType);
     // Increment the refresh key to trigger re-render
     const token = mboxSession || generateToken();
@@ -242,7 +243,7 @@ const App: React.FC<XperienceProps> = ({displayName, country, hobby, age}) => {
         });
       });
     }
-  }, [mcId, tntId, refreshKey]);
+  }, [refreshKey]);
   return (
     <div>
       <Header refreshOnSave={handlePersonaSave}/>
