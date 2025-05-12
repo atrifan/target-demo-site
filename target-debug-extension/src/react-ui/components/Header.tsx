@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useSearchParams, useNavigate} from 'react-router-dom';
-import { usePersona } from './Persona';  // Import the context hook
+import React, { useState, useEffect, useRef } from 'react';
+import { Link, useSearchParams, useNavigate } from 'react-router-dom';
+import { usePersona } from './Persona';
 import './Header.css';
 
 interface DropdownMenuProps {
@@ -24,10 +24,14 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ title, children }) => {
 };
 
 const Header: React.FC<{ refreshOnSave: () => void }> = ({ refreshOnSave }) => {
-  const { displayName, setDisplayName, country, setCountry, hobby, setHobby, age, setAge, refreshKey, setRefreshKey} = usePersona();  // Use the context here
+  const {
+    displayName, setDisplayName,
+    country, setCountry,
+    hobby, setHobby,
+    age, setAge
+  } = usePersona();
 
   const navigate = useNavigate();
-  // List of possible values for each field
   const nameOptions = ['Alice', 'Bob', 'Charlie', 'David'];
   const countryOptions = ['USA', 'Canada', 'UK', 'Germany'];
   const hobbyOptions = ['Reading', 'Sports', 'Cooking', 'Traveling'];
@@ -45,35 +49,43 @@ const Header: React.FC<{ refreshOnSave: () => void }> = ({ refreshOnSave }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [itemsInCart, setItemsInCart] = useState(0);
 
-  // Populate fields on component load if they are empty
+  // Prevent multiple initial saves
+  const hasSaved = useRef(false);
+
+  // Populate missing fields with random values on mount or when persona fields change
   useEffect(() => {
-    const shouldSave = !displayName || !country || !hobby || !age;
     if (!displayName) setInputName(getRandomValue(nameOptions));
     if (!country) setInputCountry(getRandomValue(countryOptions));
     if (!hobby) setInputHobby(getRandomValue(hobbyOptions));
     if (!age) setInputAge(getRandomValue(ageOptions));
-    if (shouldSave) handleSave();
-  }, [displayName, country, hobby, age, refreshKey]);
+    // eslint-disable-next-line
+  }, [displayName, country, hobby, age]);
+
+  // When all input fields are ready and persona fields are missing, call handleSave ONCE
+  useEffect(() => {
+    const shouldSave =
+      (!displayName || !country || !hobby || !age) &&
+      inputName && inputCountry && inputHobby && inputAge;
+
+    if (shouldSave && !hasSaved.current) {
+      hasSaved.current = true; // prevent multiple calls
+      handleSave();
+    }
+    // eslint-disable-next-line
+  }, [inputName, inputCountry, inputHobby, inputAge, displayName, country, hobby, age]);
 
   const handleLinkClick = (e: React.MouseEvent, to: string) => {
-    e.preventDefault(); // Prevent the default navigation behavior
-
-    // Create a new instance of URLSearchParams to modify the search params
+    e.preventDefault();
     const updatedSearchParams = new URLSearchParams(searchParams);
-
-    // Iterate through all search params and delete those starting with 'at_preview'
     Array.from(updatedSearchParams.entries()).forEach(([key]) => {
       if (key.startsWith("at_preview")) {
         updatedSearchParams.delete(key);
       }
     });
-
-    // Update the searchParams with the modified URLSearchParams
     setSearchParams(updatedSearchParams);
-
     navigate({
       pathname: to,
-      search: updatedSearchParams.toString() // Pass updated search params with other params retained
+      search: updatedSearchParams.toString()
     });
   };
 
@@ -82,30 +94,25 @@ const Header: React.FC<{ refreshOnSave: () => void }> = ({ refreshOnSave }) => {
     if (event) {
       event.preventDefault();
     }
-    // If input fields are empty, generate random values
     const savedName = inputName || getRandomValue(nameOptions);
     const savedCountry = inputCountry || getRandomValue(countryOptions);
     const savedHobby = inputHobby || getRandomValue(hobbyOptions);
     const savedAge = inputAge || getRandomValue(ageOptions);
 
-    // Save the updated persona information
     setDisplayName(savedName);
     setCountry(savedCountry);
     setHobby(savedHobby);
     setAge(savedAge);
-    // Increment the refresh key to trigger re-render
     refreshOnSave();
   };
 
   return (
     <header>
       <div className={"header-top"}>
-        {/* Input fields for Name, Country, Hobby, and Age */}
         <div className="profile-container">
-          {/* Profile Icon */}
           <div className="profile-icon" onClick={() => setIsModalOpen(true)}>
             <img
-              src="https://cdn-icons-png.flaticon.com/512/4794/4794936.png" // Replace with user's avatar if available
+              src="https://cdn-icons-png.flaticon.com/512/4794/4794936.png"
               alt="Profile"
               className="profile-avatar"
             />
@@ -117,7 +124,6 @@ const Header: React.FC<{ refreshOnSave: () => void }> = ({ refreshOnSave }) => {
             </div>
           </div>
 
-          {/* Modal */}
           {isModalOpen && (
             <div className="modal-overlay">
               <div className="modal-content">
@@ -170,15 +176,7 @@ const Header: React.FC<{ refreshOnSave: () => void }> = ({ refreshOnSave }) => {
             </div>
           )}
         </div>
-
-        {/*<div className="cart-icon">*/}
-        {/*  <img*/}
-        {/*    src="https://d1nhio0ox7pgb.cloudfront.net/_img/g_collection_png/standard/512x512/shopping_cart.png"*/}
-        {/*    alt="Cart Icon"*/}
-        {/*    className="cart-image"*/}
-        {/*  />*/}
-        {/*  <div className="cart-bubble">{itemsInCart}</div>*/}
-        {/*</div>*/}
+        {/* Cart icon and other header elements can go here */}
       </div>
     </header>
   );

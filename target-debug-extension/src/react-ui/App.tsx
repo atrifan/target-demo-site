@@ -226,6 +226,9 @@ const App: React.FC<XperienceProps> = ({displayName, country, hobby, age}) => {
     // if (window.adobe && window.adobe.target) {
     //   window.adobe.target.init();
     // }
+    if (!displayName || !country || !hobby || !age) {
+      return;
+    }
     let cleanupEvents: [Promise<any>?] = [];
     if (window.extension_data.sdkType === "atjs") {
       targetRetRender(cleanupEvents);
@@ -243,7 +246,7 @@ const App: React.FC<XperienceProps> = ({displayName, country, hobby, age}) => {
         });
       });
     }
-  }, [refreshKey]);
+  }, [refreshKey, displayName, country, hobby, age]);
   return (
     <div>
       <Header refreshOnSave={handlePersonaSave}/>
