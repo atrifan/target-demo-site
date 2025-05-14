@@ -393,7 +393,14 @@ export const generateViewsWithConversions = (uniqueVisitors: boolean, number: st
 
           } else {
             window.adobe.target?.applyOffers({response: response});
-            okTargeted.push(isTarget? sendNotificationTarget(response.execute.pageLoad, conversionEvent, conversion, profileData, experienceIndex, false, viewMap) : sendNotificationAnalytics(tntA, response.execute.pageLoad, algorithmId, reportingServer, mcId, conversion, conversionEvent, conversionValue, experienceIndex, viewMap));
+            if (response.prefetch.views.length > 0) {
+              response.prefetch.views.forEach((el: any) => {
+                okTargeted.push(isTarget? sendNotificationTarget(el, conversionEvent, conversion, profileData, experienceIndex, true, viewMap) : sendNotificationAnalytics(tntA, el, algorithmId, reportingServer, mcId, conversion, conversionEvent, conversionValue, experienceIndex, viewMap));
+              })
+            } else {
+              okTargeted.push(isTarget? sendNotificationTarget(response.execute.pageLoad, conversionEvent, conversion, profileData, experienceIndex, false, viewMap) : sendNotificationAnalytics(tntA, response.execute.pageLoad, algorithmId, reportingServer, mcId, conversion, conversionEvent, conversionValue, experienceIndex, viewMap));
+            }
+
           }
 
           Promise.all(okTargeted).then((okTargeted) => {
