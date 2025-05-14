@@ -8,7 +8,7 @@ if (!head) {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'INIT_EXTENSION') {
     console.log(message);
-    const { tenant, org, analyticsReportingServer, analyticsReportSuite, mboxParams, environment, customEdgeHost, admin, profileParameters, atProperty, sdkType, dataStreamId } = message;
+    const { tenant, org, analyticsReportingServer, analyticsReportSuite, mboxParams, environment, customEdgeHost, admin, profileParameters, atProperty, sdkType, dataStreamId, decisionScopes } = message;
 
     console.log(`#### -- ${sdkType} -- ####`);
     // Ensure the data is available
@@ -47,7 +47,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           profileParameters: profileParameters,
           atProperty: atProperty,
           sdkType: sdkType,
-          dataStreamId: dataStreamId
+          dataStreamId: dataStreamId,
+          decisionScopes: decisionScopes
         }, (response) => {
           console.log(`Response from background.ts: ${response}`);
           const scriptNames = ["AppMeasurement.js"];

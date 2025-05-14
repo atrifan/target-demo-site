@@ -238,7 +238,8 @@ export async function getAndApplyOffers(deliveryRequest: any, mcIdToUse: string,
       request: {
         property: deliveryRequest.property,
         id: { marketingCloudVisitorId: mcIdToUse },
-        execute: deliveryRequest.execute
+        execute: deliveryRequest.execute,
+        prefetch: deliveryRequest.prefetch,
       }
     });
 
@@ -311,7 +312,35 @@ export const generateViewsWithConversions = (uniqueVisitors: boolean, number: st
               logging: !isTarget ? "client_side" : "server_side"
             }
           },
+          prefetch: {
+            views: mboxes.length == 0 ? [{
+              parameters: {
+                ...parameters
+              },
+              profileParameters: {
+                "user.422": `${profileData.displayName}-${Date.now()}`,
+                "user.country": profileData.country,
+                "user.hobby": profileData.hobby,
+                "user.age": profileData.age,
+                "brand.bought": "offline",
+                ...window.extension_data.profileParameters
+              }
+            }] : undefined
+          },
           execute: {
+            pageLoad: mboxes.length == 0 ? {
+              parameters: {
+                ...parameters
+              },
+              profileParameters: {
+                "user.422": `${profileData.displayName}-${Date.now()}`,
+                "user.country": profileData.country,
+                "user.hobby": profileData.hobby,
+                "user.age": profileData.age,
+                "brand.bought": "offline",
+                ...window.extension_data.profileParameters
+              }
+            } : undefined,
             mboxes: mboxes.length > 0 ? mboxes.map((mboxName, idx) => {
               return {
                 index: idx,
@@ -330,19 +359,6 @@ export const generateViewsWithConversions = (uniqueVisitors: boolean, number: st
                 }
               }
             }) : undefined,
-            pageLoad: mboxes.length == 0 ? {
-              parameters: {
-                ...parameters
-              },
-              profileParameters: {
-                "user.422": `${profileData.displayName}-${Date.now()}`,
-                "user.country": profileData.country,
-                "user.hobby": profileData.hobby,
-                "user.age": profileData.age,
-                "brand.bought": "offline",
-                ...window.extension_data.profileParameters
-              }
-            } : undefined
           }
         }
       })

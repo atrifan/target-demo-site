@@ -67,6 +67,11 @@ const App: React.FC<XperienceProps> = ({displayName, country, hobby, age}) => {
     newParams.set('mboxSession', `${token}`);
     newParams.set('PC', `${pcToken}`);
     newParams.set('MCID', `${mcId}`);
+    //clear the non rendering stuff
+    //TODO: might need for initial run  to run it with mboxEdit=1 disable=1 authoring_enabled=1
+    newParams.delete("mboxEdit");
+    newParams.delete("mboxDisable");
+    newParams.delete("adobe_authoring_enabled");
     setSearchParams(newParams);
     //new mcid
     setRefreshKey(prevKey => prevKey + 1);
@@ -124,6 +129,20 @@ const App: React.FC<XperienceProps> = ({displayName, country, hobby, age}) => {
             ...window.extension_data.profileParameters
           }
         }
+      },
+      prefetch: {
+        views: [{
+          parameters: {
+            ...parameters
+          },
+          profileParameters: {
+            "user.422": displayName,
+            "user.country": country,
+            "user.hobby": hobby,
+            "user.age": age,
+            ...window.extension_data.profileParameters
+          }
+        }]
       }
     }
     if (mboxes.length > 0) {
@@ -150,7 +169,8 @@ const App: React.FC<XperienceProps> = ({displayName, country, hobby, age}) => {
           id: {
             marketingCloudVisitorId: mcIdToUse,
           },
-          execute: deliveryRequest.execute
+          execute: deliveryRequest.execute,
+          prefetch: deliveryRequest.prefetch
         }
       });
       return getAndApplyOffers(deliveryRequest, mcIdToUse, addCampaignId);
@@ -187,7 +207,7 @@ const App: React.FC<XperienceProps> = ({displayName, country, hobby, age}) => {
 
     // 6) Build Alloy payload for sendEvent
     const deliveryRequest = {
-      decisionScopes: mboxNames.length > 0 ? mboxNames : ["__view__"],
+      decisionScopes: mboxNames.length > 0 ? mboxNames : [],
       xdm: {
         profile: profileParams,
         identityMap: {

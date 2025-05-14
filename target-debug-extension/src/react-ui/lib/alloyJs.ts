@@ -69,23 +69,46 @@ const requestScriptInjection = (scriptNames: string[], scriptIds: string[], reso
       console.log(event);
     if (window.extension_data.sdkType === "websdk" && (window as any).alloy) {
 
-        window.alloy("configure", {
-          datastreamId: window.extension_data.dataStreamId,
-          orgId: window.extension_data.org,
-          debugEnabled: true,
-          edgeConfigOverrides: {
-            /**
-             * You could also override the Target environment ID here (if needed) under com_adobe_target.environmentId, or disable/enable Target entirely with com_adobe_target.enabled.
-             */
-            com_adobe_target: {
-              propertyToken: window.extension_data.atProperty
-            }
+      window.alloy("configure", {
+        datastreamId: window.extension_data.dataStreamId,
+        orgId: window.extension_data.org,
+        debugEnabled: true, // Enable debugging as before
+        // thirdPartyCookiesEnabled: false, // Keep cookies enabled
+        // idMigrationEnabled: true, // Enable ID migration
+        // targetMigrationEnabled: true, // Enable target migration
+        // personalizationStorageEnabled: true, // Enable personalization storage (same as Reactor version)
+        // autoCollectPropositionInteractions: {
+        //   AJO: "always", // Auto-collect AJO propositions
+        //   TGT: "always" // Do not auto-collect TGT propositions
+        // },
+        // context: [
+        //   "web",
+        //   "device",
+        //   "environment",
+        //   "placeContext"
+        // ],
+        // clickCollectionEnabled: true, // Keep click collection disabled (or enable it based on need)
+        // clickCollection: {
+        //   internalLinkEnabled: true,
+        //   externalLinkEnabled: true,
+        //   downloadLinkEnabled: true,
+        //   sessionStorageEnabled: true,
+        //   eventGroupingEnabled: false
+        // },
+        // downloadLinkQualifier: "\\.(exe|zip|wav|mp3|mov|mpg|avi|wmv|pdf|doc|docx|xls|xlsx|ppt|pptx)$",
+        // edgeDomain: "edge.adobedc.net",
+        // edgeBasePath: "ee",
+        edgeConfigOverrides: {
+          com_adobe_target: {
+            propertyToken: window.extension_data.atProperty // Override Target Property Token
           }
-        }).then((configureData: any) => {
-          console.log("Alloy.js configured successfully:", configureData);
-          resolve(true);
-        });
-      }
+        },
+      }).then((configureData: any) => {
+        console.log("Alloy.js configured successfully:", configureData);
+        resolve(true);
+      });
+
+    }
       window.removeEventListener("message", handleMessage); // Clean up
     }
   };
@@ -270,6 +293,8 @@ export const generateViewsWithConversions = async (
       }
     });
 
+    console.log(`### the response is ${JSON.stringify(resp, null, 2)}`);
+
     // apply personalization to page
     //await window.alloy!('applyPropositions', { propositions: resp.propositions });
     resp.propositions.forEach((proposition: any) => {
@@ -300,7 +325,7 @@ export const generateViewsWithConversions = async (
       if (conversion && conversionEvent) {
         promises.push(window.alloy!('sendEvent', {
           decisionScopes: [],
-          renderDecisions: false,
+          renderDecisions: true,
           xdm: {
             _experience: {
               decisioning: {
@@ -348,17 +373,24 @@ export async function getAndApplyOffers(deliveryRequest: any, mcIdToUse: string,
 
   try {
     const result: any = await window.alloy("sendEvent", {
-      decisionScopes: deliveryRequest.decisionScopes || ["__view__"],
-      xdm: deliveryRequest.xdm || {
+      decisionScopes: [
+        ...deliveryRequest.decisionScopes,
+        ...(window.extension_data.decisionScopes.length > 0 ? window.extension_data.decisionScopes.split(",") : []),
+      ],
+      xdm: {
+        eventType: "web.webpagedetails.pageViews",
         identityMap: {
           ECID: [{ id: mcIdToUse, authenticatedState: "ambiguous" }]
-        }
+        },
+        ...deliveryRequest.xdm
       },
-      data: deliveryRequest.data || {},
+      data: {
+        ...deliveryRequest.data
+      },
       renderDecisions: true
     });
 
-    //await window.alloy("applyPropositions", result);
+    console.log(`### the result is ${JSON.stringify(result, null, 2)}`);
     // Apply propositions to the page for mboxes
     result.propositions.forEach((proposition: any) => {
       // Extract the scope and the content

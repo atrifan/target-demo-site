@@ -16,6 +16,7 @@ const App: React.FC = () => {
   const [customEdgeHost, setCustomEdgeHost] = useState<string>(""); // State for custom edge host
   const [profileParameters, setProfileParameters] = useState<string>("{}");
   const [atProperty, setAtProperty] = useState<string>("");
+  const [decisionScopes, setDecisionScopes] = useState<string>(""); // NEW STATE
   const [sdkType, setSdkType] = useState<string>("atjs"); // NEW STATE
 
 
@@ -33,7 +34,8 @@ const App: React.FC = () => {
         setCustomEdgeHost(parsedData.customEdgeHost || ""); // Load customEdgeHost from storage
         setAtProperty(parsedData.atProperty || "");
         setDataStreamId(parsedData.dataStreamId || "");
-        setSdkType(parsedData.sdkType || "atjs"); // Load sdkType from storage
+        setSdkType(parsedData.sdkType || "atjs");
+        setDecisionScopes(parsedData.decisionScopes || "")// Load sdkType from storage
 
         // Ensure mboxParams is always a valid JSON string
         setMboxParams(
@@ -69,13 +71,14 @@ const App: React.FC = () => {
           profileParameters: parsedProfileParams,
           atProperty,
           sdkType,
-          dataStreamId
+          dataStreamId,
+          decisionScopes
         })
       );
     } catch (error) {
       console.error("Invalid JSON in mboxParams, not saving:", error);
     }
-  }, [tenant, org, analyticsReportingServer, analyticsReportSuite, environment, mboxParams, customEdgeHost, admin, profileParameters, atProperty, sdkType, dataStreamId]);
+  }, [tenant, org, analyticsReportingServer, analyticsReportSuite, environment, mboxParams, customEdgeHost, admin, profileParameters, atProperty, sdkType, dataStreamId, decisionScopes]);
 
   const handleStartDebugging = (): void => {
     try {
@@ -96,7 +99,8 @@ const App: React.FC = () => {
             profileParameters: parsedProfileParams,
             atProperty,
             sdkType,
-            dataStreamId
+            dataStreamId,
+            decisionScopes
           });
         }
       });
@@ -215,6 +219,15 @@ const App: React.FC = () => {
           value={atProperty}
           onChange={(e) => setAtProperty(e.target.value)}
           placeholder="Enter at_property"
+        />
+      </label>
+      <label>
+        decision scopes:
+        <input
+          type="text"
+          value={decisionScopes}
+          onChange={(e) => setDecisionScopes(e.target.value)}
+          placeholder="Enter decision scope (websdk)"
         />
       </label>
       <label>
