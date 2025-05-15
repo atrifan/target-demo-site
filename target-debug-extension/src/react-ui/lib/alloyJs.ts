@@ -371,25 +371,23 @@ export async function getAndApplyOffers(deliveryRequest: any, mcIdToUse: string,
     return;
   }
 
-  try {
-    const result: any = await window.alloy("sendEvent", {
-      decisionScopes: [
-        ...deliveryRequest.decisionScopes,
-        ...(window.extension_data.decisionScopes.length > 0 ? window.extension_data.decisionScopes.split(",") : []),
-      ],
-      xdm: {
-        eventType: "web.webpagedetails.pageViews",
-        identityMap: {
-          ECID: [{ id: mcIdToUse, authenticatedState: "ambiguous" }]
-        },
-        ...deliveryRequest.xdm
+  window.alloy("sendEvent", {
+    decisionScopes: [
+      ...deliveryRequest.decisionScopes,
+      ...(window.extension_data.decisionScopes.length > 0 ? window.extension_data.decisionScopes.split(",") : []),
+    ],
+    xdm: {
+      eventType: "web.webpagedetails.pageViews",
+      identityMap: {
+        ECID: [{ id: mcIdToUse, authenticatedState: "ambiguous" }]
       },
-      data: {
-        ...deliveryRequest.data
-      },
-      renderDecisions: true
-    });
-
+      ...deliveryRequest.xdm
+    },
+    data: {
+      ...deliveryRequest.data
+    },
+    renderDecisions: true
+  }).then((result: any) => {
     console.log(`### the result is ${JSON.stringify(result, null, 2)}`);
     // Apply propositions to the page for mboxes
     result.propositions.forEach((proposition: any) => {
@@ -419,8 +417,8 @@ export async function getAndApplyOffers(deliveryRequest: any, mcIdToUse: string,
         addCampaignId(activityId);
       }
     });
-
-  } catch (err) {
+  }).catch((err: any) => {
     console.error("Alloy.js sendEvent failed:", err);
-  }
+  });
+
 }

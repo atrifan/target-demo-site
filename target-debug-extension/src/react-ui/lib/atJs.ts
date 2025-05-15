@@ -92,6 +92,7 @@ const requestScriptInjection = (scriptNames: string[], scriptIds: string[], reso
       console.log(event);
       if (window.extension_data.sdkType === "atjs" && (window as any).adobe && (window as any).adobe.target) {
         (window as any).adobe.target.init(window, document, {
+          applyZeroApi: true,
           clientCode: window.extension_data.tenant,
           imsOrgId: window.extension_data.org,
           serverDomain: window.extension_data.edgeHost,
@@ -127,7 +128,8 @@ const requestScriptInjection = (scriptNames: string[], scriptIds: string[], reso
           allowHighEntropyClientHints: false,
           aepSandboxId: null,
           aepSandboxName: null,
-          silentInit: true
+          silentInit: true,
+          debug: { level: 'verbose', trace: true }
         });
       }
       resolve(true);
@@ -227,37 +229,111 @@ export function getQueryParameter(param: string) {
   return urlParams.get(param);
 }
 
+function waitForElement(selector: any, { interval = 100, timeout = 5000 } = {}) {
+  return new Promise((resolve, reject) => {
+    const start = Date.now();
+
+    (function poll() {
+      const el = document.querySelector(selector);
+      if (el) {
+        console.log(`Found element: ${selector}`);
+        return resolve(el);
+      }
+      if (Date.now() - start >= timeout) {
+        return reject(new Error(`Timed out waiting for selector ${selector}`));
+      }
+      setTimeout(poll, interval);
+    })();
+  });
+}
+
 export async function getAndApplyOffers(deliveryRequest: any, mcIdToUse: string, addCampaignId: (id: string) => void): Promise<void> {
     if (!window.adobe?.target) {
     console.error("AT.js not available.");
     return;
   }
 
-  try {
-    const response = await window.adobe.target.getOffers({
-      request: {
-        property: deliveryRequest.property,
-        id: { marketingCloudVisitorId: mcIdToUse },
-        execute: deliveryRequest.execute,
-        prefetch: deliveryRequest.prefetch,
-      }
-    });
-
+  return window.adobe.target.getOffers({
+    request: {
+      property: deliveryRequest.property,
+      id: { marketingCloudVisitorId: mcIdToUse },
+      execute: deliveryRequest.execute,
+      prefetch: deliveryRequest.prefetch,
+    }
+  }).then(async (response) => {
+    console.log(`#### getOffers response ${JSON.stringify(response, null, 2)}`);
     const mboxes = response?.execute?.mboxes || [];
     if (mboxes.length > 0) {
       for (const mbox of mboxes) {
         addCampaignId(mbox?.options?.[0]?.responseTokens?.["activity.id"]);
-        await window.adobe.target.applyOffers({
+        window.adobe?.target?.applyOffers({
           selector: `.mbox-name-${mbox.name}`,
           response: { execute: { mboxes: [mbox] } }
+        }).then((result) => {
+          console.log(`#### render result ${JSON.stringify(result, null, 2)} ---- ${JSON.stringify(response, null, 2)}`);
+        }).catch((error) => {
+          console.error("AT.js applyOffers error:", error);
         });
       }
-    } else {
-      await window.adobe.target.applyOffers({ response });
     }
-  } catch (error) {
-    console.error("AT.js get/apply offers error:", error);
-  }
+    else if (Array.isArray(response.prefetch?.views) && response.prefetch.views.length) {
+      try {
+        // For each view in your prefetch, render them individually
+        for (const view of response.prefetch.views) {
+          // Pull out all the selectors in this view's content array
+          const selectors = (view.options || []).flatMap((opt: any) =>
+            (opt.content || [])
+              .filter((item: any) => item.selector)
+              .map((item: any) => item.selector)
+          );
+
+          // Wait for each of those selectors to exist on the page
+          await Promise.all(selectors.map((sel: any) =>
+            waitForElement(sel, { timeout: 8000 })
+          ));
+
+          // Now invoke applyOffers for just this one view
+          const fakeMbox = {
+            name:   view.name,           // this becomes your .mbox-name-<view.name> container
+            options: view.options,       // carries over your setHtml/actions
+          };
+
+          addCampaignId(fakeMbox?.options?.[0]?.responseTokens?.["activity.id"]);
+          const singleViewResponse = {
+            execute: { mboxes: [fakeMbox] },
+            // you can also include execute.pageLoad if needed
+          };
+
+          console.log(`#### rendering view ${JSON.stringify({
+            // pick any one of the selectors as the insertion point;
+            // at.js will read the matching content.selector inside the view payload
+            selector: selectors[0],
+            response: singleViewResponse
+          }, null, 2)}`);
+
+          const result = await window.adobe?.target?.applyOffers({
+            // pick any one of the selectors as the insertion point;
+            // at.js will read the matching content.selector inside the view payload
+            selector: selectors[0],
+            response: singleViewResponse
+          });
+          console.log(`#### render result for view "${view.name}"`, result);
+        }
+      } catch (err) {
+        console.error("Error rendering prefetched views:", err);
+      }
+    } else {
+      return window.adobe?.target?.applyOffers({ response }).then((result) => {
+        console.log(`#### render result ${JSON.stringify(result, null, 2)} ---- ${JSON.stringify(response, null, 2)}`);
+      }).catch((error) => {
+        console.error("AT.js applyOffers error:", error);
+      });
+    }
+  }).catch((error) => {
+    console.error("AT.js getOffers error:", error);
+  });
+
+
 }
 
 export const generateViewsWithConversions = (uniqueVisitors: boolean, number: string, setTotal: any, setCurrent: any, setModalVisible: any, reportingServer: string, profileData: ProfileData, mboxes: string[], tntA?: string, conversion: boolean = false,
