@@ -288,11 +288,6 @@ export async function getAndApplyOffers(deliveryRequest: any, mcIdToUse: string,
           );
 
           // Wait for each of those selectors to exist on the page
-          await Promise.all(selectors.map((sel: any) =>
-            waitForElement(sel, { timeout: 8000 })
-          ));
-
-          // Now invoke applyOffers for just this one view
           const fakeMbox = {
             name:   view.name,           // this becomes your .mbox-name-<view.name> container
             options: view.options,       // carries over your setHtml/actions
