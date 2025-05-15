@@ -8,6 +8,7 @@ declare global {
     s_gi: (any) => void;
     extension_data: any;
     alloy: any;
+    _satellite: any;
     adobe: {
       target?: {
         triggerView: (viewName: string) => void;

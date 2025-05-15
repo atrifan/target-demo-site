@@ -376,12 +376,14 @@ export async function getAndApplyOffers(deliveryRequest: any, mcIdToUse: string,
       ...deliveryRequest.decisionScopes,
       ...(window.extension_data.decisionScopes.length > 0 ? window.extension_data.decisionScopes.split(",") : []),
     ],
+    type: "decisioning.propositionDisplay",
     xdm: {
-      eventType: "web.webpagedetails.pageViews",
       identityMap: {
         ECID: [{ id: mcIdToUse, authenticatedState: "ambiguous" }]
       },
+      web: { webPageDetails: { viewName: window.extension_data.decisionScopes.length > 0 ? window.extension_data.decisionScopes : undefined } },
       ...deliveryRequest.xdm
+
     },
     data: {
       ...deliveryRequest.data

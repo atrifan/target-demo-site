@@ -228,6 +228,14 @@ document.addEventListener("click", (event) => {
   });
 });
 
+function clearAllCookies() {
+  document.cookie.split(';').forEach(cookie => {
+    const name = cookie.split('=')[0].trim();
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  });
+  localStorage.clear();
+  sessionStorage.clear();
+};
 
 function injectScripts(scriptNames: string[], scriptIds: string[]): Promise<boolean>[] {
   const head = document.head || document.getElementsByTagName("head")[0];
@@ -237,6 +245,20 @@ function injectScripts(scriptNames: string[], scriptIds: string[]): Promise<bool
   }
 
   // Remove existing scripts if present
+  if (window.adobe?.target) {
+    window.adobe.target = undefined;
+  }
+
+  if (window.alloy) {
+    window.alloy = undefined;
+  }
+
+  if (window._satellite) {
+    window._satellite = undefined;
+  }
+
+  clearAllCookies();
+
   document.querySelectorAll("script").forEach((script) => {
     if (script.src && script.src.includes('launch')) {
       console.log(`Removing existing script: ${script.src}`);
@@ -246,7 +268,7 @@ function injectScripts(scriptNames: string[], scriptIds: string[]): Promise<bool
       console.log(`Removing existing script: ${script.src}`);
       script.remove();
     }
-    if (script.src && script.src.includes('adobetm')) {
+    if (script.src && script.src.includes('adobedtm')) {
       console.log(`Removing existing script: ${script.src}`);
       script.remove();
     }

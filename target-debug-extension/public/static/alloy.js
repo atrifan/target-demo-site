@@ -6905,6 +6905,16 @@
           components
         });
         const instance = createInstanceFunction(executeCommand);
+        if (!window[instanceName]) {
+          window[instanceName] = {
+            q: []
+          }
+        }
+
+        if (!window[instanceName].q) {
+          window[instanceName].q = [];
+        }
+
         const queue = window[instanceName].q;
         queue.push = instance;
         logController.logger.logOnInstanceCreated({
