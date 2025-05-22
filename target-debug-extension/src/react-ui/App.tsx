@@ -60,7 +60,10 @@ const App: React.FC<XperienceProps> = ({displayName, country, hobby, age}) => {
     const pcToken = providedTntId || getNewCookiePCValue(generateToken());
     // updateQueryParams("PC", `${pcToken}`);
 
-    const mcId = providedMcId || `${generateToken(38)}`;
+    let mcId = providedMcId || `${generateToken(38)}`;
+    if(window.extension_data.sdkType === 'atjs') {
+      mcId = providedMcId || `${generateToken(2)}-${generateToken(2)}`
+    }
     setMcId(mcId);
     setTntId(`${pcToken}`);
     const newParams = new URLSearchParams(searchParams);
@@ -112,6 +115,8 @@ const App: React.FC<XperienceProps> = ({displayName, country, hobby, age}) => {
       }
     });
 
+    const views = window.extension_data.decisionScopes.length > 0 ? window.extension_data.decisionScopes.split(",") : [];
+
     let deliveryRequest: any = {
       property: {
         token: window.extension_data.atProperty,
@@ -131,7 +136,9 @@ const App: React.FC<XperienceProps> = ({displayName, country, hobby, age}) => {
         }
       },
       prefetch: {
-        views: [{
+        views: views.length > 0 ? views.map((view: string) => { return {
+          name: view,
+          key: view,
           parameters: {
             ...parameters
           },
@@ -142,7 +149,7 @@ const App: React.FC<XperienceProps> = ({displayName, country, hobby, age}) => {
             "user.age": age,
             ...window.extension_data.profileParameters
           }
-        }]
+        }}) : undefined
       }
     }
     if (mboxes.length > 0) {

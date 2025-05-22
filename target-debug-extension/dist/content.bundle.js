@@ -587,6 +587,35 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, `/* Floating Refresh Button */
+#react-root .floating-refresh-button-inplace {
+    position: fixed;
+    bottom: 20px;
+    left: 90px;
+    width: 50px;
+    height: 50px;
+    background-color: #a6e22e; /* Refresh button background color */
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    z-index: 1000;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+#react-root .floating-refresh-button-inplace:hover {
+    transform: scale(1.1);
+    background-color: #8bc34a; /* Darker shade on hover */
+}
+
+#react-root .floating-refresh-button-inplace img {
+    width: 24px;
+    height: 24px;
+    pointer-events: none;
+}
+
 #react-root .floating-refresh-button {
     position: fixed;
     bottom: 20px;
@@ -830,7 +859,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `/* Floating Refresh Button */
     transform: scale(1.1);
     background-color: darkred; /* Darker shade on hover */
 }
-`, "",{"version":3,"sources":["webpack://./src/react-ui/components/UtilityFloater.css"],"names":[],"mappings":"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","sourcesContent":["/* Floating Refresh Button */\n#react-root .floating-refresh-button {\n    position: fixed;\n    bottom: 20px;\n    left: 20px;\n    width: 50px;\n    height: 50px;\n    background-color: #007bff;\n    color: white;\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);\n    cursor: pointer;\n    z-index: 1000;\n    transition: transform 0.2s ease, background-color 0.3s ease;\n}\n\n#react-root .floating-refresh-button:hover {\n    transform: scale(1.1);\n    background-color: #0056b3;\n}\n\n#react-root .floating-refresh-button img {\n    width: 24px;\n    height: 24px;\n    pointer-events: none;\n}\n\n/* Floating Forward Button */\n#react-root .floating-forward-button {\n    position: fixed;\n    bottom: 240px; /* Positioned above the back button */\n    left: 20px;\n    width: 50px;\n    height: 50px;\n    background-color: #4caf50; /* Forward button background color */\n    color: white;\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);\n    cursor: pointer;\n    z-index: 1000;\n    transition: transform 0.2s ease, background-color 0.3s ease;\n}\n\n/* Hover Effects for Forward Button */\n#react-root .floating-forward-button:hover {\n    transform: scale(1.1);\n    background-color: #388e3c; /* Darker shade on hover */\n}\n\n/* Forward Icon Styling */\n#react-root .floating-forward-button img {\n    width: 24px;\n    height: 24px;\n    pointer-events: none;\n}\n\n/* Floating Back Button */\n#react-root .floating-back-button {\n    position: fixed;\n    bottom: 160px; /* Positioned above the profile button */\n    left: 20px;\n    width: 50px;\n    height: 50px;\n    background-color: #ff5722; /* Back button background color */\n    color: white;\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);\n    cursor: pointer;\n    z-index: 1000;\n    transition: transform 0.2s ease, background-color 0.3s ease;\n}\n\n/* Hover Effects for Back Button */\n#react-root .floating-back-button:hover {\n    transform: scale(1.1);\n    background-color: #e64a19; /* Darker shade on hover */\n}\n\n/* Back Icon Styling */\n#react-root .floating-back-button img {\n    width: 24px;\n    height: 24px;\n    pointer-events: none;\n}\n\n/* Floating Profile Button */\n#react-root .floating-profile-button {\n    position: fixed;\n    bottom: 90px; /* Position it above the refresh button */\n    left: 20px; /* Same alignment with the refresh button */\n    width: 50px;\n    height: 50px;\n    background-color: #28a745;\n    color: white;\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);\n    cursor: pointer;\n    z-index: 1000;\n    transition: transform 0.2s ease, background-color 0.3s ease;\n}\n\n#react-root .floating-profile-button:hover {\n    transform: scale(1.1);\n    background-color: #1e7e34;\n}\n\n#react-root .floating-profile-button img {\n    width: 24px;\n    height: 24px;\n    pointer-events: none;\n}\n\n/* Profile Modal */\n#react-root .profile-modal {\n    position: fixed;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, 0.6);\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    z-index: 1001;\n}\n\n#react-root .profile-modal-content {\n    background: black;\n    padding: 20px;\n    border-radius: 16px;\n    width: 90%;\n    max-width: 600px;\n    text-align: left;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);\n    color: white;\n    position: relative;\n}\n\n#react-root .json-block {\n    background: #1e1e1e;\n    color: #00ff00;\n    padding: 10px;\n    border-radius: 8px;\n    max-height: 300px; /* Limit height */\n    overflow-y: auto; /* Enable scroll */\n    font-family: monospace;\n    font-size: 0.9em;\n    white-space: pre-wrap;\n    word-break: break-word;\n}\n\n/* Close Button */\n#react-root .close-button {\n    background-color: #ff5722;\n    color: white;\n    border: none;\n    border-radius: 8px;\n    padding: 10px 20px;\n    cursor: pointer;\n    margin-top: 10px;\n    font-size: 0.9em;\n    display: block;\n    margin-left: auto;\n    margin-right: auto;\n}\n\n#react-root .close-button:hover {\n    background-color: #e64a19;\n}\n\n/* Floating Traffic Generator Button */\n#react-root .floating-traffic-button {\n    position: fixed;\n    bottom: 160px; /* Positioned above the profile button */\n    left: 20px; /* Same alignment with the refresh button */\n    width: 50px;\n    height: 50px;\n    background-color: #ffc107; /* Traffic Generator button background color */\n    color: white;\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);\n    cursor: pointer;\n    z-index: 1000;\n    transition: transform 0.2s ease, background-color 0.3s ease;\n}\n\n#react-root .floating-product-button {\n    position: fixed;\n    bottom: 240px; /* Positioned above the profile button */\n    left: 20px; /* Same alignment with the refresh button */\n    width: 50px;\n    height: 50px;\n    background-color: red; /* Traffic Generator button background color */\n    color: white;\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);\n    cursor: pointer;\n    z-index: 1000;\n    transition: transform 0.2s ease, background-color 0.3s ease;\n}\n\n/* Hover Effects for Traffic Generator Button */\n#react-root .floating-traffic-button:hover {\n    transform: scale(1.1);\n    background-color: #e0a800; /* Darker shade on hover */\n}\n\n/* Traffic Generator Icon Styling */\n#react-root .floating-traffic-button img {\n    width: 24px;\n    height: 24px;\n    pointer-events: none;\n}\n\n#react-root .floating-product-button img {\n    width: 24px;\n    height: 24px;\n    pointer-events: none;\n}\n\n\n/* Hover Effects for Traffic Generator Button */\n#react-root .floating-product-button:hover {\n    transform: scale(1.1);\n    background-color: darkred; /* Darker shade on hover */\n}\n"],"sourceRoot":""}]);
+`, "",{"version":3,"sources":["webpack://./src/react-ui/components/UtilityFloater.css"],"names":[],"mappings":"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","sourcesContent":["/* Floating Refresh Button */\n#react-root .floating-refresh-button-inplace {\n    position: fixed;\n    bottom: 20px;\n    left: 90px;\n    width: 50px;\n    height: 50px;\n    background-color: #a6e22e; /* Refresh button background color */\n    color: white;\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);\n    cursor: pointer;\n    z-index: 1000;\n    transition: transform 0.2s ease, background-color 0.3s ease;\n}\n\n#react-root .floating-refresh-button-inplace:hover {\n    transform: scale(1.1);\n    background-color: #8bc34a; /* Darker shade on hover */\n}\n\n#react-root .floating-refresh-button-inplace img {\n    width: 24px;\n    height: 24px;\n    pointer-events: none;\n}\n\n#react-root .floating-refresh-button {\n    position: fixed;\n    bottom: 20px;\n    left: 20px;\n    width: 50px;\n    height: 50px;\n    background-color: #007bff;\n    color: white;\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);\n    cursor: pointer;\n    z-index: 1000;\n    transition: transform 0.2s ease, background-color 0.3s ease;\n}\n\n#react-root .floating-refresh-button:hover {\n    transform: scale(1.1);\n    background-color: #0056b3;\n}\n\n#react-root .floating-refresh-button img {\n    width: 24px;\n    height: 24px;\n    pointer-events: none;\n}\n\n/* Floating Forward Button */\n#react-root .floating-forward-button {\n    position: fixed;\n    bottom: 240px; /* Positioned above the back button */\n    left: 20px;\n    width: 50px;\n    height: 50px;\n    background-color: #4caf50; /* Forward button background color */\n    color: white;\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);\n    cursor: pointer;\n    z-index: 1000;\n    transition: transform 0.2s ease, background-color 0.3s ease;\n}\n\n/* Hover Effects for Forward Button */\n#react-root .floating-forward-button:hover {\n    transform: scale(1.1);\n    background-color: #388e3c; /* Darker shade on hover */\n}\n\n/* Forward Icon Styling */\n#react-root .floating-forward-button img {\n    width: 24px;\n    height: 24px;\n    pointer-events: none;\n}\n\n/* Floating Back Button */\n#react-root .floating-back-button {\n    position: fixed;\n    bottom: 160px; /* Positioned above the profile button */\n    left: 20px;\n    width: 50px;\n    height: 50px;\n    background-color: #ff5722; /* Back button background color */\n    color: white;\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);\n    cursor: pointer;\n    z-index: 1000;\n    transition: transform 0.2s ease, background-color 0.3s ease;\n}\n\n/* Hover Effects for Back Button */\n#react-root .floating-back-button:hover {\n    transform: scale(1.1);\n    background-color: #e64a19; /* Darker shade on hover */\n}\n\n/* Back Icon Styling */\n#react-root .floating-back-button img {\n    width: 24px;\n    height: 24px;\n    pointer-events: none;\n}\n\n/* Floating Profile Button */\n#react-root .floating-profile-button {\n    position: fixed;\n    bottom: 90px; /* Position it above the refresh button */\n    left: 20px; /* Same alignment with the refresh button */\n    width: 50px;\n    height: 50px;\n    background-color: #28a745;\n    color: white;\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);\n    cursor: pointer;\n    z-index: 1000;\n    transition: transform 0.2s ease, background-color 0.3s ease;\n}\n\n#react-root .floating-profile-button:hover {\n    transform: scale(1.1);\n    background-color: #1e7e34;\n}\n\n#react-root .floating-profile-button img {\n    width: 24px;\n    height: 24px;\n    pointer-events: none;\n}\n\n/* Profile Modal */\n#react-root .profile-modal {\n    position: fixed;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, 0.6);\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    z-index: 1001;\n}\n\n#react-root .profile-modal-content {\n    background: black;\n    padding: 20px;\n    border-radius: 16px;\n    width: 90%;\n    max-width: 600px;\n    text-align: left;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);\n    color: white;\n    position: relative;\n}\n\n#react-root .json-block {\n    background: #1e1e1e;\n    color: #00ff00;\n    padding: 10px;\n    border-radius: 8px;\n    max-height: 300px; /* Limit height */\n    overflow-y: auto; /* Enable scroll */\n    font-family: monospace;\n    font-size: 0.9em;\n    white-space: pre-wrap;\n    word-break: break-word;\n}\n\n/* Close Button */\n#react-root .close-button {\n    background-color: #ff5722;\n    color: white;\n    border: none;\n    border-radius: 8px;\n    padding: 10px 20px;\n    cursor: pointer;\n    margin-top: 10px;\n    font-size: 0.9em;\n    display: block;\n    margin-left: auto;\n    margin-right: auto;\n}\n\n#react-root .close-button:hover {\n    background-color: #e64a19;\n}\n\n/* Floating Traffic Generator Button */\n#react-root .floating-traffic-button {\n    position: fixed;\n    bottom: 160px; /* Positioned above the profile button */\n    left: 20px; /* Same alignment with the refresh button */\n    width: 50px;\n    height: 50px;\n    background-color: #ffc107; /* Traffic Generator button background color */\n    color: white;\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);\n    cursor: pointer;\n    z-index: 1000;\n    transition: transform 0.2s ease, background-color 0.3s ease;\n}\n\n#react-root .floating-product-button {\n    position: fixed;\n    bottom: 240px; /* Positioned above the profile button */\n    left: 20px; /* Same alignment with the refresh button */\n    width: 50px;\n    height: 50px;\n    background-color: red; /* Traffic Generator button background color */\n    color: white;\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);\n    cursor: pointer;\n    z-index: 1000;\n    transition: transform 0.2s ease, background-color 0.3s ease;\n}\n\n/* Hover Effects for Traffic Generator Button */\n#react-root .floating-traffic-button:hover {\n    transform: scale(1.1);\n    background-color: #e0a800; /* Darker shade on hover */\n}\n\n/* Traffic Generator Icon Styling */\n#react-root .floating-traffic-button img {\n    width: 24px;\n    height: 24px;\n    pointer-events: none;\n}\n\n#react-root .floating-product-button img {\n    width: 24px;\n    height: 24px;\n    pointer-events: none;\n}\n\n\n/* Hover Effects for Traffic Generator Button */\n#react-root .floating-product-button:hover {\n    transform: scale(1.1);\n    background-color: darkred; /* Darker shade on hover */\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -42971,7 +43000,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/development/chunk-IR6S3I6Y.mjs");
 /* harmony import */ var _components_Header__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/Header */ "./src/react-ui/components/Header.tsx");
 /* harmony import */ var _components_Persona__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Persona */ "./src/react-ui/components/Persona.tsx");
-/* harmony import */ var _lib_atJs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./lib/atJs */ "./src/react-ui/lib/atJs.ts");
+/* harmony import */ var _lib_factory__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./lib/factory */ "./src/react-ui/lib/factory.ts");
 /* harmony import */ var _components_UtilityFloater__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/UtilityFloater */ "./src/react-ui/components/UtilityFloater.tsx");
 /* harmony import */ var _components_ModelExplorer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/ModelExplorer */ "./src/react-ui/components/ModelExplorer.tsx");
 /* harmony import */ var _lib_visitor__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./lib/visitor */ "./src/react-ui/lib/visitor.ts");
@@ -42999,34 +43028,41 @@ const App = ({ displayName, country, hobby, age }) => {
         setCampaignIds((prev) => (prev.includes(newCampaignId) ? prev : [...prev, newCampaignId]));
     };
     const [reportingServer, setReportingServer] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('adobetargeteng.d1.sc.omtrdc.net');
+    (0,_lib_factory__WEBPACK_IMPORTED_MODULE_3__["default"])(window.extension_data.sdkType);
     const [mcId, setMcId] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
     const [tntId, setTntId] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
     const [refreshKey, setRefreshKey] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0);
     const [selectedProduct, setSelectedProduct] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
     const [searchParams, setSearchParams] = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_8__.useSearchParams)();
-    const handlePersonaSave = (providedMcId, providedTntId) => {
+    const handlePersonaSave = (providedMcId, providedTntId, mboxSession) => {
+        console.log("persona save");
+        (0,_lib_factory__WEBPACK_IMPORTED_MODULE_3__["default"])(window.extension_data.sdkType);
         // Increment the refresh key to trigger re-render
-        const token = (0,_lib_atJs__WEBPACK_IMPORTED_MODULE_3__.generateToken)();
+        const token = mboxSession || (0,_lib_factory__WEBPACK_IMPORTED_MODULE_3__.generateToken)();
         // updateQueryParams('mboxSession', `${token}`);
         //new tntId
-        const pcToken = providedTntId || (0,_lib_atJs__WEBPACK_IMPORTED_MODULE_3__.getNewCookiePCValue)((0,_lib_atJs__WEBPACK_IMPORTED_MODULE_3__.generateToken)());
+        const pcToken = providedTntId || (0,_lib_factory__WEBPACK_IMPORTED_MODULE_3__.getNewCookiePCValue)((0,_lib_factory__WEBPACK_IMPORTED_MODULE_3__.generateToken)());
         // updateQueryParams("PC", `${pcToken}`);
-        const mcId = providedMcId || (0,_lib_atJs__WEBPACK_IMPORTED_MODULE_3__.generateToken)();
+        let mcId = providedMcId || `${(0,_lib_factory__WEBPACK_IMPORTED_MODULE_3__.generateToken)(38)}`;
+        if (window.extension_data.sdkType === 'atjs') {
+            mcId = providedMcId || `${(0,_lib_factory__WEBPACK_IMPORTED_MODULE_3__.generateToken)(2)}-${(0,_lib_factory__WEBPACK_IMPORTED_MODULE_3__.generateToken)(2)}`;
+        }
         setMcId(mcId);
         setTntId(`${pcToken}`);
         const newParams = new URLSearchParams(searchParams);
         newParams.set('mboxSession', `${token}`);
         newParams.set('PC', `${pcToken}`);
         newParams.set('MCID', `${mcId}`);
+        //clear the non rendering stuff
+        //TODO: might need for initial run  to run it with mboxEdit=1 disable=1 authoring_enabled=1
+        newParams.delete("mboxEdit");
+        newParams.delete("mboxDisable");
+        newParams.delete("adobe_authoring_enabled");
         setSearchParams(newParams);
         //new mcid
         setRefreshKey(prevKey => prevKey + 1);
     };
-    (0,react__WEBPACK_IMPORTED_MODULE_0__.useLayoutEffect)(() => {
-        // Check if the Adobe Target library is loaded
-        // if (window.adobe && window.adobe.target) {
-        //   window.adobe.target.init();
-        // }
+    const targetRetRender = async (cleanupEvents = []) => {
         window.targetGlobalSettings = {
             clientCode: window.extension_data.tenant || "emeastage4" || 0,
             imsOrgId: window.extension_data.org || "655538B35271368A0A490D4C@AdobeOrg" || 0
@@ -43051,25 +43087,54 @@ const App = ({ displayName, country, hobby, age }) => {
                     "user.422": displayName,
                     "user.country": country,
                     "user.hobby": hobby,
-                    "user.age": age
+                    "user.age": age,
+                    ...window.extension_data.profileParameters
                 }
             };
         });
+        const views = window.extension_data.decisionScopes.length > 0 ? window.extension_data.decisionScopes.split(",") : [];
         let deliveryRequest = {
+            property: {
+                token: window.extension_data.atProperty,
+            },
             execute: {
                 pageLoad: {
-                    parameters: parameters,
+                    parameters: {
+                        ...parameters
+                    },
                     profileParameters: {
                         "user.422": displayName,
                         "user.country": country,
                         "user.hobby": hobby,
-                        "user.age": age
+                        "user.age": age,
+                        ...window.extension_data.profileParameters
                     }
                 }
+            },
+            prefetch: {
+                views: views.length > 0 ? views.map((view) => {
+                    return {
+                        name: view,
+                        key: view,
+                        parameters: {
+                            ...parameters
+                        },
+                        profileParameters: {
+                            "user.422": displayName,
+                            "user.country": country,
+                            "user.hobby": hobby,
+                            "user.age": age,
+                            ...window.extension_data.profileParameters
+                        }
+                    };
+                }) : undefined
             }
         };
         if (mboxes.length > 0) {
             deliveryRequest = {
+                property: {
+                    token: window.extension_data.atProperty,
+                },
                 execute: {
                     mboxes: mboxes
                 }
@@ -43077,49 +43142,93 @@ const App = ({ displayName, country, hobby, age }) => {
         }
         setExperienceIndex(-100);
         console.log(mboxValues);
-        let cleanupEvents = [];
-        const mcIdToUse = mcId.length > 0 ? mcId : (0,_lib_visitor__WEBPACK_IMPORTED_MODULE_6__["default"])();
-        (0,_lib_atJs__WEBPACK_IMPORTED_MODULE_3__["default"])().then(() => {
-            console.log(" loaded at.js", window.adobe);
-            if (window.adobe && window.adobe.target) {
-                window.adobe.target.getOffers({
-                    request: {
-                        id: {
-                            marketingCloudVisitorId: mcIdToUse,
-                        },
-                        execute: deliveryRequest.execute
+        const mcIdToUse = mcId.length > 0 ? mcId : (0,_lib_factory__WEBPACK_IMPORTED_MODULE_3__.getQueryParameter)('MCID') || (0,_lib_visitor__WEBPACK_IMPORTED_MODULE_6__["default"])();
+        await (0,_lib_factory__WEBPACK_IMPORTED_MODULE_3__["default"])(window.extension_data.sdkType)();
+        console.log(" loaded at.js", window.adobe);
+        if (window.adobe && window.adobe.target) {
+            console.log({
+                request: {
+                    property: deliveryRequest.property,
+                    id: {
+                        marketingCloudVisitorId: mcIdToUse,
+                    },
+                    execute: deliveryRequest.execute,
+                    prefetch: deliveryRequest.prefetch
+                }
+            });
+            return (0,_lib_factory__WEBPACK_IMPORTED_MODULE_3__.getAndApplyOffers)(deliveryRequest, mcIdToUse, addCampaignId);
+        }
+    };
+    const websdkRetRender = async (cleanupEvents = []) => {
+        // 1) Load the chosen SDK (at.js or Alloy loader)
+        await (0,_lib_factory__WEBPACK_IMPORTED_MODULE_3__["default"])(window.extension_data.sdkType)();
+        console.log("SDK loaded:", window.adobe || window.alloy);
+        // 2) Collect all mbox names on the page
+        const mboxElements = document.querySelectorAll("[mbox-name]");
+        const mboxNames = Array.from(mboxElements).map((el) => el.getAttribute("mbox-name")).filter(Boolean);
+        // 3) Global-level mbox and profile parameters
+        const baseParams = window.extension_data.mboxParams || {};
+        const profileParams = {
+            "user.422": displayName,
+            "user.country": country,
+            "user.hobby": hobby,
+            "user.age": age,
+            ...window.extension_data.profileParameters,
+        };
+        // 4) Per-mbox parameters mapping (object of mboxName → params)
+        const mboxParams = mboxNames.length > 0 ? mboxNames.map((mboxName, idx) => {
+            const element = document.getElementsByClassName(`mbox-name-${mboxName}`)[0];
+            return JSON.parse(element.getAttribute('data-mboxparams') || '{}');
+        }) : {};
+        // 5) Resolve MCID
+        const mcIdToUse = mcId.length > 0 ? mcId : (0,_lib_factory__WEBPACK_IMPORTED_MODULE_3__.getQueryParameter)('MCID') || (0,_lib_visitor__WEBPACK_IMPORTED_MODULE_6__["default"])();
+        // 6) Build Alloy payload for sendEvent
+        const deliveryRequest = {
+            decisionScopes: mboxNames.length > 0 ? mboxNames : [],
+            xdm: {
+                profile: profileParams,
+                identityMap: {
+                    ECID: [{ id: mcIdToUse, authenticatedState: "ambiguous" }]
+                }
+            },
+            data: {
+                __adobe: {
+                    target: {
+                        parameters: baseParams,
+                        profileParameters: profileParams,
+                        mboxes: mboxNames.map((name, index) => ({
+                            id: index,
+                            name,
+                            parameters: {
+                                ...baseParams,
+                                ...(mboxParams[index] || {})
+                            }
+                        }))
                     }
-                })
-                    .then(response => {
-                    console.log(response);
-                    const mboxes = response.execute.mboxes;
-                    let count = 1;
-                    if (mboxes && mboxes.length > 0) {
-                        mboxes.forEach(el => {
-                            addCampaignId(el?.options?.[0]?.responseTokens?.["activity.id"]);
-                            window.adobe.target?.applyOffers({
-                                selector: `.mbox-name-${el.name}`,
-                                response: {
-                                    execute: {
-                                        mboxes: [el]
-                                    }
-                                }
-                            }).then((e) => {
-                            });
-                            count += 1;
-                        });
-                    }
-                    else {
-                        window.adobe.target?.applyOffers({
-                            response: response
-                        });
-                    }
-                })
-                    .catch(error => {
-                    console.log("Error fetching or applying offers:", error);
-                });
+                }
             }
-        });
+        };
+        // 7) Reset experience index and log payload
+        setExperienceIndex(-100);
+        console.log("Alloy payload:", deliveryRequest);
+        // 8) Fire Alloy sendEvent + apply decisions
+        return (0,_lib_factory__WEBPACK_IMPORTED_MODULE_3__.getAndApplyOffers)(deliveryRequest, mcIdToUse, addCampaignId);
+    };
+    (0,react__WEBPACK_IMPORTED_MODULE_0__.useLayoutEffect)(() => {
+        // Check if the Adobe Target library is loaded
+        // if (window.adobe && window.adobe.target) {
+        //   window.adobe.target.init();
+        // }
+        if (!displayName || !country || !hobby || !age) {
+            return;
+        }
+        let cleanupEvents = [];
+        if (window.extension_data.sdkType === "atjs") {
+            targetRetRender(cleanupEvents);
+        }
+        else {
+            websdkRetRender(cleanupEvents);
+        }
         return () => {
             Promise.all(cleanupEvents).then((cleanupEvents) => {
                 cleanupEvents.forEach((cleanup) => {
@@ -43129,7 +43238,7 @@ const App = ({ displayName, country, hobby, age }) => {
                 });
             });
         };
-    }, [mcId, tntId]);
+    }, [refreshKey, displayName, country, hobby, age]);
     return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
         react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Header__WEBPACK_IMPORTED_MODULE_1__["default"], { refreshOnSave: handlePersonaSave }),
         react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_ModelExplorer__WEBPACK_IMPORTED_MODULE_5__["default"], { campaignIds: campaignIds, tenant: window.extension_data.tenant }),
@@ -43163,7 +43272,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Header_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Header.css */ "./src/react-ui/components/Header.css");
 
 
- // Import the context hook
+
 
 const DropdownMenu = ({ title, children }) => {
     const [open, setOpen] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
@@ -43172,9 +43281,8 @@ const DropdownMenu = ({ title, children }) => {
         open && react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "dropdown-content" }, children)));
 };
 const Header = ({ refreshOnSave }) => {
-    const { displayName, setDisplayName, country, setCountry, hobby, setHobby, age, setAge, refreshKey, setRefreshKey } = (0,_Persona__WEBPACK_IMPORTED_MODULE_1__.usePersona)(); // Use the context here
+    const { displayName, setDisplayName, country, setCountry, hobby, setHobby, age, setAge } = (0,_Persona__WEBPACK_IMPORTED_MODULE_1__.usePersona)();
     const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_3__.useNavigate)();
-    // List of possible values for each field
     const nameOptions = ['Alice', 'Bob', 'Charlie', 'David'];
     const countryOptions = ['USA', 'Canada', 'UK', 'Germany'];
     const hobbyOptions = ['Reading', 'Sports', 'Cooking', 'Traveling'];
@@ -43189,9 +43297,10 @@ const Header = ({ refreshOnSave }) => {
     const [searchParams, setSearchParams] = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_3__.useSearchParams)();
     const [isModalOpen, setIsModalOpen] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
     const [itemsInCart, setItemsInCart] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0);
-    // Populate fields on component load if they are empty
+    // Prevent multiple initial saves
+    const hasSaved = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(false);
+    // Populate missing fields with random values on mount or when persona fields change
     (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-        const shouldSave = !displayName || !country || !hobby || !age;
         if (!displayName)
             setInputName(getRandomValue(nameOptions));
         if (!country)
@@ -43200,24 +43309,30 @@ const Header = ({ refreshOnSave }) => {
             setInputHobby(getRandomValue(hobbyOptions));
         if (!age)
             setInputAge(getRandomValue(ageOptions));
-        if (shouldSave)
+        // eslint-disable-next-line
+    }, [displayName, country, hobby, age]);
+    // When all input fields are ready and persona fields are missing, call handleSave ONCE
+    (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+        const shouldSave = (!displayName || !country || !hobby || !age) &&
+            inputName && inputCountry && inputHobby && inputAge;
+        if (shouldSave && !hasSaved.current) {
+            hasSaved.current = true; // prevent multiple calls
             handleSave();
-    }, [displayName, country, hobby, age, refreshKey]);
+        }
+        // eslint-disable-next-line
+    }, [inputName, inputCountry, inputHobby, inputAge, displayName, country, hobby, age]);
     const handleLinkClick = (e, to) => {
-        e.preventDefault(); // Prevent the default navigation behavior
-        // Create a new instance of URLSearchParams to modify the search params
+        e.preventDefault();
         const updatedSearchParams = new URLSearchParams(searchParams);
-        // Iterate through all search params and delete those starting with 'at_preview'
         Array.from(updatedSearchParams.entries()).forEach(([key]) => {
             if (key.startsWith("at_preview")) {
                 updatedSearchParams.delete(key);
             }
         });
-        // Update the searchParams with the modified URLSearchParams
         setSearchParams(updatedSearchParams);
         navigate({
             pathname: to,
-            search: updatedSearchParams.toString() // Pass updated search params with other params retained
+            search: updatedSearchParams.toString()
         });
     };
     const handleSave = (event) => {
@@ -43225,25 +43340,21 @@ const Header = ({ refreshOnSave }) => {
         if (event) {
             event.preventDefault();
         }
-        // If input fields are empty, generate random values
         const savedName = inputName || getRandomValue(nameOptions);
         const savedCountry = inputCountry || getRandomValue(countryOptions);
         const savedHobby = inputHobby || getRandomValue(hobbyOptions);
         const savedAge = inputAge || getRandomValue(ageOptions);
-        // Save the updated persona information
         setDisplayName(savedName);
         setCountry(savedCountry);
         setHobby(savedHobby);
         setAge(savedAge);
-        // Increment the refresh key to trigger re-render
         refreshOnSave();
     };
     return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("header", null,
         react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "header-top" },
             react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "profile-container" },
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "profile-icon", onClick: () => setIsModalOpen(true) },
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", { src: "https://cdn-icons-png.flaticon.com/512/4794/4794936.png" // Replace with user's avatar if available
-                        , alt: "Profile", className: "profile-avatar" }),
+                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", { src: "https://cdn-icons-png.flaticon.com/512/4794/4794936.png", alt: "Profile", className: "profile-avatar" }),
                     react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "profile-details" },
                         react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, displayName),
                         react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, country),
@@ -43602,75 +43713,136 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _ProductUtil_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ProductUtil.css */ "./src/react-ui/components/ProductUtil.css");
 /* harmony import */ var _lib_atJs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../lib/atJs */ "./src/react-ui/lib/atJs.ts");
+/* harmony import */ var _lib_visitor__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../lib/visitor */ "./src/react-ui/lib/visitor.ts");
 
 
 
-const getNewCookiePCValue = (token) => {
-    return `cookie-${token}`;
-};
-const updateQueryParams = (key, value) => {
-    const urlParams = new URLSearchParams(window.location.search);
-    urlParams.set(key, value);
-    window.history.replaceState({}, '', `${window.location.pathname}?${urlParams}`);
-};
-const generate = (entityId, unique, views, type, setCurrent, onClose, productValue) => {
-    let mcId;
-    if (unique) {
-        mcId = `${(0,_lib_atJs__WEBPACK_IMPORTED_MODULE_2__.generateToken)(2)}-${(0,_lib_atJs__WEBPACK_IMPORTED_MODULE_2__.generateToken)(2)}`;
-        updateQueryParams("MCID", mcId);
-        updateQueryParams("PC", getNewCookiePCValue((0,_lib_atJs__WEBPACK_IMPORTED_MODULE_2__.generateToken)()));
-        updateQueryParams("mboxSession", (0,_lib_atJs__WEBPACK_IMPORTED_MODULE_2__.generateToken)());
-    }
-    else {
-        mcId = window.location.search.includes("MCID") ? new URLSearchParams(window.location.search).get("MCID") : "";
-    }
-    const interval = setInterval(() => {
-        if (views <= 0) {
-            clearInterval(interval);
-            onClose();
-            return;
-        }
-        const requestPayload = type === "views"
-            ? { "entity.id": entityId }
-            : {
-                orderId: `${Date.now()}-${entityId}`,
-                orderTotal: `${productValue}`,
-                productPurchaseId: entityId,
-            };
-        console.log("requestPayload", requestPayload);
-        window.adobe.target
-            ?.getOffers({
-            request: {
-                id: {
-                    marketingCloudVisitorId: mcId,
-                },
-                execute: {
-                    pageLoad: {
-                        parameters: requestPayload,
-                    },
-                },
-            },
-        })
-            .then((response) => {
-            window.adobe.target?.applyOffers({ response });
-        })
-            .finally(() => {
-            setCurrent(views - 1);
-            if (views === 1) {
-                clearInterval(interval);
-                onClose();
-            }
-        });
-        views -= 1;
-    }, 300);
-};
-const ProductUtil = ({ mcId, tntId, isOpen, onClose }) => {
+
+const ProductUtil = ({ mcId, tntId, isOpen, onClose, mboxes, setTotal, setCurrent, setModalVisible }) => {
     const [entityId, setEntityId] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)("");
     const [productValue, setProductValue] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)("100");
     const [views, setViews] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1);
     const [buys, setBuys] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1);
-    const [current, setCurrent] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0);
     const [isUnique, setIsUnique] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true); // Added isUnique state
+    const [mboxesInput, setMboxesInput] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(mboxes);
+    const [isAnalytics, setIsAnalytics] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+    const getNewCookiePCValue = (token) => {
+        return `cookie-${token}`;
+    };
+    const updateQueryParams = (key, value) => {
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set(key, value);
+        window.history.replaceState({}, '', `${window.location.pathname}?${urlParams}`);
+    };
+    const generate = (entityId, unique, views, type, setCurrent, onClose, productValue, analytics = false) => {
+        let mcId;
+        let sessionId;
+        const mboxesToSend = mboxesInput.length > 0 ? mboxesInput.split(',') : [];
+        setModalVisible(true);
+        setTotal(views);
+        setCurrent(views);
+        let parameters = {};
+        if (window.extension_data.mboxParams) {
+            parameters = window.extension_data.mboxParams;
+        }
+        const mboxParams = mboxesToSend.length > 0 ? mboxesToSend.map((mboxName, idx) => {
+            const element = document.getElementsByClassName(`mbox-name-${mboxName}`)[0];
+            return JSON.parse(element.getAttribute('data-mboxparams') || '{}');
+        }) : {};
+        const interval = setInterval(() => {
+            if (unique) {
+                mcId = `${(0,_lib_atJs__WEBPACK_IMPORTED_MODULE_2__.generateToken)(38)}`;
+                if (window.extension_data.sdkType === 'atjs') {
+                    mcId = `${(0,_lib_atJs__WEBPACK_IMPORTED_MODULE_2__.generateToken)(2)}-${(0,_lib_atJs__WEBPACK_IMPORTED_MODULE_2__.generateToken)(2)}`;
+                }
+                sessionId = (0,_lib_atJs__WEBPACK_IMPORTED_MODULE_2__.generateToken)();
+                updateQueryParams("MCID", mcId);
+                updateQueryParams("PC", getNewCookiePCValue((0,_lib_atJs__WEBPACK_IMPORTED_MODULE_2__.generateToken)()));
+                updateQueryParams("mboxSession", sessionId);
+            }
+            else {
+                mcId = window.location.search.includes("MCID") ? new URLSearchParams(window.location.search).get("MCID") : "";
+                sessionId = window.location.search.includes("mboxSession") ? new URLSearchParams(window.location.search).get("mboxSession") : "";
+            }
+            if (views <= 0) {
+                clearInterval(interval);
+                setModalVisible(false);
+                onClose();
+                return;
+            }
+            if (analytics) {
+                (0,_lib_visitor__WEBPACK_IMPORTED_MODULE_3__.trackEvent)(type === "buys" ? "purchase" : "view", mcId, window.s.visitor.getSupplementalDataID(), {
+                    "a.target.sessionid": sessionId,
+                    purchaseID: `${Date.now()}-${entityId}`,
+                    /*format <category>;<product_name>;<quantity>;<price>;<optional_evars split by | > - then you can continue in the same format with a trailling "," meaning you will have multiple products in one event*/
+                    products: `;${entityId};1;${productValue}`,
+                    marketingCloudVisitorID: mcId,
+                    supplementalDataID: window.s.visitor.getSupplementalDataID(),
+                    tnt: tntId,
+                });
+                setCurrent(views - 1);
+                views -= 1;
+                return;
+            }
+            const requestPayload = type === "views"
+                ? { "entity.id": entityId }
+                : {
+                    orderId: `${Date.now()}-${entityId}`,
+                    orderTotal: `${productValue}`,
+                    productPurchaseId: entityId,
+                };
+            console.log("requestPayload", requestPayload);
+            window.adobe.target
+                ?.getOffers({
+                request: {
+                    property: {
+                        token: window.extension_data.atProperty,
+                    },
+                    id: {
+                        marketingCloudVisitorId: mcId,
+                    },
+                    execute: {
+                        mboxes: mboxesToSend.length > 0 ? mboxesToSend.map((mboxName, idx) => {
+                            return {
+                                index: idx,
+                                name: mboxName,
+                                parameters: {
+                                    ...requestPayload
+                                },
+                                profileParameters: {
+                                    ...window.extension_data.profileParameters
+                                }
+                            };
+                        }) : undefined,
+                        pageLoad: mboxesToSend.length == 0 ? {
+                            parameters: {
+                                ...requestPayload
+                            },
+                            profileParameters: {
+                                ...window.extension_data.profileParameters
+                            }
+                        } : undefined
+                    },
+                },
+            })
+                .then((response) => {
+                window.adobe.target?.applyOffers({ response });
+            })
+                .finally(() => {
+                setCurrent(views - 1);
+                if (views === 1) {
+                    clearInterval(interval);
+                    onClose();
+                }
+            });
+            views -= 1;
+        }, 300);
+    };
+    (0,react__WEBPACK_IMPORTED_MODULE_0__.useLayoutEffect)(() => {
+        return () => {
+            setMboxesInput(mboxes);
+        };
+    }, [mboxes]);
     if (!isOpen)
         return null; // Prevent rendering when closed
     return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "profile-modal" },
@@ -43684,14 +43856,17 @@ const ProductUtil = ({ mcId, tntId, isOpen, onClose }) => {
             react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "group" },
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", null, "Number of Views:"),
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { type: "number", value: views, onChange: (e) => setViews(Number(e.target.value)) }),
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", { className: "generate-btn", onClick: () => generate(entityId, isUnique, views, "views", setCurrent, onClose) }, "Generate Views")),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", { className: "generate-btn", onClick: () => generate(entityId, isUnique, views, "views", setCurrent, onClose, productValue, isAnalytics) }, "Generate Views")),
             react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "group" },
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", null, "Number of Buys:"),
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { type: "number", value: buys, onChange: (e) => setBuys(Number(e.target.value)) }),
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", { className: "generate-btn", onClick: () => generate(entityId, isUnique, buys, "buys", setCurrent, onClose, productValue) }, "Generate Buys")),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", { className: "generate-btn", onClick: () => generate(entityId, isUnique, buys, "buys", setCurrent, onClose, productValue, isAnalytics) }, "Generate Buys")),
             react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "group" },
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", null, "Unique:"),
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { type: "checkbox", checked: isUnique, onChange: () => setIsUnique(!isUnique) })))));
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { type: "checkbox", checked: isUnique, onChange: () => setIsUnique(!isUnique) })),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "group" },
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", null, "Analytics:"),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { type: "checkbox", checked: isAnalytics, onChange: () => setIsAnalytics(!isAnalytics) })))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ProductUtil);
 
@@ -43957,23 +44132,403 @@ const UtilityFloater = ({ handlePersonaSave, mcId, tntId, displayName, country, 
         extractMboxesFromDOM();
         setTrafficModalOpen((prevState) => !prevState);
     };
+    const openProductUtil = () => {
+        extractMboxesFromDOM();
+        setProductUtilOpen((prevState) => !prevState);
+    };
+    const params = new URLSearchParams(window.location.search);
+    const mboxSession = params.get("mboxSession") || undefined;
     return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null,
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "floating-refresh-button-inplace", onClick: () => handlePersonaSave(mcId, tntId, mboxSession) },
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", { src: "https://cdn-icons-png.freepik.com/256/10152/10152078.png?semt=ais_hybrid", alt: "Refresh Same client" })),
         react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "floating-refresh-button", onClick: () => handlePersonaSave() },
             react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", { src: "https://cdn-icons-png.freepik.com/256/10152/10152078.png?semt=ais_hybrid", alt: "Refresh" })),
         react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "floating-profile-button", onClick: () => setProfileModalOpen(true) },
             react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", { src: "https://cdn-icons-png.freepik.com/256/847/847969.png", alt: "Profile" })),
         react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "floating-traffic-button", onClick: openTrafficModal },
             react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", { src: "https://cdn-icons-png.flaticon.com/512/17076/17076762.png", alt: "Traffic Generator" })),
-        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "floating-product-button", onClick: () => setProductUtilOpen(true) },
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "floating-product-button", onClick: openProductUtil },
             react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", { src: "https://cdn-icons-png.freepik.com/256/12783/12783710.png?semt=ais_hybrid", alt: "Product Util" })),
         react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ProfileModal__WEBPACK_IMPORTED_MODULE_4__["default"], { mcId: mcId, tntId: tntId, isOpen: isProfileModalOpen, onClose: () => setProfileModalOpen(false), handlePersonaSave: handlePersonaSave }),
         isTrafficModalOpen && (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "traffic-modal" },
             react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "traffic-modal-content" },
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_TrafficGenerator__WEBPACK_IMPORTED_MODULE_2__["default"], { displayName: displayName, country: country, hobby: hobby, age: age, experienceIndex: experienceIndex, setExperienceIndex: setExperienceIndex, showExperienceIndex: true, isTarget: true, conversionEvent: "click", setTotal: setTotal, setCurrent: setCurrent, setModalVisible: setModalVisible, setTrafficModalOpen: setTrafficModalOpen, mboxes: mboxes, algorithmId: algorithmId, setAlgorithmId: setAlgorithmId, selectAlgorithm: true, reportingServer: reportingServer, setTrafficData: setTrafficData, setTestDuration: setTestDuration, setTrafficModalVisible: setTrafficModalVisible })))),
-        react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ProductUtil__WEBPACK_IMPORTED_MODULE_5__["default"], { mcId: mcId, tntId: tntId, isOpen: isProductUtilOpen, onClose: () => setProductUtilOpen(false) }),
+        isProductUtilOpen && (react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ProductUtil__WEBPACK_IMPORTED_MODULE_5__["default"], { mcId: mcId, tntId: tntId, isOpen: isProductUtilOpen, setTotal: setTotal, setCurrent: setCurrent, setModalVisible: setModalVisible, onClose: () => setProductUtilOpen(false), mboxes: mboxes })),
         react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_HitsModal__WEBPACK_IMPORTED_MODULE_3__["default"], { data: trafficData, testDuration: testDuration, visible: isTrafficModalVisible, setVisible: setTrafficModalVisible })));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (UtilityFloater);
+
+
+/***/ }),
+
+/***/ "./src/react-ui/lib/alloyJs.ts":
+/*!*************************************!*\
+  !*** ./src/react-ui/lib/alloyJs.ts ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   clearAllCookies: () => (/* binding */ clearAllCookies),
+/* harmony export */   "default": () => (/* binding */ AlloyJs),
+/* harmony export */   generateToken: () => (/* binding */ generateToken),
+/* harmony export */   generateViewsWithConversions: () => (/* binding */ generateViewsWithConversions),
+/* harmony export */   getAndApplyOffers: () => (/* binding */ getAndApplyOffers),
+/* harmony export */   getNewCookiePCValue: () => (/* binding */ getNewCookiePCValue),
+/* harmony export */   getQueryParameter: () => (/* binding */ getQueryParameter),
+/* harmony export */   updateQueryParams: () => (/* binding */ updateQueryParams)
+/* harmony export */ });
+/* harmony import */ var _visitor__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./visitor */ "./src/react-ui/lib/visitor.ts");
+/* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! js-cookie */ "./node_modules/js-cookie/dist/js.cookie.mjs");
+// alloyjs.ts
+
+
+// ── UTILITIES ────────────────────────────────────────────────────────────────
+const clearAllCookies = () => {
+    document.cookie.split(';').forEach(cookie => {
+        const name = cookie.split('=')[0].trim();
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    });
+    localStorage.clear();
+    sessionStorage.clear();
+};
+function updateQueryParams(key, value) {
+    const url = new URL(window.location.href);
+    const params = new URLSearchParams(url.search);
+    if (value)
+        params.set(key, value);
+    else
+        params.delete(key);
+    window.history.pushState({}, '', `${url.pathname}?${params.toString()}`);
+}
+function generateToken(length = 32) {
+    const digits = [];
+    const array = new Uint8Array(length);
+    window.crypto.getRandomValues(array);
+    // Ensure the first digit is never '0'
+    digits.push(((array[0] % 9) + 1).toString()); // Map byte to 1-9 to avoid 0 as the first digit
+    for (let i = 1; i < length; i++) {
+        digits.push((array[i] % 10).toString()); // Map byte to 0–9
+    }
+    return digits.join('');
+}
+function injectScripts(names, ids) {
+    const head = document.head;
+    // remove old
+    document.querySelectorAll('script').forEach(s => {
+        if (s.src && names.some(n => s.src.includes(n)))
+            s.remove();
+    });
+    // inject new
+    return Promise.all(names.map((name, i) => new Promise((res, rej) => {
+        const s = document.createElement('script');
+        s.src = chrome.runtime.getURL(`static/${name}`);
+        s.async = false;
+        s.id = ids[i];
+        s.onload = () => res(true);
+        s.onerror = () => rej(`Failed to load ${name}`);
+        head.appendChild(s);
+    })));
+}
+// ── CORE INIT ───────────────────────────────────────────────────────────────
+const requestScriptInjection = (scriptNames, scriptIds, resolve, reject) => {
+    const requestId = `request-${Date.now()}`; // Unique ID for matching responses
+    // Listen for a response from content.js
+    const handleMessage = (event) => {
+        if (event.source !== window || event.data.type !== "INJECT_SCRIPT_RESPONSE")
+            return;
+        if (event.data.requestId === requestId) { // Ensure it's the correct response
+            console.log(event);
+            if (window.extension_data.sdkType === "websdk" && window.alloy) {
+                window.alloy("configure", {
+                    datastreamId: window.extension_data.dataStreamId,
+                    orgId: window.extension_data.org,
+                    debugEnabled: true,
+                    // thirdPartyCookiesEnabled: false, // Keep cookies enabled
+                    // idMigrationEnabled: true, // Enable ID migration
+                    // targetMigrationEnabled: true, // Enable target migration
+                    // personalizationStorageEnabled: true, // Enable personalization storage (same as Reactor version)
+                    // autoCollectPropositionInteractions: {
+                    //   AJO: "always", // Auto-collect AJO propositions
+                    //   TGT: "always" // Do not auto-collect TGT propositions
+                    // },
+                    // context: [
+                    //   "web",
+                    //   "device",
+                    //   "environment",
+                    //   "placeContext"
+                    // ],
+                    // clickCollectionEnabled: true, // Keep click collection disabled (or enable it based on need)
+                    // clickCollection: {
+                    //   internalLinkEnabled: true,
+                    //   externalLinkEnabled: true,
+                    //   downloadLinkEnabled: true,
+                    //   sessionStorageEnabled: true,
+                    //   eventGroupingEnabled: false
+                    // },
+                    // downloadLinkQualifier: "\\.(exe|zip|wav|mp3|mov|mpg|avi|wmv|pdf|doc|docx|xls|xlsx|ppt|pptx)$",
+                    // edgeDomain: "edge.adobedc.net",
+                    // edgeBasePath: "ee",
+                    edgeConfigOverrides: {
+                        com_adobe_target: {
+                            propertyToken: window.extension_data.atProperty // Override Target Property Token
+                        }
+                    },
+                }).then((configureData) => {
+                    console.log("Alloy.js configured successfully:", configureData);
+                    resolve(true);
+                });
+            }
+            window.removeEventListener("message", handleMessage); // Clean up
+        }
+    };
+    window.addEventListener("message", handleMessage);
+    window.postMessage({ type: "INJECT_SCRIPT", scriptNames: scriptNames, scriptIds: scriptIds, requestId }, "*");
+};
+async function AlloyJs(initParams) {
+    // reset any previous state
+    window.targetPageParams = initParams || (() => ({}));
+    if (window.alloy) {
+        window.alloy = undefined;
+        clearAllCookies();
+    }
+    // reset any leftover mbox DOM state
+    document.querySelectorAll('[data-mbox]').forEach(element => {
+        const clone = element.cloneNode(true); // Clone the element
+        element.parentNode?.replaceChild(clone, element); // Replace the original with the clone
+    });
+    document.querySelectorAll('[data-mbox]').forEach(element => {
+        //reset it to the default
+        element.innerHTML = "";
+    });
+    return new Promise((resolve, reject) => {
+        console.log(window.adobe.target);
+        if (!window.alloy) {
+            //get script element from head with id at-js
+            const oldScript = document.getElementById("alloy-js");
+            const oldEnforceAlloy = document.getElementById("enforce-alloy");
+            const mcjs = document.getElementById("mcjs");
+            const oldScriptAt = document.getElementById("at-js");
+            const oldAppServiceAt = document.getElementById("app-service");
+            //if oldScript is present than delete it
+            if (oldScriptAt) {
+                oldScriptAt.remove();
+            }
+            if (oldAppServiceAt) {
+                oldAppServiceAt.remove();
+            }
+            if (mcjs) {
+                mcjs.remove();
+            }
+            //if oldScript is present than delete it
+            if (oldScript) {
+                oldScript.remove();
+            }
+            if (oldEnforceAlloy) {
+                oldEnforceAlloy.remove();
+            }
+            if (mcjs) {
+                mcjs.remove();
+            }
+            const scriptNames = ['enforce_alloy.js', 'alloy.js', 'mcid.js'];
+            const scriptIds = ['enforce-alloy', 'alloy-js', 'mcjs'];
+            requestScriptInjection(scriptNames, scriptIds, resolve, reject);
+        }
+    });
+}
+function getNewCookiePCValue(newPC) {
+    const mboxCookie = js_cookie__WEBPACK_IMPORTED_MODULE_1__["default"].get('mbox') || '';
+    const parts = mboxCookie.split('|');
+    for (const p of parts) {
+        if (p.startsWith('PC#')) {
+            const version = p.split('#')[1].split('.')[1];
+            return `${newPC}.${version}`;
+        }
+    }
+    return `${newPC}.37_0`;
+}
+function getQueryParameter(param) {
+    return new URLSearchParams(window.location.search).get(param);
+}
+// ── DRIVE VIEWS + CONVERSIONS ────────────────────────────────────────────────
+const generateViewsWithConversions = async (uniqueVisitors, countStr, setTotal, setCurrent, setModalVisible, reportingServer, profileData, mboxes, tntA, conversion = false, conversionEvent, conversionValue = 1, algorithmId = -1000, isTarget = false, experienceIndex) => {
+    let total = parseInt(countStr, 10);
+    setTotal(total);
+    setCurrent(total);
+    setModalVisible(true);
+    const viewMap = {};
+    let remaining = total;
+    const loop = async () => {
+        // manage MCID/PC/mboxSession
+        let mcid;
+        if (uniqueVisitors) {
+            mcid = `${generateToken(38)}`;
+            updateQueryParams('MCID', mcid);
+            updateQueryParams('PC', getNewCookiePCValue(generateToken()));
+            updateQueryParams('mboxSession', generateToken());
+        }
+        else {
+            mcid = getQueryParameter('MCID') || (0,_visitor__WEBPACK_IMPORTED_MODULE_0__["default"])();
+        }
+        // build XDM envelope
+        const xdmProfile = {
+            'user.422': `${profileData.displayName}-${Date.now()}`,
+            'user.country': profileData.country,
+            'user.hobby': profileData.hobby,
+            'user.age': profileData.age,
+            'brand.bought': 'offline',
+            ...window.extension_data.profileParameters
+        };
+        let parameters = {};
+        if (window.extension_data.mboxParams) {
+            parameters = window.extension_data.mboxParams;
+        }
+        // sendEvent → get propositions
+        const mboxParams = mboxes.length > 0 ? mboxes.map((mboxName, idx) => {
+            const element = document.getElementsByClassName(`mbox-name-${mboxName}`)[0];
+            return JSON.parse(element.getAttribute('data-mboxparams') || '{}');
+        }) : {};
+        const resp = await window.alloy('sendEvent', {
+            renderDecisions: true,
+            decisionScopes: mboxes.length > 0 ? mboxes : ["__view__"],
+            xdm: {
+                profile: xdmProfile,
+                identityMap: {
+                    ECID: [{ id: mcid, authenticatedState: "ambiguous" }]
+                }
+            },
+            data: {
+                __adobe: {
+                    target: {
+                        parameters: parameters,
+                        profileParameters: xdmProfile,
+                        mboxes: mboxes.map((name, index) => ({
+                            id: index,
+                            name,
+                            parameters: {
+                                ...parameters,
+                                ...(mboxParams[index] || {})
+                            }
+                        }))
+                    }
+                }
+            }
+        });
+        console.log(`### the response is ${JSON.stringify(resp, null, 2)}`);
+        // apply personalization to page
+        //await window.alloy!('applyPropositions', { propositions: resp.propositions });
+        resp.propositions.forEach((proposition) => {
+            // Extract the scope and the content
+            const { scope, items } = proposition;
+            // Loop through all items in the proposition
+            items.forEach((item) => {
+                // Get the content data from the item
+                const content = item.data.content;
+                // Find elements with the class "mbox-name-${scope}"
+                const targetElements = document.querySelectorAll(`.mbox-name-${scope}`);
+                // Loop through all matching elements and set their innerHTML
+                targetElements.forEach(element => {
+                    element.innerHTML = content;
+                });
+            });
+        });
+        // track views + optionally notify analytics/target
+        const promises = [];
+        for (const dec of resp.propositions || []) {
+            const scope = dec.scope;
+            viewMap[scope] = (viewMap[scope] || 0) + 1;
+            if (conversion && conversionEvent) {
+                promises.push(window.alloy('sendEvent', {
+                    decisionScopes: [],
+                    renderDecisions: true,
+                    xdm: {
+                        _experience: {
+                            decisioning: {
+                                propositions: [dec],
+                                propositionEventType: { interact: 1 }
+                            }
+                        },
+                        commerce: { order: { priceTotal: conversionValue } }
+                    }
+                }).then(() => true).catch(() => false));
+            }
+            else {
+                promises.push(Promise.resolve(true));
+            }
+        }
+        await Promise.all(promises);
+        // update remaining & UI
+        if (experienceIndex != null && experienceIndex !== -100) {
+            remaining--;
+        }
+        else {
+            remaining--;
+        }
+        setCurrent(remaining);
+        if (remaining <= 0) {
+            setModalVisible(false);
+            return viewMap;
+        }
+        // schedule next iteration
+        return new Promise(res => {
+            setTimeout(async () => res(await loop()), 400);
+        });
+    };
+    return loop();
+};
+async function getAndApplyOffers(deliveryRequest, mcIdToUse, addCampaignId) {
+    if (!window.alloy) {
+        console.error("Alloy.js not initialized.");
+        return;
+    }
+    window.alloy("sendEvent", {
+        decisionScopes: [
+            ...deliveryRequest.decisionScopes,
+            ...(window.extension_data.decisionScopes.length > 0 ? window.extension_data.decisionScopes.split(",") : []),
+        ],
+        type: "decisioning.propositionDisplay",
+        xdm: {
+            identityMap: {
+                ECID: [{ id: mcIdToUse, authenticatedState: "ambiguous" }]
+            },
+            web: { webPageDetails: { viewName: window.extension_data.decisionScopes.length > 0 ? window.extension_data.decisionScopes : undefined } },
+            ...deliveryRequest.xdm
+        },
+        data: {
+            ...deliveryRequest.data
+        },
+        renderDecisions: true
+    }).then((result) => {
+        console.log(`### the result is ${JSON.stringify(result, null, 2)}`);
+        // Apply propositions to the page for mboxes
+        result.propositions.forEach((proposition) => {
+            // Extract the scope and the content
+            const { scope, items } = proposition;
+            // Loop through all items in the proposition
+            items.forEach((item) => {
+                // Get the content data from the item
+                const content = item.data.content;
+                // Find elements with the class "mbox-name-${scope}"
+                const targetElements = document.querySelectorAll(`.mbox-name-${scope}`);
+                // Loop through all matching elements and set their innerHTML
+                targetElements.forEach(element => {
+                    element.innerHTML = content;
+                });
+            });
+        });
+        // await window.alloy("applyPropositions", { propositions: result.propositions });
+        const decisions = result?.decisions || [];
+        decisions.forEach((decision) => {
+            const activityId = decision.items?.[0]?.data?.activity?.id;
+            if (activityId) {
+                addCampaignId(activityId);
+            }
+        });
+    }).catch((err) => {
+        console.error("Alloy.js sendEvent failed:", err);
+    });
+}
 
 
 /***/ }),
@@ -43992,6 +44547,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   generateNotificationRequest: () => (/* binding */ generateNotificationRequest),
 /* harmony export */   generateToken: () => (/* binding */ generateToken),
 /* harmony export */   generateViewsWithConversions: () => (/* binding */ generateViewsWithConversions),
+/* harmony export */   getAndApplyOffers: () => (/* binding */ getAndApplyOffers),
 /* harmony export */   getNewCookiePCValue: () => (/* binding */ getNewCookiePCValue),
 /* harmony export */   getQueryParameter: () => (/* binding */ getQueryParameter),
 /* harmony export */   sendNotificationAnalytics: () => (/* binding */ sendNotificationAnalytics),
@@ -44066,6 +44622,49 @@ const requestScriptInjection = (scriptNames, scriptIds, resolve, reject) => {
             return;
         if (event.data.requestId === requestId) { // Ensure it's the correct response
             console.log(event);
+            if (window.extension_data.sdkType === "atjs" && window.adobe && window.adobe.target) {
+                window.adobe.target.init(window, document, {
+                    applyZeroApi: true,
+                    clientCode: window.extension_data.tenant,
+                    imsOrgId: window.extension_data.org,
+                    serverDomain: window.extension_data.edgeHost,
+                    trackingServer: window.extension_data.analyticsReportingServer || `${window.extension_data.tenant}.com.sc.omtrdc.net`,
+                    trackingServerSecure: window.extension_data.analyticsReportingServer || `${window.extension_data.tenant}.com.ssl.sc.omtrdc.net`,
+                    crossDomain: 'disabled',
+                    timeout: 5000,
+                    globalMboxName: 'target-global-mbox',
+                    version: '2.11.5',
+                    defaultContentHiddenStyle: 'visibility: hidden;',
+                    defaultContentVisibleStyle: 'visibility: visible;',
+                    bodyHiddenStyle: 'body {opacity: 0 !important}',
+                    bodyHidingEnabled: true,
+                    deviceIdLifetime: 63244800000,
+                    sessionIdLifetime: 1860000,
+                    selectorsPollingTimeout: 5000,
+                    visitorApiTimeout: 2000,
+                    overrideMboxEdgeServer: false,
+                    overrideMboxEdgeServerTimeout: 1860000,
+                    optoutEnabled: false,
+                    optinEnabled: false,
+                    secureOnly: false,
+                    supplementalDataIdParamTimeout: 30,
+                    authoringScriptUrl: '//cdn.tt.omtrdc.net/cdn/target-vec.js',
+                    urlSizeLimit: 2048,
+                    endpoint: '/rest/v1/delivery',
+                    pageLoadEnabled: true,
+                    viewsEnabled: true,
+                    analyticsLogging: 'server_side',
+                    serverState: {},
+                    decisioningMethod: 'server-side',
+                    legacyBrowserSupport: false,
+                    allowHighEntropyClientHints: false,
+                    aepSandboxId: null,
+                    aepSandboxName: null,
+                    enabled: true,
+                    silentInit: true,
+                    debug: { level: 'verbose', trace: true }
+                });
+            }
             resolve(true);
             window.removeEventListener("message", handleMessage); // Clean up
         }
@@ -44099,7 +44698,15 @@ async function AtJs(targetPageParams) {
             const oldScript = document.getElementById("at-js");
             const oldAppService = document.getElementById("app-service");
             const mcjs = document.getElementById("mcjs");
+            const oldScriptAlloy = document.getElementById("alloy-js");
+            const oldEnforceAlloy = document.getElementById("enforce-alloy");
             //if oldScript is present than delete it
+            if (oldScriptAlloy) {
+                oldScriptAlloy.remove();
+            }
+            if (oldEnforceAlloy) {
+                oldEnforceAlloy.remove();
+            }
             if (oldScript) {
                 oldScript.remove();
             }
@@ -44109,7 +44716,7 @@ async function AtJs(targetPageParams) {
             if (mcjs) {
                 mcjs.remove();
             }
-            requestScriptInjection(["at.js"], ["at-js"], resolve, reject);
+            requestScriptInjection(["mcid.js", "at.js"], ["mcjs", "at-js"], resolve, reject);
         }
     });
 }
@@ -44134,6 +44741,101 @@ function getNewCookiePCValue(newPCValue) {
 function getQueryParameter(param) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(param);
+}
+function waitForElement(selector, { interval = 100, timeout = 5000 } = {}) {
+    return new Promise((resolve, reject) => {
+        const start = Date.now();
+        (function poll() {
+            const el = document.querySelector(selector);
+            if (el) {
+                console.log(`Found element: ${selector}`);
+                return resolve(el);
+            }
+            if (Date.now() - start >= timeout) {
+                return reject(new Error(`Timed out waiting for selector ${selector}`));
+            }
+            setTimeout(poll, interval);
+        })();
+    });
+}
+async function getAndApplyOffers(deliveryRequest, mcIdToUse, addCampaignId) {
+    if (!window.adobe?.target) {
+        console.error("AT.js not available.");
+        return;
+    }
+    return window.adobe.target.getOffers({
+        request: {
+            property: deliveryRequest.property,
+            id: { marketingCloudVisitorId: mcIdToUse },
+            execute: deliveryRequest.execute,
+            prefetch: deliveryRequest.prefetch,
+        }
+    }).then(async (response) => {
+        console.log(`#### getOffers response ${JSON.stringify(response, null, 2)}`);
+        const mboxes = response?.execute?.mboxes || [];
+        if (mboxes.length > 0) {
+            for (const mbox of mboxes) {
+                addCampaignId(mbox?.options?.[0]?.responseTokens?.["activity.id"]);
+                const result = await window.adobe?.target?.applyOffers({
+                    selector: `.mbox-name-${mbox.name}`,
+                    response: { execute: { mboxes: [mbox] } }
+                });
+                console.log(`#### render result ${JSON.stringify(result, null, 2)} ---- ${JSON.stringify(response, null, 2)}`);
+            }
+            return;
+        }
+        if (Array.isArray(response.prefetch?.views) && response.prefetch.views.length) {
+            try {
+                // For each view in your prefetch, render them individually
+                const result = await window.adobe?.target?.applyOffers({
+                    response: response
+                });
+                for (const view of response.prefetch.views) {
+                    // Pull out all the selectors in this view's content array
+                    const selectors = (view.options || []).flatMap((opt) => (opt.content || [])
+                        .filter((item) => item.selector)
+                        .map((item) => item.selector));
+                    // Wait for each of those selectors to exist on the page
+                    // const fakeMbox = {
+                    //   name:   view.name,           // this becomes your .mbox-name-<view.name> container
+                    //   options: view.options,       // carries over your setHtml/actions
+                    // };
+                    //
+                    // addCampaignId(fakeMbox?.options?.[0]?.responseTokens?.["activity.id"]);
+                    // const singleViewResponse = {
+                    //   execute: { mboxes: [fakeMbox] },
+                    //   // you can also include execute.pageLoad if needed
+                    // };
+                    //
+                    // console.log(`#### rendering view ${JSON.stringify({
+                    //   // pick any one of the selectors as the insertion point;
+                    //   // at.js will read the matching content.selector inside the view payload
+                    //   selector: selectors[0],
+                    //   response: singleViewResponse
+                    // }, null, 2)}`);
+                    await window.adobe?.target?.triggerView(view.name);
+                }
+                return;
+            }
+            catch (err) {
+                console.error("Error rendering prefetched views:", err);
+                throw err;
+            }
+        }
+        if (response.execute.pageLoad) {
+            const result = await window.adobe?.target?.applyOffers({
+                response: {
+                    execute: {
+                        pageLoad: response.execute.pageLoad
+                    }
+                }
+            });
+            console.log(`#### render result ${JSON.stringify(result, null, 2)} ---- ${JSON.stringify(response, null, 2)}`);
+            return result;
+        }
+    }).catch((error) => {
+        console.error("AT.js getOffers error:", error);
+    });
 }
 const generateViewsWithConversions = (uniqueVisitors, number, setTotal, setCurrent, setModalVisible, reportingServer, profileData, mboxes, tntA, conversion = false, conversionEvent, conversionValue = 1, algorithmId = -1000, isTarget = false, experienceIndex) => {
     return new Promise((resolve, reject) => {
@@ -44167,18 +44869,55 @@ const generateViewsWithConversions = (uniqueVisitors, number, setTotal, setCurre
                 const element = document.getElementsByClassName(`mbox-name-${mboxName}`)[0];
                 return JSON.parse(element.getAttribute('data-mboxparams') || '{}');
             }) : {};
+            const views = window.extension_data.decisionScopes.length > 0 ? window.extension_data.decisionScopes.split(",") : [];
             window.adobe.target?.getOffers({
                 request: {
-                    mid: {
+                    property: {
+                        token: window.extension_data.atProperty,
+                    },
+                    id: {
                         marketingCloudVisitorId: mcId,
                     },
                     experienceCloud: {
                         analytics: {
-                            trackingServer: reportingServer,
+                            trackingServer: reportingServer || `${window.extension_data.tenant}.com.sc.omtrdc.net`,
+                            trackingServerSecure: reportingServer || `${window.extension_data.tenant}.com.ssl.sc.omtrdc.net`,
                             logging: !isTarget ? "client_side" : "server_side"
                         }
                     },
+                    prefetch: {
+                        views: views.length > 0 ? views.map((view) => {
+                            return {
+                                name: view,
+                                key: view,
+                                parameters: {
+                                    ...parameters
+                                },
+                                profileParameters: {
+                                    "user.422": `${profileData.displayName}-${Date.now()}`,
+                                    "user.country": profileData.country,
+                                    "user.hobby": profileData.hobby,
+                                    "user.age": profileData.age,
+                                    "brand.bought": "offline",
+                                    ...window.extension_data.profileParameters
+                                }
+                            };
+                        }) : undefined
+                    },
                     execute: {
+                        pageLoad: mboxes.length == 0 ? {
+                            parameters: {
+                                ...parameters
+                            },
+                            profileParameters: {
+                                "user.422": `${profileData.displayName}-${Date.now()}`,
+                                "user.country": profileData.country,
+                                "user.hobby": profileData.hobby,
+                                "user.age": profileData.age,
+                                "brand.bought": "offline",
+                                ...window.extension_data.profileParameters
+                            }
+                        } : undefined,
                         mboxes: mboxes.length > 0 ? mboxes.map((mboxName, idx) => {
                             return {
                                 index: idx,
@@ -44192,24 +44931,15 @@ const generateViewsWithConversions = (uniqueVisitors, number, setTotal, setCurre
                                     "user.country": profileData.country,
                                     "user.hobby": profileData.hobby,
                                     "user.age": profileData.age,
-                                    "brand.bought": "offline"
+                                    "brand.bought": "offline",
+                                    ...window.extension_data.profileParameters
                                 }
                             };
                         }) : undefined,
-                        pageLoad: mboxes.length == 0 ? {
-                            parameters: parameters,
-                            profileParameters: {
-                                "user.422": `${profileData.displayName}-${Date.now()}`,
-                                "user.country": profileData.country,
-                                "user.hobby": profileData.hobby,
-                                "user.age": profileData.age,
-                                "brand.bought": "offline"
-                            }
-                        } : undefined
                     }
                 }
             })
-                .then(response => {
+                .then((response) => {
                 console.log(response);
                 //all my elements should be with data-mbox
                 document.querySelectorAll('[data-mbox]').forEach(element => {
@@ -44236,7 +44966,36 @@ const generateViewsWithConversions = (uniqueVisitors, number, setTotal, setCurre
                         okTargeted.push(isTarget ? sendNotificationTarget(el, conversionEvent, conversion, profileData, experienceIndex, true, viewMap) : sendNotificationAnalytics(tntA, el, algorithmId, reportingServer, mcId, conversion, conversionEvent, conversionValue, experienceIndex, viewMap));
                     });
                 }
-                else {
+                if (Array.isArray(response.prefetch?.views) && response.prefetch.views.length) {
+                    try {
+                        // For each view in your prefetch, render them individually
+                        window.adobe?.target?.applyOffers({ response: response });
+                        for (const view of response.prefetch.views) {
+                            // Pull out all the selectors in this view's content array
+                            const selectors = (view.options || []).flatMap((opt) => (opt.content || [])
+                                .filter((item) => item.selector)
+                                .map((item) => item.selector));
+                            // Wait for each of those selectors to exist on the page
+                            const fakeMbox = {
+                                options: view.options,
+                                metrics: response.prefetch.metrics
+                            };
+                            const singleViewResponse = {
+                                execute: { mboxes: [fakeMbox] },
+                                // you can also include execute.pageLoad if needed
+                            };
+                            window.adobe?.target?.triggerView(view.name);
+                            //displaying for views will be treated as conversion
+                            if (conversion) {
+                                okTargeted.push(isTarget ? sendNotificationTarget(fakeMbox, conversionEvent, conversion, profileData, experienceIndex, false, viewMap) : sendNotificationAnalytics(tntA, fakeMbox, algorithmId, reportingServer, mcId, conversion, conversionEvent, conversionValue, experienceIndex, viewMap));
+                            }
+                        }
+                    }
+                    catch (err) {
+                        console.error("Error rendering prefetched views:", err);
+                    }
+                }
+                if (response.execute.pageLoad) {
                     window.adobe.target?.applyOffers({ response: response });
                     okTargeted.push(isTarget ? sendNotificationTarget(response.execute.pageLoad, conversionEvent, conversion, profileData, experienceIndex, false, viewMap) : sendNotificationAnalytics(tntA, response.execute.pageLoad, algorithmId, reportingServer, mcId, conversion, conversionEvent, conversionValue, experienceIndex, viewMap));
                 }
@@ -44277,7 +45036,8 @@ function generateNotificationRequest(el, type, profileData, useMbox = true) {
             "user.country": profileData.country,
             "user.hobby": profileData.hobby,
             "user.age": profileData.age,
-            "brand.bought": "offline"
+            "brand.bought": "offline",
+            ...window.extension_data.profileParameters
         } : undefined,
         order: el.order,
         product: el.product
@@ -44292,6 +45052,7 @@ function sendNotificationTarget(el, event, conversion, profileData, experienceIn
     //     request: { notifications: [generateNotificationRequest(el, 'display', profileData)] }
     //   }
     // );
+    console.log(`send notif for elem ${JSON.stringify(el, null, 2)}`);
     if (!viewMap[el?.options?.[0]?.responseTokens["experience.id"]]) {
         viewMap[`${el?.options?.[0]?.responseTokens["experience.id"]}`] = 1;
     }
@@ -44357,7 +45118,7 @@ function sendNotificationAnalytics(tntA, el, algorithmId, reportingServer, mcId,
         if (tntaData.indexOf("|0") == -1) {
             tntaData = `${revenueEvent[0]}|0,${tntaData}`;
         }
-        let viewsLink = `https://${reportingServer}/b/ss/atetrifandemo/0/TA-1.0?pe=tnt&tnta=${tntaData}&mid=${mcId}&c.a.target.sessionid=${el.analytics.payload["session-id"]}`;
+        let viewsLink = `https://${reportingServer}/b/ss/${window.extension_data.reportSuite || 'atetrifandemo'}/0/TA-1.0?pe=tnt&tnta=${tntaData}&mid=${mcId}&c.a.target.sessionid=${el.analytics.payload["session-id"]}`;
         fetch(viewsLink, {
             method: "GET",
             headers: {
@@ -44373,7 +45134,7 @@ function sendNotificationAnalytics(tntA, el, algorithmId, reportingServer, mcId,
             }
             if (conversion && conversionEvent && (el.options[0].responseTokens["experience.id"] == experienceIndex ||
                 (experienceIndex == -100 || experienceIndex == undefined))) {
-                viewsLink = `https://${reportingServer}/b/ss/atetrifandemo/0/TA-1.0?pe=tnt&tnta=${revenueEvent[0]}|32767,${revenueEvent[0]}|${conversionEvent?.replace("event", "")}|${conversionValue}&mid=${mcId}&c.a.target.sessionid=${el.analytics.payload["session-id"]}&events=${conversionEvent}=${conversionValue}`;
+                viewsLink = `https://${reportingServer}/b/ss/${window.extension_data.reportSuite || 'atetrifandemo'}/0/TA-1.0?pe=tnt&tnta=${revenueEvent[0]}|32767,${revenueEvent[0]}|${conversionEvent?.replace("event", "")}|${conversionValue}&mid=${mcId}&c.a.target.sessionid=${el.analytics.payload["session-id"]}&events=${conversionEvent}=${conversionValue}`;
                 setTimeout(() => {
                     fetch(viewsLink, {
                         method: "GET",
@@ -44395,6 +45156,81 @@ function sendNotificationAnalytics(tntA, el, algorithmId, reportingServer, mcId,
 
 /***/ }),
 
+/***/ "./src/react-ui/lib/factory.ts":
+/*!*************************************!*\
+  !*** ./src/react-ui/lib/factory.ts ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Sdk),
+/* harmony export */   generateToken: () => (/* binding */ generateToken),
+/* harmony export */   getAndApplyOffers: () => (/* binding */ getAndApplyOffers),
+/* harmony export */   getNewCookiePCValue: () => (/* binding */ getNewCookiePCValue),
+/* harmony export */   getQueryParameter: () => (/* binding */ getQueryParameter),
+/* harmony export */   updateQueryParams: () => (/* binding */ updateQueryParams)
+/* harmony export */ });
+/* harmony import */ var _atJs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./atJs */ "./src/react-ui/lib/atJs.ts");
+/* harmony import */ var _alloyJs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./alloyJs */ "./src/react-ui/lib/alloyJs.ts");
+
+
+let sdkValue;
+function Sdk(sdk = "atjs") {
+    if (sdk === "atjs") {
+        sdkValue = "atjs";
+        return _atJs__WEBPACK_IMPORTED_MODULE_0__["default"];
+    }
+    else if (sdk === "websdk") {
+        sdkValue = "websdk";
+        return _alloyJs__WEBPACK_IMPORTED_MODULE_1__["default"];
+    }
+}
+function getQueryParameter(param) {
+    if (sdkValue === "atjs") {
+        return (0,_atJs__WEBPACK_IMPORTED_MODULE_0__.getQueryParameter)(param);
+    }
+    else {
+        return (0,_alloyJs__WEBPACK_IMPORTED_MODULE_1__.getQueryParameter)(param);
+    }
+}
+async function getAndApplyOffers(deliveryRequest, mcIdToUse, addCampaignId) {
+    if (sdkValue === "atjs") {
+        return (0,_atJs__WEBPACK_IMPORTED_MODULE_0__.getAndApplyOffers)(deliveryRequest, mcIdToUse, addCampaignId);
+    }
+    else {
+        return (0,_alloyJs__WEBPACK_IMPORTED_MODULE_1__.getAndApplyOffers)(deliveryRequest, mcIdToUse, addCampaignId);
+    }
+}
+function generateToken(size) {
+    if (sdkValue === "atjs") {
+        return (0,_atJs__WEBPACK_IMPORTED_MODULE_0__.generateToken)(size);
+    }
+    else {
+        return (0,_alloyJs__WEBPACK_IMPORTED_MODULE_1__.generateToken)(size);
+    }
+}
+function getNewCookiePCValue(newPCValue) {
+    if (sdkValue === "atjs") {
+        return (0,_atJs__WEBPACK_IMPORTED_MODULE_0__.getNewCookiePCValue)(newPCValue);
+    }
+    else {
+        return (0,_alloyJs__WEBPACK_IMPORTED_MODULE_1__.getNewCookiePCValue)(newPCValue);
+    }
+}
+function updateQueryParams(key, value) {
+    if (sdkValue === "atjs") {
+        return (0,_atJs__WEBPACK_IMPORTED_MODULE_0__.updateQueryParams)(key, value);
+    }
+    else {
+        return (0,_alloyJs__WEBPACK_IMPORTED_MODULE_1__.updateQueryParams)(key, value);
+    }
+}
+
+
+/***/ }),
+
 /***/ "./src/react-ui/lib/visitor.ts":
 /*!*************************************!*\
   !*** ./src/react-ui/lib/visitor.ts ***!
@@ -44410,8 +45246,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 function getMcId() {
     const visitor = window.Visitor?.getInstance(window.extension_data.org || "011B56B451AE49A90A490D4D@AdobeOrg", {
-        trackingServer: window.extension_data.analyticsReportingServer || "adobetargeteng.d1.sc.omtrdc.net",
-        trackingServerSecure: window.extension_data.analyticsReportingServer || "adobetargeteng.d1.sc.omtrdc.net", // Optional, for HTTPS
+        trackingServer: window.extension_data.analyticsReportingServer || `${window.extension_data.tenant}.com.sc.omtrdc.net`,
+        trackingServerSecure: window.extension_data.analyticsReportingServer || `${window.extension_data.tenant}.com.ssl.sc.omtrdc.net`, // Optional, for HTTPS
     });
     const mcId = visitor.getMarketingCloudVisitorID();
     console.log(mcId);
@@ -44419,19 +45255,24 @@ function getMcId() {
 }
 function getSdId() {
     const visitor = window.Visitor?.getInstance(window.extension_data.org || "011B56B451AE49A90A490D4D@AdobeOrg", {
-        trackingServer: window.extension_data.analyticsReportingServer || "adobetargeteng.d1.sc.omtrdc.net",
-        trackingServerSecure: window.extension_data.analyticsReportingServer || "adobetargeteng.d1.sc.omtrdc.net", // Optional, for HTTPS
+        trackingServer: window.extension_data.analyticsReportingServer || `${window.extension_data.tenant}.com.sc.omtrdc.net`,
+        trackingServerSecure: window.extension_data.analyticsReportingServer || `${window.extension_data.tenant}.com.ssl.sc.omtrdc.net`, // Optional, for HTTPS
     });
     const sdId = visitor.getSupplementalDataID();
     console.log(sdId);
     return sdId;
 }
-function trackEvent(event, mcId, sdId = window.s.visitor.getSupplementalDataID()) {
+function trackEvent(event, mcId, sdId = window.s.visitor.getSupplementalDataID(), obj = {}) {
     console.log(window.s.supplementalDataID);
     window.s.account = window.extension_data.reportSuite || "atetrifandemo";
     window.s.events = event;
     window.s.marketingCloudVisitorID = mcId;
     window.s.supplementalDataID = sdId;
+    if (obj) {
+        Object.keys(obj).forEach((key) => {
+            window.s[key] = obj[key];
+        });
+    }
     window.s.t();
 }
 

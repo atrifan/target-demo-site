@@ -36,7 +36,7 @@ export async function getAndApplyOffers(deliveryRequest: any, mcIdToUse: string,
   }
 }
 
-export function generateToken(size: number=32) {
+export function generateToken(size?: number) {
   if (sdkValue === "atjs") {
     return generateTokenAT(size);
   }

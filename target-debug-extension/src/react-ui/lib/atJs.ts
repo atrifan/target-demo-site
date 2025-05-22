@@ -31,19 +31,10 @@ export function updateQueryParams(key: string, value?: string) {
   window.history.pushState({}, '', `${url.pathname}?${params.toString()}`);
 }
 
-export function generateToken(length: number = 32): string {
-  const digits: string[] = [];
-  const array = new Uint8Array(length);
+export function generateToken(size: number=4) {
+  const array = new Uint32Array(size);  // Adjust size as needed
   window.crypto.getRandomValues(array);
-
-  // Ensure the first digit is never '0'
-  digits.push(((array[0] % 9) + 1).toString()); // Map byte to 1-9 to avoid 0 as the first digit
-
-  for (let i = 1; i < length; i++) {
-    digits.push((array[i] % 10).toString()); // Map byte to 0–9
-  }
-
-  return digits.join('');
+  return Array.from(array, dec => dec.toString(16)).join('');
 }
 
 
@@ -128,6 +119,7 @@ const requestScriptInjection = (scriptNames: string[], scriptIds: string[], reso
           allowHighEntropyClientHints: false,
           aepSandboxId: null,
           aepSandboxName: null,
+          enabled: true,
           silentInit: true,
           debug: { level: 'verbose', trace: true }
         });
@@ -266,19 +258,20 @@ export async function getAndApplyOffers(deliveryRequest: any, mcIdToUse: string,
     if (mboxes.length > 0) {
       for (const mbox of mboxes) {
         addCampaignId(mbox?.options?.[0]?.responseTokens?.["activity.id"]);
-        window.adobe?.target?.applyOffers({
+        const result = await window.adobe?.target?.applyOffers({
           selector: `.mbox-name-${mbox.name}`,
           response: { execute: { mboxes: [mbox] } }
-        }).then((result) => {
-          console.log(`#### render result ${JSON.stringify(result, null, 2)} ---- ${JSON.stringify(response, null, 2)}`);
-        }).catch((error) => {
-          console.error("AT.js applyOffers error:", error);
         });
+        console.log(`#### render result ${JSON.stringify(result, null, 2)} ---- ${JSON.stringify(response, null, 2)}`);
       }
+      return;
     }
-    else if (Array.isArray(response.prefetch?.views) && response.prefetch.views.length) {
+    if (Array.isArray(response.prefetch?.views) && response.prefetch.views.length) {
       try {
         // For each view in your prefetch, render them individually
+        const result = await window.adobe?.target?.applyOffers({
+          response: response
+        });
         for (const view of response.prefetch.views) {
           // Pull out all the selectors in this view's content array
           const selectors = (view.options || []).flatMap((opt: any) =>
@@ -288,41 +281,42 @@ export async function getAndApplyOffers(deliveryRequest: any, mcIdToUse: string,
           );
 
           // Wait for each of those selectors to exist on the page
-          const fakeMbox = {
-            name:   view.name,           // this becomes your .mbox-name-<view.name> container
-            options: view.options,       // carries over your setHtml/actions
-          };
+          // const fakeMbox = {
+          //   name:   view.name,           // this becomes your .mbox-name-<view.name> container
+          //   options: view.options,       // carries over your setHtml/actions
+          // };
+          //
+          // addCampaignId(fakeMbox?.options?.[0]?.responseTokens?.["activity.id"]);
+          // const singleViewResponse = {
+          //   execute: { mboxes: [fakeMbox] },
+          //   // you can also include execute.pageLoad if needed
+          // };
+          //
+          // console.log(`#### rendering view ${JSON.stringify({
+          //   // pick any one of the selectors as the insertion point;
+          //   // at.js will read the matching content.selector inside the view payload
+          //   selector: selectors[0],
+          //   response: singleViewResponse
+          // }, null, 2)}`);
 
-          addCampaignId(fakeMbox?.options?.[0]?.responseTokens?.["activity.id"]);
-          const singleViewResponse = {
-            execute: { mboxes: [fakeMbox] },
-            // you can also include execute.pageLoad if needed
-          };
-
-          console.log(`#### rendering view ${JSON.stringify({
-            // pick any one of the selectors as the insertion point;
-            // at.js will read the matching content.selector inside the view payload
-            selector: selectors[0],
-            response: singleViewResponse
-          }, null, 2)}`);
-
-          const result = await window.adobe?.target?.applyOffers({
-            // pick any one of the selectors as the insertion point;
-            // at.js will read the matching content.selector inside the view payload
-            selector: selectors[0],
-            response: singleViewResponse
-          });
-          console.log(`#### render result for view "${view.name}"`, result);
+          await window.adobe?.target?.triggerView(view.name);
         }
+        return;
       } catch (err) {
         console.error("Error rendering prefetched views:", err);
+        throw err;
       }
-    } else {
-      return window.adobe?.target?.applyOffers({ response }).then((result) => {
-        console.log(`#### render result ${JSON.stringify(result, null, 2)} ---- ${JSON.stringify(response, null, 2)}`);
-      }).catch((error) => {
-        console.error("AT.js applyOffers error:", error);
+    }
+    if (response.execute.pageLoad) {
+      const result = await window.adobe?.target?.applyOffers({
+        response: {
+          execute: {
+            pageLoad: response.execute.pageLoad
+          }
+        }
       });
+      console.log(`#### render result ${JSON.stringify(result, null, 2)} ---- ${JSON.stringify(response, null, 2)}`);
+      return result;
     }
   }).catch((error) => {
     console.error("AT.js getOffers error:", error);
@@ -349,7 +343,7 @@ export const generateViewsWithConversions = (uniqueVisitors: boolean, number: st
       //I don't care about this if not unique it will take current query params
       let mcId: any;
       if (uniqueVisitors) {
-        mcId = `${generateToken(38)}`;
+        mcId = `${generateToken(2)}-${generateToken(2)}`;
         updateQueryParams("MCID", mcId);
         updateQueryParams("PC", getNewCookiePCValue(generateToken()));
         updateQueryParams('mboxSession', generateToken());
@@ -368,6 +362,8 @@ export const generateViewsWithConversions = (uniqueVisitors: boolean, number: st
         return JSON.parse(element.getAttribute('data-mboxparams') || '{}');
       }) : {}
 
+      const views = window.extension_data.decisionScopes.length > 0 ? window.extension_data.decisionScopes.split(","): [];
+
       window.adobe.target?.getOffers({
         request: {
           property: {
@@ -384,7 +380,9 @@ export const generateViewsWithConversions = (uniqueVisitors: boolean, number: st
             }
           },
           prefetch: {
-            views: mboxes.length == 0 ? [{
+            views: views.length > 0 ? views.map((view: string) => { return {
+              name: view,
+              key: view,
               parameters: {
                 ...parameters
               },
@@ -396,7 +394,7 @@ export const generateViewsWithConversions = (uniqueVisitors: boolean, number: st
                 "brand.bought": "offline",
                 ...window.extension_data.profileParameters
               }
-            }] : undefined
+            }}) : undefined
           },
           execute: {
             pageLoad: mboxes.length == 0 ? {
@@ -433,7 +431,7 @@ export const generateViewsWithConversions = (uniqueVisitors: boolean, number: st
           }
         }
       })
-        .then(response => {
+        .then((response) => {
           console.log(response);
 
           //all my elements should be with data-mbox
@@ -459,19 +457,46 @@ export const generateViewsWithConversions = (uniqueVisitors: boolean, number: st
                   }
                 }
               });
-              okTargeted.push(isTarget? sendNotificationTarget(el, conversionEvent, conversion, profileData, experienceIndex, true, viewMap) : sendNotificationAnalytics(tntA, el, algorithmId, reportingServer, mcId, conversion, conversionEvent, conversionValue, experienceIndex, viewMap));
+              okTargeted.push(isTarget ? sendNotificationTarget(el, conversionEvent, conversion, profileData, experienceIndex, true, viewMap) : sendNotificationAnalytics(tntA, el, algorithmId, reportingServer, mcId, conversion, conversionEvent, conversionValue, experienceIndex, viewMap));
             })
+          }
+          if (Array.isArray(response.prefetch?.views) && response.prefetch.views.length) {
+            try {
+              // For each view in your prefetch, render them individually
+              window.adobe?.target?.applyOffers({response: response});
+              for (const view of response.prefetch.views) {
+                // Pull out all the selectors in this view's content array
+                const selectors = (view.options || []).flatMap((opt: any) =>
+                  (opt.content || [])
+                    .filter((item: any) => item.selector)
+                    .map((item: any) => item.selector)
+                );
 
-          } else {
-            window.adobe.target?.applyOffers({response: response});
-            if (response.prefetch.views.length > 0) {
-              response.prefetch.views.forEach((el: any) => {
-                okTargeted.push(isTarget? sendNotificationTarget(el, conversionEvent, conversion, profileData, experienceIndex, true, viewMap) : sendNotificationAnalytics(tntA, el, algorithmId, reportingServer, mcId, conversion, conversionEvent, conversionValue, experienceIndex, viewMap));
-              })
-            } else {
-              okTargeted.push(isTarget? sendNotificationTarget(response.execute.pageLoad, conversionEvent, conversion, profileData, experienceIndex, false, viewMap) : sendNotificationAnalytics(tntA, response.execute.pageLoad, algorithmId, reportingServer, mcId, conversion, conversionEvent, conversionValue, experienceIndex, viewMap));
+                // Wait for each of those selectors to exist on the page
+                const fakeMbox = {
+                  options: view.options,       // carries over your setHtml/actions
+                  metrics: response.prefetch.metrics
+                };
+
+                const singleViewResponse = {
+                  execute: { mboxes: [fakeMbox] },
+                  // you can also include execute.pageLoad if needed
+                };
+
+                window.adobe?.target?.triggerView(view.name);
+
+                //displaying for views will be treated as conversion
+                if(conversion) {
+                  okTargeted.push(isTarget ? sendNotificationTarget(fakeMbox, conversionEvent, conversion, profileData, experienceIndex, false, viewMap) : sendNotificationAnalytics(tntA, fakeMbox, algorithmId, reportingServer, mcId, conversion, conversionEvent, conversionValue, experienceIndex, viewMap));
+                }
+              }
+            } catch (err) {
+              console.error("Error rendering prefetched views:", err);
             }
-
+          }
+          if (response.execute.pageLoad) {
+            window.adobe.target?.applyOffers({response: response});
+            okTargeted.push(isTarget? sendNotificationTarget(response.execute.pageLoad, conversionEvent, conversion, profileData, experienceIndex, false, viewMap) : sendNotificationAnalytics(tntA, response.execute.pageLoad, algorithmId, reportingServer, mcId, conversion, conversionEvent, conversionValue, experienceIndex, viewMap));
           }
 
           Promise.all(okTargeted).then((okTargeted) => {
@@ -497,7 +522,7 @@ export const generateViewsWithConversions = (uniqueVisitors: boolean, number: st
 
 export function generateNotificationRequest(el: any, type: string, profileData?: ProfileData, useMbox: boolean = true) {
   const result = {
-    id: generateToken(),
+    id: generateToken(4),
     type: type,
     timestamp: Date.now(),
     mbox: useMbox ? {
@@ -531,6 +556,7 @@ export function sendNotificationTarget(el: any, event: string|undefined, convers
   //   }
   // );
 
+  console.log(`send notif for elem ${JSON.stringify(el, null, 2)}`);
   if (!viewMap[el?.options?.[0]?.responseTokens["experience.id"]]) {
     viewMap[`${el?.options?.[0]?.responseTokens["experience.id"]}`] = 1;
   } else {

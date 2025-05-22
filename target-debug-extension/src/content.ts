@@ -59,7 +59,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             rootElement.id = 'react-root';  // Give it a unique ID so you can target it
 
 // Apply CSS to make the root element cover the full viewport and sit on top
-            rootElement.style.position = 'absolute';
             rootElement.style.pointerEvents = 'auto';
             rootElement.style.top = '0';
             rootElement.style.left = '0';
