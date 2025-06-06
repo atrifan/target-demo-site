@@ -475,7 +475,8 @@ export const generateViewsWithConversions = (uniqueVisitors: boolean, number: st
                 // Wait for each of those selectors to exist on the page
                 const fakeMbox = {
                   options: view.options,       // carries over your setHtml/actions
-                  metrics: response.prefetch.metrics
+                  metrics: response.prefetch.metrics,
+                  analytics: response.execute?.pageLoad?.analytics,
                 };
 
                 const singleViewResponse = {
@@ -599,20 +600,23 @@ export function sendNotificationAnalytics(tntA :string|undefined, el: any, algor
     viewMap[`${el?.options?.[0]?.responseTokens["experience.id"]}`] += 1;
   }
 
+  console.log(el.analytics);
   return new Promise((resolve, reject) => {
     let tntaData = tntA? tntA : el.analytics.payload.tnta;
-    console.log(tntA)
+    console.log(tntaData);
     //make targeted events
     tntaData = tntaData.split(',').map((event: string) => {
       //remove visits and unique visits and not conversion
       const eventBreakDown = event.split(':');
       //traffic type - targeted for AT
-      eventBreakDown[2] = conversionEvent == 'event10' ? '0' : '1';
-      //algorithm id change
-      if (algorithmId !== -1000) {
-        let [algoId, event] = eventBreakDown[3].split('|');
-        algoId = `${algorithmId}`;
-        eventBreakDown[3] = `${algoId}|${event}`;
+      if (eventBreakDown.length == 4) {
+        eventBreakDown[2] = conversionEvent == 'event10' ? '0' : '1';
+        //algorithm id change
+        if (algorithmId !== -1000) {
+          let [algoId, event] = eventBreakDown[3].split('|');
+          algoId = `${algorithmId}`;
+          eventBreakDown[3] = `${algoId}|${event}`;
+        }
       }
 
       return eventBreakDown.join(':');
@@ -621,7 +625,7 @@ export function sendNotificationAnalytics(tntA :string|undefined, el: any, algor
 
     const events = tntaData.split(',');
     const revenueEvent = events.filter((event: string) => {
-      return event.split('|')[0].split(":").length === 4;
+      return event.split('|')[0].split(":").length >= 3;
     })[0].split("|");
 
     if (tntaData.indexOf("|1") == -1) {
