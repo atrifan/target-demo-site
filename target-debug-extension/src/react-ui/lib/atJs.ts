@@ -307,7 +307,7 @@ export async function getAndApplyOffers(deliveryRequest: any, mcIdToUse: string,
         throw err;
       }
     }
-    if (response.execute.pageLoad) {
+    if (response.execute?.pageLoad) {
       const result = await window.adobe?.target?.applyOffers({
         response: {
           execute: {
@@ -495,7 +495,7 @@ export const generateViewsWithConversions = (uniqueVisitors: boolean, number: st
               console.error("Error rendering prefetched views:", err);
             }
           }
-          if (response.execute.pageLoad) {
+          if (response.execute?.pageLoad) {
             window.adobe.target?.applyOffers({response: response});
             okTargeted.push(isTarget? sendNotificationTarget(response.execute.pageLoad, conversionEvent, conversion, profileData, experienceIndex, false, viewMap) : sendNotificationAnalytics(tntA, response.execute.pageLoad, algorithmId, reportingServer, mcId, conversion, conversionEvent, conversionValue, experienceIndex, viewMap));
           }
