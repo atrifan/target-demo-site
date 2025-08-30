@@ -386,7 +386,7 @@ export async function getAndApplyOffers(deliveryRequest: any, mcIdToUse: string,
       ...deliveryRequest.decisionScopes,
       ...(window.extension_data.decisionScopes.length > 0 ? window.extension_data.decisionScopes.split(",") : []),
     ],
-    type: "decisioning.propositionDisplay",
+    eventType: "decisioning.propositionDisplay",
     xdm: {
       identityMap: {
         ECID: [{ id: mcIdToUse, authenticatedState: "ambiguous" }]
@@ -428,6 +428,7 @@ export async function getAndApplyOffers(deliveryRequest: any, mcIdToUse: string,
             // ---- FIRE DISPLAY (impression) ----
             window.alloy("sendEvent", {
               xdm: {
+                eventType: "decisioning.propositionDisplay",
                 _experience: {
                   decisioning: {
                     propositions: [proposition],
@@ -449,6 +450,7 @@ export async function getAndApplyOffers(deliveryRequest: any, mcIdToUse: string,
             element.addEventListener(item.data.type, () => {
               window.alloy("sendEvent", {
                 xdm: {
+                  eventType: "decisioning.propositionInteract",
                   _experience: {
                     decisioning: {
                       propositions: [proposition],
