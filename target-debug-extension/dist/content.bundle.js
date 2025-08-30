@@ -44270,6 +44270,14 @@ const requestScriptInjection = (scriptNames, scriptIds, resolve, reject) => {
                     // downloadLinkQualifier: "\\.(exe|zip|wav|mp3|mov|mpg|avi|wmv|pdf|doc|docx|xls|xlsx|ppt|pptx)$",
                     // edgeDomain: "edge.adobedc.net",
                     // edgeBasePath: "ee",
+                    // Automatically attach click/interaction tracking
+                    // autoCollectPropositionInteractions: {
+                    //   AJO: "always", // Adobe Journey Optimizer
+                    //   TGT: "always"  // Adobe Target
+                    // },
+                    //
+                    // // Make Alloy handle link/button click detection
+                    // clickCollectionEnabled: true,
                     edgeConfigOverrides: {
                         com_adobe_target: {
                             propertyToken: window.extension_data.atProperty // Override Target Property Token
@@ -44401,6 +44409,7 @@ const generateViewsWithConversions = async (uniqueVisitors, countStr, setTotal, 
             data: {
                 __adobe: {
                     target: {
+                        ...parameters,
                         parameters: parameters,
                         profileParameters: xdmProfile,
                         mboxes: mboxes.map((name, index) => ({
@@ -44417,20 +44426,65 @@ const generateViewsWithConversions = async (uniqueVisitors, countStr, setTotal, 
         });
         console.log(`### the response is ${JSON.stringify(resp, null, 2)}`);
         // apply personalization to page
-        //await window.alloy!('applyPropositions', { propositions: resp.propositions });
         resp.propositions.forEach((proposition) => {
-            // Extract the scope and the content
-            const { scope, items } = proposition;
-            // Loop through all items in the proposition
+            const { scope, items, scopeDetails } = proposition;
+            // Extract tokens from response
+            const displayToken = scopeDetails?.characteristics?.displayToken || "";
+            const clickToken = scopeDetails?.characteristics?.clickToken || "";
             items.forEach((item) => {
-                // Get the content data from the item
-                const content = item.data.content;
-                // Find elements with the class "mbox-name-${scope}"
-                const targetElements = document.querySelectorAll(`.mbox-name-${scope}`);
-                // Loop through all matching elements and set their innerHTML
-                targetElements.forEach(element => {
-                    element.innerHTML = content;
-                });
+                if (item.schema === "https://ns.adobe.com/personalization/html-content-item" &&
+                    item.data?.content) {
+                    const content = item.data.content;
+                    const targetElements = document.querySelectorAll(`.mbox-name-${scope}`);
+                    targetElements.forEach((element) => {
+                        // Inject HTML content
+                        element.innerHTML = content;
+                        // ---- FIRE DISPLAY EVENT ----
+                        const displayProposition = JSON.parse(JSON.stringify(proposition));
+                        displayProposition.scopeDetails.characteristics = {
+                            eventToken: displayToken,
+                            displayToken: displayToken,
+                        };
+                        // ---- FIRE DISPLAY EVENT ----
+                        window.alloy("sendEvent", {
+                            xdm: {
+                                eventType: "decisioning.propositionDisplay",
+                                _experience: {
+                                    decisioning: {
+                                        propositions: [
+                                            {
+                                                id: proposition.id,
+                                                scope: proposition.scope,
+                                                scopeDetails: proposition.scopeDetails
+                                            }
+                                        ],
+                                        propositionEventType: { display: 1 }
+                                    }
+                                }
+                            }
+                        }).catch(console.error);
+                        // ---- ATTACH CLICK HANDLER FOR INTERACT EVENT ----
+                        element.addEventListener("click", () => {
+                            window.alloy("sendEvent", {
+                                xdm: {
+                                    eventType: "decisioning.propositionInteract",
+                                    _experience: {
+                                        decisioning: {
+                                            propositions: [
+                                                {
+                                                    id: proposition.id,
+                                                    scope: proposition.scope,
+                                                    scopeDetails: proposition.scopeDetails
+                                                }
+                                            ],
+                                            propositionEventType: { interact: 1 }
+                                        }
+                                    }
+                                }
+                            }).catch(console.error);
+                        });
+                    });
+                }
             });
         });
         // track views + optionally notify analytics/target
@@ -44498,26 +44552,59 @@ async function getAndApplyOffers(deliveryRequest, mcIdToUse, addCampaignId) {
         data: {
             ...deliveryRequest.data
         },
-        renderDecisions: true
-    }).then((result) => {
+        renderDecisions: false
+    }).then(async (result) => {
         console.log(`### the result is ${JSON.stringify(result, null, 2)}`);
         // Apply propositions to the page for mboxes
         result.propositions.forEach((proposition) => {
-            // Extract the scope and the content
             const { scope, items } = proposition;
-            // Loop through all items in the proposition
             items.forEach((item) => {
-                // Get the content data from the item
-                const content = item.data.content;
-                // Find elements with the class "mbox-name-${scope}"
-                const targetElements = document.querySelectorAll(`.mbox-name-${scope}`);
-                // Loop through all matching elements and set their innerHTML
-                targetElements.forEach(element => {
-                    element.innerHTML = content;
-                });
+                // Only process HTML content items, skip measurement items
+                if ((item.schema ===
+                    "https://ns.adobe.com/personalization/html-content-item" ||
+                    item.schema ===
+                        "https://ns.adobe.com/personalization/json-content-item") &&
+                    item.data?.content) {
+                    const content = item.data.content;
+                    // Find elements with the class "mbox-name-${scope}"
+                    const targetElements = document.querySelectorAll(`.mbox-name-${scope}`);
+                    targetElements.forEach((element) => {
+                        // Inject HTML content
+                        element.innerHTML = content;
+                        // ---- FIRE DISPLAY (impression) ----
+                        window.alloy("sendEvent", {
+                            xdm: {
+                                _experience: {
+                                    decisioning: {
+                                        propositions: [proposition],
+                                        propositionEventType: { display: 1 },
+                                    },
+                                },
+                            },
+                        });
+                    });
+                }
+                if (item.schema === "https://ns.adobe.com/personalization/measurement") {
+                    // ---- ATTACH CLICK HANDLER ----
+                    const targetElements = document.querySelectorAll(`.mbox-name-${scope}`);
+                    targetElements.forEach((element) => {
+                        element.addEventListener(item.data.type, () => {
+                            window.alloy("sendEvent", {
+                                xdm: {
+                                    _experience: {
+                                        decisioning: {
+                                            propositions: [proposition],
+                                            propositionEventType: { interact: 1 },
+                                        },
+                                    },
+                                },
+                            });
+                        });
+                    });
+                }
             });
         });
-        // await window.alloy("applyPropositions", { propositions: result.propositions });
+        //await window.alloy("applyPropositions", { propositions: result.propositions });
         const decisions = result?.decisions || [];
         decisions.forEach((decision) => {
             const activityId = decision.items?.[0]?.data?.activity?.id;
@@ -44822,7 +44909,7 @@ async function getAndApplyOffers(deliveryRequest, mcIdToUse, addCampaignId) {
                 throw err;
             }
         }
-        if (response.execute.pageLoad) {
+        if (response.execute?.pageLoad) {
             const result = await window.adobe?.target?.applyOffers({
                 response: {
                     execute: {
@@ -44978,7 +45065,8 @@ const generateViewsWithConversions = (uniqueVisitors, number, setTotal, setCurre
                             // Wait for each of those selectors to exist on the page
                             const fakeMbox = {
                                 options: view.options,
-                                metrics: response.prefetch.metrics
+                                metrics: response.prefetch.metrics,
+                                analytics: response.execute?.pageLoad?.analytics,
                             };
                             const singleViewResponse = {
                                 execute: { mboxes: [fakeMbox] },
@@ -44995,7 +45083,7 @@ const generateViewsWithConversions = (uniqueVisitors, number, setTotal, setCurre
                         console.error("Error rendering prefetched views:", err);
                     }
                 }
-                if (response.execute.pageLoad) {
+                if (response.execute?.pageLoad) {
                     window.adobe.target?.applyOffers({ response: response });
                     okTargeted.push(isTarget ? sendNotificationTarget(response.execute.pageLoad, conversionEvent, conversion, profileData, experienceIndex, false, viewMap) : sendNotificationAnalytics(tntA, response.execute.pageLoad, algorithmId, reportingServer, mcId, conversion, conversionEvent, conversionValue, experienceIndex, viewMap));
                 }
@@ -45090,26 +45178,29 @@ function sendNotificationAnalytics(tntA, el, algorithmId, reportingServer, mcId,
     else {
         viewMap[`${el?.options?.[0]?.responseTokens["experience.id"]}`] += 1;
     }
+    console.log(el, tntA);
     return new Promise((resolve, reject) => {
         let tntaData = tntA ? tntA : el.analytics.payload.tnta;
-        console.log(tntA);
+        console.log(tntaData);
         //make targeted events
         tntaData = tntaData.split(',').map((event) => {
             //remove visits and unique visits and not conversion
             const eventBreakDown = event.split(':');
             //traffic type - targeted for AT
-            eventBreakDown[2] = conversionEvent == 'event10' ? '0' : '1';
-            //algorithm id change
-            if (algorithmId !== -1000) {
-                let [algoId, event] = eventBreakDown[3].split('|');
-                algoId = `${algorithmId}`;
-                eventBreakDown[3] = `${algoId}|${event}`;
+            if (eventBreakDown.length == 4) {
+                eventBreakDown[2] = conversionEvent == 'event10' ? '0' : '1';
+                //algorithm id change
+                if (algorithmId !== -1000) {
+                    let [algoId, event] = eventBreakDown[3].split('|');
+                    algoId = `${algorithmId}`;
+                    eventBreakDown[3] = `${algoId}|${event}`;
+                }
             }
             return eventBreakDown.join(':');
         }).join(',');
         const events = tntaData.split(',');
         const revenueEvent = events.filter((event) => {
-            return event.split('|')[0].split(":").length === 4;
+            return event.split('|')[0].split(":").length >= 3;
         })[0].split("|");
         if (tntaData.indexOf("|1") == -1) {
             tntaData = `${revenueEvent[0]}|1,${tntaData}`;

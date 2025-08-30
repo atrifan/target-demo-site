@@ -600,7 +600,7 @@ export function sendNotificationAnalytics(tntA :string|undefined, el: any, algor
     viewMap[`${el?.options?.[0]?.responseTokens["experience.id"]}`] += 1;
   }
 
-  console.log(el.analytics);
+  console.log(el, tntA);
   return new Promise((resolve, reject) => {
     let tntaData = tntA? tntA : el.analytics.payload.tnta;
     console.log(tntaData);

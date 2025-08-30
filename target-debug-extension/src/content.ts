@@ -199,6 +199,7 @@ document.addEventListener("click", (event) => {
 
     // Update the target element
     targetElement.setAttribute("mbox-name", mboxName);
+    targetElement.setAttribute("data-alloy-space", mboxName);
     targetElement.setAttribute("data-mboxparams", JSON.stringify(jsonParams));
 
     // Append or update class with mbox-name-{mboxName}

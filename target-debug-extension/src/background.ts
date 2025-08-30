@@ -87,12 +87,15 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
               });
             } else if (sdkType === "websdk" && (window as any).alloy) {
               window.alloy("configure", {
-                datastreamId: dataStreamId,
-                orgId: org,
-                debugEnabled: true,
-                /**
-                 * You could also override the Target environment ID here (if needed) under com_adobe_target.environmentId, or disable/enable Target entirely with com_adobe_target.enabled.
-                 */
+                // Automatically attach click/interaction tracking
+                // autoCollectPropositionInteractions: {
+                //   // AJO: "always", // Adobe Journey Optimizer
+                //   // TGT: "always"  // Adobe Target
+                // },
+
+                // Make Alloy handle link/button click detection
+                // clickCollectionEnabled: false,
+
                 edgeConfigOverrides: {
                   com_adobe_target: {
                     propertyToken: atProperty
