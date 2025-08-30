@@ -315,7 +315,7 @@ export const generateViewsWithConversions = async (
 
           window.alloy("sendEvent", {
             xdm: {
-              eventType: "decisioning.propositionDisplay",
+              type: "decisioning.propositionDisplay",
               _experience: {
                 decisioning: {
                   propositions: [proposition],
@@ -330,7 +330,7 @@ export const generateViewsWithConversions = async (
           for (const proposition of result.propositions) {
             await window.alloy("sendEvent", {
               xdm: {
-                eventType: "decisioning.propositionInteract",
+                type: "decisioning.propositionInteract",
                 _experience: {
                   decisioning: {
                     propositions: [proposition],
@@ -386,7 +386,6 @@ export async function getAndApplyOffers(deliveryRequest: any, mcIdToUse: string,
       ...deliveryRequest.decisionScopes,
       ...(window.extension_data.decisionScopes.length > 0 ? window.extension_data.decisionScopes.split(",") : []),
     ],
-    eventType: "decisioning.propositionDisplay",
     xdm: {
       identityMap: {
         ECID: [{ id: mcIdToUse, authenticatedState: "ambiguous" }]

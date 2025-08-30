@@ -44475,7 +44475,7 @@ const generateViewsWithConversions = async (uniqueVisitors, countStr, setTotal, 
                     viewMap[scope] = (viewMap[scope] || 0) + 1;
                     window.alloy("sendEvent", {
                         xdm: {
-                            eventType: "decisioning.propositionDisplay",
+                            type: "decisioning.propositionDisplay",
                             _experience: {
                                 decisioning: {
                                     propositions: [proposition],
@@ -44489,7 +44489,7 @@ const generateViewsWithConversions = async (uniqueVisitors, countStr, setTotal, 
                     for (const proposition of result.propositions) {
                         await window.alloy("sendEvent", {
                             xdm: {
-                                eventType: "decisioning.propositionInteract",
+                                type: "decisioning.propositionInteract",
                                 _experience: {
                                     decisioning: {
                                         propositions: [proposition],
@@ -44539,7 +44539,6 @@ async function getAndApplyOffers(deliveryRequest, mcIdToUse, addCampaignId) {
             ...deliveryRequest.decisionScopes,
             ...(window.extension_data.decisionScopes.length > 0 ? window.extension_data.decisionScopes.split(",") : []),
         ],
-        type: "decisioning.propositionDisplay",
         xdm: {
             identityMap: {
                 ECID: [{ id: mcIdToUse, authenticatedState: "ambiguous" }]
@@ -44572,6 +44571,7 @@ async function getAndApplyOffers(deliveryRequest, mcIdToUse, addCampaignId) {
                         // ---- FIRE DISPLAY (impression) ----
                         window.alloy("sendEvent", {
                             xdm: {
+                                eventType: "decisioning.propositionDisplay",
                                 _experience: {
                                     decisioning: {
                                         propositions: [proposition],
@@ -44589,6 +44589,7 @@ async function getAndApplyOffers(deliveryRequest, mcIdToUse, addCampaignId) {
                         element.addEventListener(item.data.type, () => {
                             window.alloy("sendEvent", {
                                 xdm: {
+                                    eventType: "decisioning.propositionInteract",
                                     _experience: {
                                         decisioning: {
                                             propositions: [proposition],
