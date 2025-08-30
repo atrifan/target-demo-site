@@ -239,176 +239,126 @@ export const generateViewsWithConversions = async (
   const viewMap: Record<string,number> = {};
   let remaining = total;
 
-  const loop = async () => {
-    // manage MCID/PC/mboxSession
-    let mcid: string;
-    if (uniqueVisitors) {
-      mcid = `${generateToken(38)}`;
-      updateQueryParams('MCID', mcid);
-      updateQueryParams('PC', getNewCookiePCValue(generateToken()));
-      updateQueryParams('mboxSession', generateToken());
-    } else {
-      mcid = getQueryParameter('MCID') || getMcId();
-    }
-
-    // build XDM envelope
-    const xdmProfile = {
-      'user.422': `${profileData.displayName}-${Date.now()}`,
-      'user.country': profileData.country,
-      'user.hobby': profileData.hobby,
-      'user.age': profileData.age,
-      'brand.bought': 'offline',
-      ...window.extension_data.profileParameters
-    };
-
-    let parameters = {};
-
-    if(window.extension_data.mboxParams) {
-      parameters = window.extension_data.mboxParams
-    }
-
-    // sendEvent → get propositions
-
-    const mboxParams: any = mboxes.length > 0 ? mboxes.map((mboxName, idx) => {
-      const element = document.getElementsByClassName(`mbox-name-${mboxName}`)[0];
-      return JSON.parse(element.getAttribute('data-mboxparams') || '{}');
-    }) : {}
-
-    const resp = await window.alloy!('sendEvent', {
-      renderDecisions: true,
-      decisionScopes: mboxes.length > 0 ? mboxes : ["__view__"],
-      xdm: {
-        profile: xdmProfile,
-        identityMap: {
-          ECID: [{ id: mcid, authenticatedState: "ambiguous" }]
+  const loop = async (): Promise<Record<string,number>> => {
+    const executeIteration = async (retryCount = 0): Promise<void> => {
+      try {
+        // manage MCID/PC/mboxSession
+        let mcid: string;
+        if (uniqueVisitors) {
+          mcid = `${generateToken(38)}`;
+          updateQueryParams('MCID', mcid);
+          updateQueryParams('PC', getNewCookiePCValue(generateToken()));
+          updateQueryParams('mboxSession', generateToken());
+        } else {
+          mcid = getQueryParameter('MCID') || getMcId();
         }
-      },
-      data: {
-        __adobe: {
-          target: {
-            ...parameters,
-            parameters: parameters,
-            profileParameters: xdmProfile,
-            mboxes: mboxes.map((name, index) => ({
-              id: index,
-              name,
-              parameters: {
-                ...parameters,
-                ...(mboxParams[index] || {})
+
+        // build delivery request
+        const deliveryRequest = {
+          decisionScopes: [
+            ...mboxes,
+            ...(window.extension_data.decisionScopes.length > 0 ? window.extension_data.decisionScopes.split(",") : []),
+          ],
+          xdm: {
+            identityMap: {
+              ECID: [{ id: mcid, authenticatedState: "ambiguous" }]
+            },
+            web: { 
+              webPageDetails: { 
+                viewName: window.extension_data.decisionScopes.length > 0 ? window.extension_data.decisionScopes : undefined 
+              } 
+            }
+          },
+          data: {
+            __adobe: {
+              target: {
+                ...window.extension_data.mboxParams,
+                profileParameters: {
+                  'user.422': `${profileData.displayName}-${Date.now()}`,
+                  'user.country': profileData.country,
+                  'user.hobby': profileData.hobby,
+                  'user.age': profileData.age,
+                  'brand.bought': 'offline',
+                  ...window.extension_data.profileParameters
+                },
+                mboxes: mboxes.map((name, index) => {
+                  const element = document.getElementsByClassName(`mbox-name-${name}`)[0];
+                  const mboxParams = JSON.parse(element?.getAttribute('data-mboxparams') || '{}');
+                  return {
+                    id: index,
+                    name,
+                    parameters: {
+                      ...window.extension_data.mboxParams,
+                      ...mboxParams
+                    }
+                  };
+                })
               }
-            }))
+            }
           }
-        }
-      }
-    });
+        };
 
-    console.log(`### the response is ${JSON.stringify(resp, null, 2)}`);
+        // Use getAndApplyOffers and get result
+        await getAndApplyOffers(deliveryRequest, mcid, (id: string) => {
+          console.log('Campaign ID:', id);
+        });
 
-    // apply personalization to page
-    resp.propositions.forEach((proposition: any) => {
-      const { scope, items, scopeDetails } = proposition;
+        const result = await window.alloy("sendEvent", {
+          ...deliveryRequest,
+          renderDecisions: false
+        });
 
-      // Extract tokens from response
-      const displayToken = scopeDetails?.characteristics?.displayToken || "";
-      const clickToken = scopeDetails?.characteristics?.clickToken || "";
+        // Track views and handle conversions
+        result.propositions?.forEach((proposition: any) => {
+          const scope = proposition.scope;
+          viewMap[scope] = (viewMap[scope] || 0) + 1;
 
-      items.forEach((item: any) => {
-        if (
-          item.schema === "https://ns.adobe.com/personalization/html-content-item" &&
-          item.data?.content
-        ) {
-          const content = item.data.content;
-          const targetElements = document.querySelectorAll(`.mbox-name-${scope}`);
+          window.alloy("sendEvent", {
+            xdm: {
+              eventType: "decisioning.propositionDisplay",
+              _experience: {
+                decisioning: {
+                  propositions: [proposition],
+                  propositionEventType: { display: 1 },
+                },
+              },
+            },
+          });
+        });
 
-          targetElements.forEach((element) => {
-            // Inject HTML content
-            element.innerHTML = content;
-
-            // ---- FIRE DISPLAY EVENT ----
-            const displayProposition = JSON.parse(JSON.stringify(proposition));
-            displayProposition.scopeDetails.characteristics = {
-              eventToken: displayToken,
-              displayToken: displayToken,
-            };
-
-            // ---- FIRE DISPLAY EVENT ----
-            window.alloy("sendEvent", {
+        if (conversion && conversionEvent && result.propositions) {
+          for (const proposition of result.propositions) {
+            await window.alloy("sendEvent", {
               xdm: {
-                eventType: "decisioning.propositionDisplay",
+                eventType: "decisioning.propositionInteract",
                 _experience: {
                   decisioning: {
-                    propositions: [
-                      {
-                        id: proposition.id,
-                        scope: proposition.scope,
-                        scopeDetails: proposition.scopeDetails
-                      }
-                    ],
-                    propositionEventType: { display: 1 }
+                    propositions: [proposition],
+                    propositionEventType: { interact: 1 }
                   }
-                }
+                },
+                commerce: { order: { priceTotal: conversionValue } }
               }
             }).catch(console.error);
-
-            // ---- ATTACH CLICK HANDLER FOR INTERACT EVENT ----
-            element.addEventListener("click", () => {
-              window.alloy("sendEvent", {
-                xdm: {
-                  eventType: "decisioning.propositionInteract",
-                  _experience: {
-                    decisioning: {
-                      propositions: [
-                        {
-                          id: proposition.id,
-                          scope: proposition.scope,
-                          scopeDetails: proposition.scopeDetails
-                        }
-                      ],
-                      propositionEventType: { interact: 1 }
-                    }
-                  }
-                }
-              }).catch(console.error);
-            });
-          });
-        }
-      });
-    });
-
-
-    // track views + optionally notify analytics/target
-    const promises: Promise<boolean>[] = [];
-    for (const dec of resp.propositions || []) {
-      const scope = dec.scope;
-      viewMap[scope] = (viewMap[scope]||0) + 1;
-
-      if (conversion && conversionEvent) {
-        promises.push(window.alloy!('sendEvent', {
-          decisionScopes: [],
-          renderDecisions: true,
-          xdm: {
-            _experience: {
-              decisioning: {
-                propositions: [dec],
-                propositionEventType: { interact: 1 }
-              }
-            },
-            commerce: { order: { priceTotal: conversionValue } }
           }
-        }).then(() => true).catch(() => false));
-      } else {
-        promises.push(Promise.resolve(true));
+        }
+
+      } catch (error) {
+        console.error(`Iteration failed (attempt ${retryCount + 1}):`, error);
+        if (retryCount < 2) { // Retry up to 3 times total
+          console.log(`Retrying iteration... (${retryCount + 1}/2)`);
+          await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second before retry
+          return executeIteration(retryCount + 1);
+        } else {
+          console.error('Max retries reached, skipping this iteration');
+        }
       }
-    }
+    };
 
-    await Promise.all(promises);
+    await executeIteration();
 
-    // update remaining & UI
-    if (experienceIndex != null && experienceIndex !== -100) {
-      remaining--;
-    } else {
-      remaining--;
-    }
+    // Update remaining & UI
+    remaining--;
     setCurrent(remaining);
 
     if (remaining <= 0) {
@@ -416,7 +366,7 @@ export const generateViewsWithConversions = async (
       return viewMap;
     }
 
-    // schedule next iteration
+    // Schedule next iteration
     return new Promise<Record<string,number>>(res => {
       setTimeout(async () => res(await loop()), 400);
     });

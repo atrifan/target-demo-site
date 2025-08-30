@@ -43954,10 +43954,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _lib_atJs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../lib/atJs */ "./src/react-ui/lib/atJs.ts");
-/* harmony import */ var _TrafficGenerator_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./TrafficGenerator.css */ "./src/react-ui/components/TrafficGenerator.css");
+/* harmony import */ var _lib_alloyJs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../lib/alloyJs */ "./src/react-ui/lib/alloyJs.ts");
+/* harmony import */ var _TrafficGenerator_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./TrafficGenerator.css */ "./src/react-ui/components/TrafficGenerator.css");
 
 
- // Import the CSS file
+
+
 const GeneratorComponent = ({ displayName, country, hobby, age, experienceIndex, setExperienceIndex = () => { }, setAlgorithmId = () => { }, showExperienceIndex = false, setTotal, setCurrent, setModalVisible, setTrafficModalOpen, algorithmId = undefined, selectAlgorithm = false, conversionEvent = undefined, reportingServer = '', tntA = undefined, isTarget, mboxes, multiplier = 0, setTrafficModalVisible, setTrafficData, setTestDuration }) => {
     const [uniqueVisitors, setUniqueVisitors] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true);
     const [revenueValue, setRevenueValue] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1);
@@ -43966,7 +43968,12 @@ const GeneratorComponent = ({ displayName, country, hobby, age, experienceIndex,
     const [mboxesInput, setMboxesInput] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(mboxes);
     const [isTargetCheckbox, setIsTargetCheckbox] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true); // Default to true
     const [selectAlgorithmCheckbox, setSelectAlgorithmCheckbox] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false); // Default to false
+    const [selectedAlgorithmId, setSelectedAlgorithmId] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(algorithmId);
     const tooltipRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+    // Determine which generateViewsWithConversions to use based on SDK
+    const generateViewsWithConversions = window.extension_data?.sdkType === 'websdk'
+        ? _lib_alloyJs__WEBPACK_IMPORTED_MODULE_2__.generateViewsWithConversions
+        : _lib_atJs__WEBPACK_IMPORTED_MODULE_1__.generateViewsWithConversions;
     const algorithmDetails = [
         { id: 1, name: 'touch_clarity', description: 'Residual Variance', date: '2017-05-25 11:07:23', flag: 0 },
         { id: 2, name: 'e_greedy_rf', description: 'Random Forest', date: '2017-05-25 11:07:23', flag: 0 },
@@ -43985,7 +43992,7 @@ const GeneratorComponent = ({ displayName, country, hobby, age, experienceIndex,
         setTrafficModalOpen(false);
         const startTime = Date.now();
         const mboxesToSend = mboxesInput.length > 0 ? mboxesInput.split(',') : [];
-        const stats = await (0,_lib_atJs__WEBPACK_IMPORTED_MODULE_1__.generateViewsWithConversions)(uniqueVisitors, number, setTotal, setCurrent, setModalVisible, reportingServer, { displayName, country, hobby, age }, mboxesToSend, tntA, false, event, revenueValue, algorithmId, isTargetCheckbox, experienceIndex + multiplier);
+        const stats = await generateViewsWithConversions(uniqueVisitors, number, setTotal, setCurrent, setModalVisible, reportingServer, { displayName, country, hobby, age }, mboxesToSend, tntA, false, event, revenueValue, algorithmId, isTargetCheckbox, experienceIndex + multiplier);
         const endTime = Date.now();
         setTrafficModalVisible(true);
         setTrafficData(stats);
@@ -43995,7 +44002,7 @@ const GeneratorComponent = ({ displayName, country, hobby, age, experienceIndex,
         setTrafficModalOpen(false);
         const startTime = Date.now();
         const mboxesToSend = mboxesInput.length > 0 ? mboxesInput.split(',') : [];
-        const stats = await (0,_lib_atJs__WEBPACK_IMPORTED_MODULE_1__.generateViewsWithConversions)(uniqueVisitors, number, setTotal, setCurrent, setModalVisible, reportingServer, { displayName, country, hobby, age }, mboxesToSend, tntA, true, event, revenueValue, algorithmId, isTargetCheckbox, experienceIndex + multiplier);
+        const stats = await generateViewsWithConversions(uniqueVisitors, number, setTotal, setCurrent, setModalVisible, reportingServer, { displayName, country, hobby, age }, mboxesToSend, tntA, true, event, revenueValue, algorithmId, isTargetCheckbox, experienceIndex + multiplier);
         const endTime = Date.now();
         setTrafficModalVisible(true);
         setTrafficData(stats);
@@ -44013,6 +44020,21 @@ const GeneratorComponent = ({ displayName, country, hobby, age, experienceIndex,
             return;
         }
         setAlgorithmId(parseInt(number));
+    };
+    const handleAlgorithmChange = (value) => {
+        if (value === '') {
+            setSelectedAlgorithmId(undefined);
+            if (setAlgorithmId) {
+                setAlgorithmId(-1); // Use -1 or another default value instead of undefined
+            }
+        }
+        else {
+            const id = parseInt(value);
+            setSelectedAlgorithmId(id);
+            if (setAlgorithmId) {
+                setAlgorithmId(id);
+            }
+        }
     };
     (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
         const handleClickOutside = (event) => {
@@ -44065,11 +44087,25 @@ const GeneratorComponent = ({ displayName, country, hobby, age, experienceIndex,
                     } }, "Save Targeted Experience"))),
             selectAlgorithm && (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "section" },
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h4", null, "Change Algorithm Id"),
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { type: "number", placeholder: "Change algorithmId", id: "algorithmId" }),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("select", { value: selectedAlgorithmId || '', onChange: (e) => handleAlgorithmChange(e.target.value), style: { marginRight: '10px', padding: '5px', width: '200px' } },
+                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", { value: "" }, "None (Default)"),
+                    algorithmDetails.map((algo) => (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", { key: algo.id, value: algo.id },
+                        algo.id,
+                        " - ",
+                        algo.name,
+                        " (",
+                        algo.description,
+                        ")")))),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, "or enter custom ID:"),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { type: "number", placeholder: "Custom algorithm ID", id: "algorithmId", style: { marginLeft: '10px', padding: '5px', width: '100px' } }),
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", { onClick: () => {
                         const number = document.getElementById('algorithmId')?.value;
-                        changeAlgorithmId(number);
-                    } }, "Save Algorithm ID"))),
+                        if (number) {
+                            const id = parseInt(number);
+                            setSelectedAlgorithmId(id);
+                            setAlgorithmId(id);
+                        }
+                    }, style: { marginLeft: '10px', padding: '5px 10px' } }, "Set Custom ID"))),
             react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "section" },
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h4", null, "Event"),
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", { type: "text", value: event, onChange: (e) => setEvent(e.target.value), placeholder: "Enter event (default: click)" })),
@@ -44368,163 +44404,125 @@ const generateViewsWithConversions = async (uniqueVisitors, countStr, setTotal, 
     const viewMap = {};
     let remaining = total;
     const loop = async () => {
-        // manage MCID/PC/mboxSession
-        let mcid;
-        if (uniqueVisitors) {
-            mcid = `${generateToken(38)}`;
-            updateQueryParams('MCID', mcid);
-            updateQueryParams('PC', getNewCookiePCValue(generateToken()));
-            updateQueryParams('mboxSession', generateToken());
-        }
-        else {
-            mcid = getQueryParameter('MCID') || (0,_visitor__WEBPACK_IMPORTED_MODULE_0__["default"])();
-        }
-        // build XDM envelope
-        const xdmProfile = {
-            'user.422': `${profileData.displayName}-${Date.now()}`,
-            'user.country': profileData.country,
-            'user.hobby': profileData.hobby,
-            'user.age': profileData.age,
-            'brand.bought': 'offline',
-            ...window.extension_data.profileParameters
-        };
-        let parameters = {};
-        if (window.extension_data.mboxParams) {
-            parameters = window.extension_data.mboxParams;
-        }
-        // sendEvent → get propositions
-        const mboxParams = mboxes.length > 0 ? mboxes.map((mboxName, idx) => {
-            const element = document.getElementsByClassName(`mbox-name-${mboxName}`)[0];
-            return JSON.parse(element.getAttribute('data-mboxparams') || '{}');
-        }) : {};
-        const resp = await window.alloy('sendEvent', {
-            renderDecisions: true,
-            decisionScopes: mboxes.length > 0 ? mboxes : ["__view__"],
-            xdm: {
-                profile: xdmProfile,
-                identityMap: {
-                    ECID: [{ id: mcid, authenticatedState: "ambiguous" }]
+        const executeIteration = async (retryCount = 0) => {
+            try {
+                // manage MCID/PC/mboxSession
+                let mcid;
+                if (uniqueVisitors) {
+                    mcid = `${generateToken(38)}`;
+                    updateQueryParams('MCID', mcid);
+                    updateQueryParams('PC', getNewCookiePCValue(generateToken()));
+                    updateQueryParams('mboxSession', generateToken());
                 }
-            },
-            data: {
-                __adobe: {
-                    target: {
-                        ...parameters,
-                        parameters: parameters,
-                        profileParameters: xdmProfile,
-                        mboxes: mboxes.map((name, index) => ({
-                            id: index,
-                            name,
-                            parameters: {
-                                ...parameters,
-                                ...(mboxParams[index] || {})
+                else {
+                    mcid = getQueryParameter('MCID') || (0,_visitor__WEBPACK_IMPORTED_MODULE_0__["default"])();
+                }
+                // build delivery request
+                const deliveryRequest = {
+                    decisionScopes: [
+                        ...mboxes,
+                        ...(window.extension_data.decisionScopes.length > 0 ? window.extension_data.decisionScopes.split(",") : []),
+                    ],
+                    xdm: {
+                        identityMap: {
+                            ECID: [{ id: mcid, authenticatedState: "ambiguous" }]
+                        },
+                        web: {
+                            webPageDetails: {
+                                viewName: window.extension_data.decisionScopes.length > 0 ? window.extension_data.decisionScopes : undefined
                             }
-                        }))
+                        }
+                    },
+                    data: {
+                        __adobe: {
+                            target: {
+                                ...window.extension_data.mboxParams,
+                                profileParameters: {
+                                    'user.422': `${profileData.displayName}-${Date.now()}`,
+                                    'user.country': profileData.country,
+                                    'user.hobby': profileData.hobby,
+                                    'user.age': profileData.age,
+                                    'brand.bought': 'offline',
+                                    ...window.extension_data.profileParameters
+                                },
+                                mboxes: mboxes.map((name, index) => {
+                                    const element = document.getElementsByClassName(`mbox-name-${name}`)[0];
+                                    const mboxParams = JSON.parse(element?.getAttribute('data-mboxparams') || '{}');
+                                    return {
+                                        id: index,
+                                        name,
+                                        parameters: {
+                                            ...window.extension_data.mboxParams,
+                                            ...mboxParams
+                                        }
+                                    };
+                                })
+                            }
+                        }
                     }
-                }
-            }
-        });
-        console.log(`### the response is ${JSON.stringify(resp, null, 2)}`);
-        // apply personalization to page
-        resp.propositions.forEach((proposition) => {
-            const { scope, items, scopeDetails } = proposition;
-            // Extract tokens from response
-            const displayToken = scopeDetails?.characteristics?.displayToken || "";
-            const clickToken = scopeDetails?.characteristics?.clickToken || "";
-            items.forEach((item) => {
-                if (item.schema === "https://ns.adobe.com/personalization/html-content-item" &&
-                    item.data?.content) {
-                    const content = item.data.content;
-                    const targetElements = document.querySelectorAll(`.mbox-name-${scope}`);
-                    targetElements.forEach((element) => {
-                        // Inject HTML content
-                        element.innerHTML = content;
-                        // ---- FIRE DISPLAY EVENT ----
-                        const displayProposition = JSON.parse(JSON.stringify(proposition));
-                        displayProposition.scopeDetails.characteristics = {
-                            eventToken: displayToken,
-                            displayToken: displayToken,
-                        };
-                        // ---- FIRE DISPLAY EVENT ----
-                        window.alloy("sendEvent", {
+                };
+                // Use getAndApplyOffers and get result
+                await getAndApplyOffers(deliveryRequest, mcid, (id) => {
+                    console.log('Campaign ID:', id);
+                });
+                const result = await window.alloy("sendEvent", {
+                    ...deliveryRequest,
+                    renderDecisions: false
+                });
+                // Track views and handle conversions
+                result.propositions?.forEach((proposition) => {
+                    const scope = proposition.scope;
+                    viewMap[scope] = (viewMap[scope] || 0) + 1;
+                    window.alloy("sendEvent", {
+                        xdm: {
+                            eventType: "decisioning.propositionDisplay",
+                            _experience: {
+                                decisioning: {
+                                    propositions: [proposition],
+                                    propositionEventType: { display: 1 },
+                                },
+                            },
+                        },
+                    });
+                });
+                if (conversion && conversionEvent && result.propositions) {
+                    for (const proposition of result.propositions) {
+                        await window.alloy("sendEvent", {
                             xdm: {
-                                eventType: "decisioning.propositionDisplay",
+                                eventType: "decisioning.propositionInteract",
                                 _experience: {
                                     decisioning: {
-                                        propositions: [
-                                            {
-                                                id: proposition.id,
-                                                scope: proposition.scope,
-                                                scopeDetails: proposition.scopeDetails
-                                            }
-                                        ],
-                                        propositionEventType: { display: 1 }
+                                        propositions: [proposition],
+                                        propositionEventType: { interact: 1 }
                                     }
-                                }
+                                },
+                                commerce: { order: { priceTotal: conversionValue } }
                             }
                         }).catch(console.error);
-                        // ---- ATTACH CLICK HANDLER FOR INTERACT EVENT ----
-                        element.addEventListener("click", () => {
-                            window.alloy("sendEvent", {
-                                xdm: {
-                                    eventType: "decisioning.propositionInteract",
-                                    _experience: {
-                                        decisioning: {
-                                            propositions: [
-                                                {
-                                                    id: proposition.id,
-                                                    scope: proposition.scope,
-                                                    scopeDetails: proposition.scopeDetails
-                                                }
-                                            ],
-                                            propositionEventType: { interact: 1 }
-                                        }
-                                    }
-                                }
-                            }).catch(console.error);
-                        });
-                    });
-                }
-            });
-        });
-        // track views + optionally notify analytics/target
-        const promises = [];
-        for (const dec of resp.propositions || []) {
-            const scope = dec.scope;
-            viewMap[scope] = (viewMap[scope] || 0) + 1;
-            if (conversion && conversionEvent) {
-                promises.push(window.alloy('sendEvent', {
-                    decisionScopes: [],
-                    renderDecisions: true,
-                    xdm: {
-                        _experience: {
-                            decisioning: {
-                                propositions: [dec],
-                                propositionEventType: { interact: 1 }
-                            }
-                        },
-                        commerce: { order: { priceTotal: conversionValue } }
                     }
-                }).then(() => true).catch(() => false));
+                }
             }
-            else {
-                promises.push(Promise.resolve(true));
+            catch (error) {
+                console.error(`Iteration failed (attempt ${retryCount + 1}):`, error);
+                if (retryCount < 2) { // Retry up to 3 times total
+                    console.log(`Retrying iteration... (${retryCount + 1}/2)`);
+                    await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second before retry
+                    return executeIteration(retryCount + 1);
+                }
+                else {
+                    console.error('Max retries reached, skipping this iteration');
+                }
             }
-        }
-        await Promise.all(promises);
-        // update remaining & UI
-        if (experienceIndex != null && experienceIndex !== -100) {
-            remaining--;
-        }
-        else {
-            remaining--;
-        }
+        };
+        await executeIteration();
+        // Update remaining & UI
+        remaining--;
         setCurrent(remaining);
         if (remaining <= 0) {
             setModalVisible(false);
             return viewMap;
         }
-        // schedule next iteration
+        // Schedule next iteration
         return new Promise(res => {
             setTimeout(async () => res(await loop()), 400);
         });
