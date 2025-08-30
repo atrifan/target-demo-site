@@ -315,7 +315,7 @@ export const generateViewsWithConversions = async (
 
           window.alloy("sendEvent", {
             xdm: {
-              type: "decisioning.propositionDisplay",
+              eventType: "decisioning.propositionDisplay",
               _experience: {
                 decisioning: {
                   propositions: [proposition],
@@ -330,7 +330,7 @@ export const generateViewsWithConversions = async (
           for (const proposition of result.propositions) {
             await window.alloy("sendEvent", {
               xdm: {
-                type: "decisioning.propositionInteract",
+                eventType: "decisioning.propositionInteract",
                 _experience: {
                   decisioning: {
                     propositions: [proposition],
