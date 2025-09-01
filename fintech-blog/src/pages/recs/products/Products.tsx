@@ -39,6 +39,28 @@ const Products: React.FC<ProductsProps> = ({ onSelectProduct, providedEntityId, 
   };
 
   useLayoutEffect(() => {
+    const parseCsvLine = (line: string): string[] => {
+      const result: string[] = [];
+      let current = '';
+      let inQuotes = false;
+      
+      for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        
+        if (char === '"') {
+          inQuotes = !inQuotes;
+        } else if (char === ',' && !inQuotes) {
+          result.push(current.trim());
+          current = '';
+        } else {
+          current += char;
+        }
+      }
+      
+      result.push(current.trim());
+      return result;
+    };
+
     const fetchData = async () => {
       try {
         const response = await fetch(
@@ -50,7 +72,7 @@ const Products: React.FC<ProductsProps> = ({ onSelectProduct, providedEntityId, 
           .split("\n")
           .filter((line) => !line.startsWith("## RECS") && line.trim() !== "")
           .map((line) => {
-            const [entityId, name, , message, thumbnailUrl, value] = line.split(",");
+            const [entityId, name, , message, thumbnailUrl, value] = parseCsvLine(line);
             return { entityId, name, message, value, thumbnailUrl };
           });
 
