@@ -4797,7 +4797,7 @@
       },
       applyResponse(event, options = {}) {
         const {
-          renderDecisions = false,
+          renderDecisions = true,
           decisionContext = {},
           responseHeaders = {},
           responseBody = {
@@ -5552,7 +5552,7 @@
           },
           run: options => {
             const {
-              renderDecisions = false,
+              renderDecisions = true,
               decisionContext = {},
               responseHeaders = {},
               responseBody = {
@@ -6905,6 +6905,16 @@
           components
         });
         const instance = createInstanceFunction(executeCommand);
+        if (!window[instanceName]) {
+          window[instanceName] = {
+            q: []
+          }
+        }
+
+        if (!window[instanceName].q) {
+          window[instanceName].q = [];
+        }
+
         const queue = window[instanceName].q;
         queue.push = instance;
         logController.logger.logOnInstanceCreated({
@@ -9320,6 +9330,7 @@
   const REDIRECT_ITEM = "https://ns.adobe.com/personalization/redirect-item";
   const MESSAGE_IN_APP = "https://ns.adobe.com/personalization/message/in-app";
   const MESSAGE_CONTENT_CARD = "https://ns.adobe.com/personalization/message/content-card";
+  const OFFERS_CONTENT_ITEM = "https://ns.adobe.com/personalization/offer"
 
   /*
   Copyright 2022 Adobe. All rights reserved.
@@ -9734,7 +9745,7 @@
   */
   var createApplyResponse = lifecycle => {
     return ({
-              renderDecisions = false,
+              renderDecisions = true,
               propositions = [],
               event,
               personalization
@@ -11931,7 +11942,7 @@
           addPageWideScope(scopes);
           addPageSurface(eventSurfaces, getPageLocation);
         }
-        const schemas = [DEFAULT_CONTENT_ITEM, HTML_CONTENT_ITEM, JSON_CONTENT_ITEM, REDIRECT_ITEM, RULESET_ITEM, MESSAGE_IN_APP, MESSAGE_CONTENT_CARD];
+        const schemas = [DEFAULT_CONTENT_ITEM, HTML_CONTENT_ITEM, JSON_CONTENT_ITEM, REDIRECT_ITEM, RULESET_ITEM, MESSAGE_IN_APP, MESSAGE_CONTENT_CARD, OFFERS_CONTENT_ITEM];
         if (scopes.includes(PAGE_WIDE_SCOPE)) {
           schemas.push(DOM_ACTION);
         }

@@ -9,7 +9,7 @@ chrome.runtime.onInstalled.addListener(() => {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'executeAdobeTargetScript') {
     console.log(message);
-    const { tenant, org, analyticsReportingServer, reportSuite, mboxParams, environment, customEdgeHost, admin, profileParameters, atProperty, sdkType, dataStreamId } = message;
+    const { tenant, org, analyticsReportingServer, reportSuite, mboxParams, environment, customEdgeHost, admin, profileParameters, atProperty, sdkType, dataStreamId, decisionScopes } = message;
 
     // Get the tabId (you'll need to get it from the sender if necessary)
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -19,7 +19,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         chrome.scripting.executeScript({
           target: { tabId: tabId },
           world: 'MAIN', // Runs in the page’s main execution context
-          func: (tenant, org, analyticsReportingServer, reportSuite, extensionId, mboxParams, environment, customEdgeHost, admin, profileParameters, atProperty, sdkType, dataStreamId) => {
+          func: (tenant, org, analyticsReportingServer, reportSuite, extensionId, mboxParams, environment, customEdgeHost, admin, profileParameters, atProperty, sdkType, dataStreamId, decisionScopes) => {
             let edgeHost = `${tenant}.tt.omtrdc.net`;
             if (environment === 'stage') {
               edgeHost = 'mboxedge1.tt-stage1.omtrdc.net';
@@ -43,7 +43,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
               profileParameters,
               atProperty,
               sdkType,
-              dataStreamId
+              dataStreamId,
+              decisionScopes
             };
             if (sdkType === "atjs" && (window as any).adobe && (window as any).adobe.target) {
               (window as any).adobe.target.init(window, document, {
@@ -82,18 +83,30 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 allowHighEntropyClientHints: false,
                 aepSandboxId: null,
                 aepSandboxName: null,
+                silentInit: true
               });
-            } else if (sdkType === "websdk" && (window as any).adobe && (window as any).adobe.target) {
+            } else if (sdkType === "websdk" && (window as any).alloy) {
               window.alloy("configure", {
-                datastreamId: dataStreamId,
-                orgId: org,
-                debugEnabled: true
+                // Automatically attach click/interaction tracking
+                // autoCollectPropositionInteractions: {
+                //   // AJO: "always", // Adobe Journey Optimizer
+                //   // TGT: "always"  // Adobe Target
+                // },
+
+                // Make Alloy handle link/button click detection
+                // clickCollectionEnabled: false,
+
+                edgeConfigOverrides: {
+                  com_adobe_target: {
+                    propertyToken: atProperty
+                  }
+                }
               });
             } else {
               console.error('Adobe Target is not available on this page.');
             }
           },
-          args: [tenant, org, analyticsReportingServer, reportSuite, extensionId, mboxParams, environment, customEdgeHost, admin, profileParameters, atProperty, sdkType, dataStreamId],
+          args: [tenant, org, analyticsReportingServer, reportSuite, extensionId, mboxParams, environment, customEdgeHost, admin, profileParameters, atProperty, sdkType, dataStreamId, decisionScopes],
         }, (injectionResults) => {
           // Handle the results of the injected script
           const [result] = injectionResults;

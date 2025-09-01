@@ -52,7 +52,7 @@ const RecentlyViewed: React.FC<XperienceProps> = ({ displayName, token, setToken
         //window.adobe.target?.triggerView('recentlyViewed');
       });
     });
-  }, [refreshKey, displayName, country, hobby, age]);
+  }, [refreshKey]);
   return (
     <div className="recently-viewed">
       <div className="product-container">

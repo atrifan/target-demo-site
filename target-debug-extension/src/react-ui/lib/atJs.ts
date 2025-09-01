@@ -32,10 +32,12 @@ export function updateQueryParams(key: string, value?: string) {
 }
 
 export function generateToken(size: number=4) {
-    const array = new Uint32Array(size);  // Adjust size as needed
-    window.crypto.getRandomValues(array);
-    return Array.from(array, dec => dec.toString(16)).join('');
+  const array = new Uint32Array(size);  // Adjust size as needed
+  window.crypto.getRandomValues(array);
+  return Array.from(array, dec => dec.toString(16)).join('');
 }
+
+
 
 function injectScripts(scriptNames: string[], scriptIds: string[]): Promise<boolean>[] {
   const head = document.head || document.getElementsByTagName("head")[0];
@@ -79,6 +81,49 @@ const requestScriptInjection = (scriptNames: string[], scriptIds: string[], reso
     if (event.source !== window || event.data.type !== "INJECT_SCRIPT_RESPONSE") return;
     if (event.data.requestId === requestId) { // Ensure it's the correct response
       console.log(event);
+      if (window.extension_data.sdkType === "atjs" && (window as any).adobe && (window as any).adobe.target) {
+        (window as any).adobe.target.init(window, document, {
+          applyZeroApi: true,
+          clientCode: window.extension_data.tenant,
+          imsOrgId: window.extension_data.org,
+          serverDomain: window.extension_data.edgeHost,
+          trackingServer: window.extension_data.analyticsReportingServer || `${window.extension_data.tenant}.com.sc.omtrdc.net`,
+          trackingServerSecure: window.extension_data.analyticsReportingServer || `${window.extension_data.tenant}.com.ssl.sc.omtrdc.net`,
+          crossDomain: 'disabled',
+          timeout: 5000,
+          globalMboxName: 'target-global-mbox',
+          version: '2.11.5',
+          defaultContentHiddenStyle: 'visibility: hidden;',
+          defaultContentVisibleStyle: 'visibility: visible;',
+          bodyHiddenStyle: 'body {opacity: 0 !important}',
+          bodyHidingEnabled: true,
+          deviceIdLifetime: 63244800000,
+          sessionIdLifetime: 1860000,
+          selectorsPollingTimeout: 5000,
+          visitorApiTimeout: 2000,
+          overrideMboxEdgeServer: false,
+          overrideMboxEdgeServerTimeout: 1860000,
+          optoutEnabled: false,
+          optinEnabled: false,
+          secureOnly: false,
+          supplementalDataIdParamTimeout: 30,
+          authoringScriptUrl: '//cdn.tt.omtrdc.net/cdn/target-vec.js',
+          urlSizeLimit: 2048,
+          endpoint: '/rest/v1/delivery',
+          pageLoadEnabled: true,
+          viewsEnabled: true,
+          analyticsLogging: 'server_side',
+          serverState: {},
+          decisioningMethod: 'server-side',
+          legacyBrowserSupport: false,
+          allowHighEntropyClientHints: false,
+          aepSandboxId: null,
+          aepSandboxName: null,
+          enabled: true,
+          silentInit: true,
+          debug: { level: 'verbose', trace: true }
+        });
+      }
       resolve(true);
       window.removeEventListener("message", handleMessage); // Clean up
     }
@@ -115,7 +160,16 @@ export default async function AtJs(targetPageParams?: any) {
       const oldScript = document.getElementById("at-js");
       const oldAppService = document.getElementById("app-service");
       const mcjs = document.getElementById("mcjs");
+      const oldScriptAlloy = document.getElementById("alloy-js");
+      const oldEnforceAlloy = document.getElementById("enforce-alloy");
       //if oldScript is present than delete it
+
+      if (oldScriptAlloy) {
+        oldScriptAlloy.remove();
+      }
+      if (oldEnforceAlloy) {
+        oldEnforceAlloy.remove();
+      }
       if (oldScript) {
         oldScript.remove();
       }
@@ -127,7 +181,7 @@ export default async function AtJs(targetPageParams?: any) {
       }
 
 
-      requestScriptInjection(["at.js", "mcid.js"], ["at-js", "mcjs"], resolve, reject);
+      requestScriptInjection(["mcid.js", "at.js"], ["mcjs", "at-js"], resolve, reject);
     }
   })
 }
@@ -167,6 +221,110 @@ export function getQueryParameter(param: string) {
   return urlParams.get(param);
 }
 
+function waitForElement(selector: any, { interval = 100, timeout = 5000 } = {}) {
+  return new Promise((resolve, reject) => {
+    const start = Date.now();
+
+    (function poll() {
+      const el = document.querySelector(selector);
+      if (el) {
+        console.log(`Found element: ${selector}`);
+        return resolve(el);
+      }
+      if (Date.now() - start >= timeout) {
+        return reject(new Error(`Timed out waiting for selector ${selector}`));
+      }
+      setTimeout(poll, interval);
+    })();
+  });
+}
+
+export async function getAndApplyOffers(deliveryRequest: any, mcIdToUse: string, addCampaignId: (id: string) => void): Promise<void> {
+    if (!window.adobe?.target) {
+    console.error("AT.js not available.");
+    return;
+  }
+
+  return window.adobe.target.getOffers({
+    request: {
+      property: deliveryRequest.property,
+      id: { marketingCloudVisitorId: mcIdToUse },
+      execute: deliveryRequest.execute,
+      prefetch: deliveryRequest.prefetch,
+    }
+  }).then(async (response) => {
+    console.log(`#### getOffers response ${JSON.stringify(response, null, 2)}`);
+    const mboxes = response?.execute?.mboxes || [];
+    if (mboxes.length > 0) {
+      for (const mbox of mboxes) {
+        addCampaignId(mbox?.options?.[0]?.responseTokens?.["activity.id"]);
+        const result = await window.adobe?.target?.applyOffers({
+          selector: `.mbox-name-${mbox.name}`,
+          response: { execute: { mboxes: [mbox] } }
+        });
+        console.log(`#### render result ${JSON.stringify(result, null, 2)} ---- ${JSON.stringify(response, null, 2)}`);
+      }
+      return;
+    }
+    if (Array.isArray(response.prefetch?.views) && response.prefetch.views.length) {
+      try {
+        // For each view in your prefetch, render them individually
+        const result = await window.adobe?.target?.applyOffers({
+          response: response
+        });
+        for (const view of response.prefetch.views) {
+          // Pull out all the selectors in this view's content array
+          const selectors = (view.options || []).flatMap((opt: any) =>
+            (opt.content || [])
+              .filter((item: any) => item.selector)
+              .map((item: any) => item.selector)
+          );
+
+          // Wait for each of those selectors to exist on the page
+          // const fakeMbox = {
+          //   name:   view.name,           // this becomes your .mbox-name-<view.name> container
+          //   options: view.options,       // carries over your setHtml/actions
+          // };
+          //
+          // addCampaignId(fakeMbox?.options?.[0]?.responseTokens?.["activity.id"]);
+          // const singleViewResponse = {
+          //   execute: { mboxes: [fakeMbox] },
+          //   // you can also include execute.pageLoad if needed
+          // };
+          //
+          // console.log(`#### rendering view ${JSON.stringify({
+          //   // pick any one of the selectors as the insertion point;
+          //   // at.js will read the matching content.selector inside the view payload
+          //   selector: selectors[0],
+          //   response: singleViewResponse
+          // }, null, 2)}`);
+
+          await window.adobe?.target?.triggerView(view.name);
+        }
+        return;
+      } catch (err) {
+        console.error("Error rendering prefetched views:", err);
+        throw err;
+      }
+    }
+    if (response.execute?.pageLoad) {
+      const result = await window.adobe?.target?.applyOffers({
+        response: {
+          execute: {
+            pageLoad: response.execute.pageLoad
+          }
+        }
+      });
+      console.log(`#### render result ${JSON.stringify(result, null, 2)} ---- ${JSON.stringify(response, null, 2)}`);
+      return result;
+    }
+  }).catch((error) => {
+    console.error("AT.js getOffers error:", error);
+  });
+
+
+}
+
 export const generateViewsWithConversions = (uniqueVisitors: boolean, number: string, setTotal: any, setCurrent: any, setModalVisible: any, reportingServer: string, profileData: ProfileData, mboxes: string[], tntA?: string, conversion: boolean = false,
                                              conversionEvent?: string, conversionValue: number = 1, algorithmId: number=-1000, isTarget = false, experienceIndex?: number): Promise<{[key: string]: number}> => {
 
@@ -204,6 +362,8 @@ export const generateViewsWithConversions = (uniqueVisitors: boolean, number: st
         return JSON.parse(element.getAttribute('data-mboxparams') || '{}');
       }) : {}
 
+      const views = window.extension_data.decisionScopes.length > 0 ? window.extension_data.decisionScopes.split(","): [];
+
       window.adobe.target?.getOffers({
         request: {
           property: {
@@ -219,7 +379,37 @@ export const generateViewsWithConversions = (uniqueVisitors: boolean, number: st
               logging: !isTarget ? "client_side" : "server_side"
             }
           },
+          prefetch: {
+            views: views.length > 0 ? views.map((view: string) => { return {
+              name: view,
+              key: view,
+              parameters: {
+                ...parameters
+              },
+              profileParameters: {
+                "user.422": `${profileData.displayName}-${Date.now()}`,
+                "user.country": profileData.country,
+                "user.hobby": profileData.hobby,
+                "user.age": profileData.age,
+                "brand.bought": "offline",
+                ...window.extension_data.profileParameters
+              }
+            }}) : undefined
+          },
           execute: {
+            pageLoad: mboxes.length == 0 ? {
+              parameters: {
+                ...parameters
+              },
+              profileParameters: {
+                "user.422": `${profileData.displayName}-${Date.now()}`,
+                "user.country": profileData.country,
+                "user.hobby": profileData.hobby,
+                "user.age": profileData.age,
+                "brand.bought": "offline",
+                ...window.extension_data.profileParameters
+              }
+            } : undefined,
             mboxes: mboxes.length > 0 ? mboxes.map((mboxName, idx) => {
               return {
                 index: idx,
@@ -238,23 +428,10 @@ export const generateViewsWithConversions = (uniqueVisitors: boolean, number: st
                 }
               }
             }) : undefined,
-            pageLoad: mboxes.length == 0 ? {
-              parameters: {
-                ...parameters
-              },
-              profileParameters: {
-                "user.422": `${profileData.displayName}-${Date.now()}`,
-                "user.country": profileData.country,
-                "user.hobby": profileData.hobby,
-                "user.age": profileData.age,
-                "brand.bought": "offline",
-                ...window.extension_data.profileParameters
-              }
-            } : undefined
           }
         }
       })
-        .then(response => {
+        .then((response) => {
           console.log(response);
 
           //all my elements should be with data-mbox
@@ -280,10 +457,45 @@ export const generateViewsWithConversions = (uniqueVisitors: boolean, number: st
                   }
                 }
               });
-              okTargeted.push(isTarget? sendNotificationTarget(el, conversionEvent, conversion, profileData, experienceIndex, true, viewMap) : sendNotificationAnalytics(tntA, el, algorithmId, reportingServer, mcId, conversion, conversionEvent, conversionValue, experienceIndex, viewMap));
+              okTargeted.push(isTarget ? sendNotificationTarget(el, conversionEvent, conversion, profileData, experienceIndex, true, viewMap) : sendNotificationAnalytics(tntA, el, algorithmId, reportingServer, mcId, conversion, conversionEvent, conversionValue, experienceIndex, viewMap));
             })
+          }
+          if (Array.isArray(response.prefetch?.views) && response.prefetch.views.length) {
+            try {
+              // For each view in your prefetch, render them individually
+              window.adobe?.target?.applyOffers({response: response});
+              for (const view of response.prefetch.views) {
+                // Pull out all the selectors in this view's content array
+                const selectors = (view.options || []).flatMap((opt: any) =>
+                  (opt.content || [])
+                    .filter((item: any) => item.selector)
+                    .map((item: any) => item.selector)
+                );
 
-          } else {
+                // Wait for each of those selectors to exist on the page
+                const fakeMbox = {
+                  options: view.options,       // carries over your setHtml/actions
+                  metrics: response.prefetch.metrics,
+                  analytics: response.execute?.pageLoad?.analytics,
+                };
+
+                const singleViewResponse = {
+                  execute: { mboxes: [fakeMbox] },
+                  // you can also include execute.pageLoad if needed
+                };
+
+                window.adobe?.target?.triggerView(view.name);
+
+                //displaying for views will be treated as conversion
+                if(conversion) {
+                  okTargeted.push(isTarget ? sendNotificationTarget(fakeMbox, conversionEvent, conversion, profileData, experienceIndex, false, viewMap) : sendNotificationAnalytics(tntA, fakeMbox, algorithmId, reportingServer, mcId, conversion, conversionEvent, conversionValue, experienceIndex, viewMap));
+                }
+              }
+            } catch (err) {
+              console.error("Error rendering prefetched views:", err);
+            }
+          }
+          if (response.execute?.pageLoad) {
             window.adobe.target?.applyOffers({response: response});
             okTargeted.push(isTarget? sendNotificationTarget(response.execute.pageLoad, conversionEvent, conversion, profileData, experienceIndex, false, viewMap) : sendNotificationAnalytics(tntA, response.execute.pageLoad, algorithmId, reportingServer, mcId, conversion, conversionEvent, conversionValue, experienceIndex, viewMap));
           }
@@ -345,6 +557,7 @@ export function sendNotificationTarget(el: any, event: string|undefined, convers
   //   }
   // );
 
+  console.log(`send notif for elem ${JSON.stringify(el, null, 2)}`);
   if (!viewMap[el?.options?.[0]?.responseTokens["experience.id"]]) {
     viewMap[`${el?.options?.[0]?.responseTokens["experience.id"]}`] = 1;
   } else {
@@ -387,20 +600,23 @@ export function sendNotificationAnalytics(tntA :string|undefined, el: any, algor
     viewMap[`${el?.options?.[0]?.responseTokens["experience.id"]}`] += 1;
   }
 
+  console.log(el, tntA);
   return new Promise((resolve, reject) => {
     let tntaData = tntA? tntA : el.analytics.payload.tnta;
-    console.log(tntA)
+    console.log(tntaData);
     //make targeted events
     tntaData = tntaData.split(',').map((event: string) => {
       //remove visits and unique visits and not conversion
       const eventBreakDown = event.split(':');
       //traffic type - targeted for AT
-      eventBreakDown[2] = conversionEvent == 'event10' ? '0' : '1';
-      //algorithm id change
-      if (algorithmId !== -1000) {
-        let [algoId, event] = eventBreakDown[3].split('|');
-        algoId = `${algorithmId}`;
-        eventBreakDown[3] = `${algoId}|${event}`;
+      if (eventBreakDown.length == 4) {
+        eventBreakDown[2] = conversionEvent == 'event10' ? '0' : '1';
+        //algorithm id change
+        if (algorithmId !== -1000) {
+          let [algoId, event] = eventBreakDown[3].split('|');
+          algoId = `${algorithmId}`;
+          eventBreakDown[3] = `${algoId}|${event}`;
+        }
       }
 
       return eventBreakDown.join(':');
@@ -409,7 +625,7 @@ export function sendNotificationAnalytics(tntA :string|undefined, el: any, algor
 
     const events = tntaData.split(',');
     const revenueEvent = events.filter((event: string) => {
-      return event.split('|')[0].split(":").length === 4;
+      return event.split('|')[0].split(":").length >= 3;
     })[0].split("|");
 
     if (tntaData.indexOf("|1") == -1) {

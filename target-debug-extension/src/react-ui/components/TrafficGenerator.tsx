@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import AtJs, { generateViewsWithConversions } from '../lib/atJs';
+import AtJs, { generateViewsWithConversions as generateViewsWithConversionsAtJs } from '../lib/atJs';
+import { generateViewsWithConversions as generateViewsWithConversionsAlloy } from '../lib/alloyJs';
 import HitsModal from './HitsModal';
-import './TrafficGenerator.css';  // Import the CSS file
+import './TrafficGenerator.css';
 
 interface GeneratorComponentProps {
   displayName: string;
@@ -61,7 +62,13 @@ const GeneratorComponent: React.FC<GeneratorComponentProps> = ({
   const [mboxesInput, setMboxesInput] = useState(mboxes);
   const [isTargetCheckbox, setIsTargetCheckbox] = useState(true);  // Default to true
   const [selectAlgorithmCheckbox, setSelectAlgorithmCheckbox] = useState(false);  // Default to false
+  const [selectedAlgorithmId, setSelectedAlgorithmId] = useState<number | undefined>(algorithmId);
   const tooltipRef = useRef<HTMLDivElement | null>(null);
+
+  // Determine which generateViewsWithConversions to use based on SDK
+  const generateViewsWithConversions = window.extension_data?.sdkType === 'websdk'
+    ? generateViewsWithConversionsAlloy 
+    : generateViewsWithConversionsAtJs;
 
   const algorithmDetails = [
     { id: 1, name: 'touch_clarity', description: 'Residual Variance', date: '2017-05-25 11:07:23', flag: 0 },
@@ -145,6 +152,21 @@ const GeneratorComponent: React.FC<GeneratorComponentProps> = ({
       return;
     }
     setAlgorithmId(parseInt(number));
+  };
+
+  const handleAlgorithmChange = (value: string) => {
+    if (value === '') {
+      setSelectedAlgorithmId(undefined);
+      if (setAlgorithmId) {
+        setAlgorithmId(-1); // Use -1 or another default value instead of undefined
+      }
+    } else {
+      const id = parseInt(value);
+      setSelectedAlgorithmId(id);
+      if (setAlgorithmId) {
+        setAlgorithmId(id);
+      }
+    }
   };
 
   useEffect(() => {
@@ -243,14 +265,37 @@ const GeneratorComponent: React.FC<GeneratorComponentProps> = ({
           {selectAlgorithm && (
             <div className="section">
               <h4>Change Algorithm Id</h4>
-              <input type="number" placeholder="Change algorithmId" id="algorithmId"/>
+              <select 
+                value={selectedAlgorithmId || ''} 
+                onChange={(e) => handleAlgorithmChange(e.target.value)}
+                style={{ marginRight: '10px', padding: '5px', width: '200px' }}
+              >
+                <option value="">None (Default)</option>
+                {algorithmDetails.map((algo) => (
+                  <option key={algo.id} value={algo.id}>
+                    {algo.id} - {algo.name} ({algo.description})
+                  </option>
+                ))}
+              </select>
+              <span>or enter custom ID:</span>
+              <input 
+                type="number" 
+                placeholder="Custom algorithm ID" 
+                id="algorithmId"
+                style={{ marginLeft: '10px', padding: '5px', width: '100px' }}
+              />
               <button
                 onClick={() => {
                   const number = (document.getElementById('algorithmId') as HTMLInputElement)?.value;
-                  changeAlgorithmId(number);
+                  if (number) {
+                    const id = parseInt(number);
+                    setSelectedAlgorithmId(id);
+                    setAlgorithmId(id);
+                  }
                 }}
+                style={{ marginLeft: '10px', padding: '5px 10px' }}
               >
-                Save Algorithm ID
+                Set Custom ID
               </button>
             </div>
           )}

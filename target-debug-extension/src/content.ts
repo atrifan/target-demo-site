@@ -8,7 +8,7 @@ if (!head) {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'INIT_EXTENSION') {
     console.log(message);
-    const { tenant, org, analyticsReportingServer, analyticsReportSuite, mboxParams, environment, customEdgeHost, admin, profileParameters, atProperty, sdkType, dataStreamId } = message;
+    const { tenant, org, analyticsReportingServer, analyticsReportSuite, mboxParams, environment, customEdgeHost, admin, profileParameters, atProperty, sdkType, dataStreamId, decisionScopes } = message;
 
     console.log(`#### -- ${sdkType} -- ####`);
     // Ensure the data is available
@@ -23,8 +23,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
 
     // Initialize Adobe Target or other logic here
-    const scriptNames = sdkType === "atjs" ? ["at.js", "mcid.js"] : ["alloy.js", "mcid.js", "enforce_alloy.js"];
-    const scriptIds = sdkType === "atjs" ? ["at-js", "mcjs"] : ["alloy-js", "mcjs", "enforce-alloy"];
+    const scriptNames = sdkType === "atjs" ? ["at.js", "mcid.js"] : ["enforce_alloy.js", "alloy.js", "mcid.js"];
+    const scriptIds = sdkType === "atjs" ? ["at-js", "mcjs"] : ["enforce-alloy", "alloy-js", "mcjs"];
     const loadedScripts = injectScripts(scriptNames, scriptIds);
 
     Promise.all(loadedScripts)
@@ -47,7 +47,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           profileParameters: profileParameters,
           atProperty: atProperty,
           sdkType: sdkType,
-          dataStreamId: dataStreamId
+          dataStreamId: dataStreamId,
+          decisionScopes: decisionScopes
         }, (response) => {
           console.log(`Response from background.ts: ${response}`);
           const scriptNames = ["AppMeasurement.js"];
@@ -58,7 +59,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             rootElement.id = 'react-root';  // Give it a unique ID so you can target it
 
 // Apply CSS to make the root element cover the full viewport and sit on top
-            rootElement.style.position = 'absolute';
             rootElement.style.pointerEvents = 'auto';
             rootElement.style.top = '0';
             rootElement.style.left = '0';
@@ -199,21 +199,27 @@ document.addEventListener("click", (event) => {
 
     // Update the target element
     targetElement.setAttribute("mbox-name", mboxName);
+    targetElement.setAttribute("data-alloy-space", mboxName);
     targetElement.setAttribute("data-mboxparams", JSON.stringify(jsonParams));
 
     // Append or update class with mbox-name-{mboxName}
     const classToAdd = `mbox-name-${mboxName}`;
+    const idToAdd = `${mboxName}`;
 
     if (targetElement.className) {
       // If class attribute exists, append the new class if not already present
       if (!targetElement.classList.contains(classToAdd)) {
         targetElement.classList.add(classToAdd);
+        targetElement.classList.add(idToAdd);
       }
     } else {
       // If class attribute does not exist, create it with the new value
-      targetElement.setAttribute("class", classToAdd);
+      targetElement.setAttribute("class", `${classToAdd} ${idToAdd}`);
     }
 
+    targetElement.setAttribute('data-mbox', idToAdd);
+    targetElement.setAttribute('data-personalization-id', idToAdd);
+    targetElement.id = idToAdd;
     targetElement.style.outline = "2px solid red"
 
     // Reset mboxName so the process can be repeated
@@ -222,6 +228,14 @@ document.addEventListener("click", (event) => {
   });
 });
 
+function clearAllCookies() {
+  document.cookie.split(';').forEach(cookie => {
+    const name = cookie.split('=')[0].trim();
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  });
+  localStorage.clear();
+  sessionStorage.clear();
+};
 
 function injectScripts(scriptNames: string[], scriptIds: string[]): Promise<boolean>[] {
   const head = document.head || document.getElementsByTagName("head")[0];
@@ -231,6 +245,20 @@ function injectScripts(scriptNames: string[], scriptIds: string[]): Promise<bool
   }
 
   // Remove existing scripts if present
+  if (window.adobe?.target) {
+    window.adobe.target = undefined;
+  }
+
+  if (window.alloy) {
+    window.alloy = undefined;
+  }
+
+  if (window._satellite) {
+    window._satellite = undefined;
+  }
+
+  clearAllCookies();
+
   document.querySelectorAll("script").forEach((script) => {
     if (script.src && script.src.includes('launch')) {
       console.log(`Removing existing script: ${script.src}`);
@@ -240,7 +268,7 @@ function injectScripts(scriptNames: string[], scriptIds: string[]): Promise<bool
       console.log(`Removing existing script: ${script.src}`);
       script.remove();
     }
-    if (script.src && script.src.includes('adobetm')) {
+    if (script.src && script.src.includes('adobedtm')) {
       console.log(`Removing existing script: ${script.src}`);
       script.remove();
     }

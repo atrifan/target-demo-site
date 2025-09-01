@@ -909,6 +909,7 @@ window.adobe.target = (function () {
   const SERVER_DOMAIN = "serverDomain";
   const CROSS_DOMAIN = "crossDomain";
   const TIMEOUT$1 = "timeout";
+  const SILENT_INIT = "silentInit";
   const GLOBAL_MBOX_NAME = "globalMboxName";
   const GLOBAL_MBOX_AUTO_CREATE = "globalMboxAutoCreate";
   const VERSION = "version";
@@ -8271,7 +8272,14 @@ window.adobe.target = (function () {
       timeout
     };
     if (!shouldUseOptin() || isTargetApproved()) {
+      if (config[SILENT_INIT]) {
+        return;
+      }
       executeGetOffers(options).then(handleSuccess)['catch'](handleError);
+      return;
+    }
+
+    if (config[SILENT_INIT]) {
       return;
     }
     fetchOptinPermissions().then(() => {
@@ -9256,44 +9264,44 @@ function getQueryParam(paramName) {
 
 //# sourceMappingURL=at.build.js.map
 
-if (window.adobe && window.adobe.target) {
-  window.adobe.target.init(window, document, {
-    clientCode: window.extension_data.tenant,
-    imsOrgId: window.extension_data.org,
-    serverDomain: window.extension_data.edgeHost,
-    trackingServer: window.extension_data.analyticsReportingServer,
-    crossDomain: 'disabled',
-    timeout: 5000,
-    globalMboxName: 'target-global-mbox',
-    version: '2.11.5',
-    defaultContentHiddenStyle: 'visibility: hidden;',
-    defaultContentVisibleStyle: 'visibility: visible;',
-    bodyHiddenStyle: 'body {opacity: 0 !important}',
-    bodyHidingEnabled: true,
-    deviceIdLifetime: 63244800000,
-    sessionIdLifetime: 1860000,
-    selectorsPollingTimeout: 5000,
-    visitorApiTimeout: 2000,
-    overrideMboxEdgeServer: false,
-    overrideMboxEdgeServerTimeout: 1860000,
-    optoutEnabled: false,
-    optinEnabled: false,
-    secureOnly: false,
-    supplementalDataIdParamTimeout: 30,
-    authoringScriptUrl: '//cdn.tt.omtrdc.net/cdn/target-vec.js',
-    urlSizeLimit: 2048,
-    endpoint: '/rest/v1/delivery',
-    pageLoadEnabled: true,
-    viewsEnabled: true,
-    analyticsLogging: 'server_side',
-    serverState: {},
-    decisioningMethod: 'server-side',
-    legacyBrowserSupport: false,
-    allowHighEntropyClientHints: false,
-    aepSandboxId: null,
-    aepSandboxName: null,
-  });
-}
-else {
-  console.error('Adobe Target is not available on this page.');
-}
+// if (window.adobe && window.adobe.target) {
+//   window.adobe.target.init(window, document, {
+//     clientCode: window.extension_data.tenant,
+//     imsOrgId: window.extension_data.org,
+//     serverDomain: window.extension_data.edgeHost,
+//     trackingServer: window.extension_data.analyticsReportingServer,
+//     crossDomain: 'disabled',
+//     timeout: 5000,
+//     globalMboxName: 'target-global-mbox',
+//     version: '2.11.5',
+//     defaultContentHiddenStyle: 'visibility: hidden;',
+//     defaultContentVisibleStyle: 'visibility: visible;',
+//     bodyHiddenStyle: 'body {opacity: 0 !important}',
+//     bodyHidingEnabled: true,
+//     deviceIdLifetime: 63244800000,
+//     sessionIdLifetime: 1860000,
+//     selectorsPollingTimeout: 5000,
+//     visitorApiTimeout: 2000,
+//     overrideMboxEdgeServer: false,
+//     overrideMboxEdgeServerTimeout: 1860000,
+//     optoutEnabled: false,
+//     optinEnabled: false,
+//     secureOnly: false,
+//     supplementalDataIdParamTimeout: 30,
+//     authoringScriptUrl: '//cdn.tt.omtrdc.net/cdn/target-vec.js',
+//     urlSizeLimit: 2048,
+//     endpoint: '/rest/v1/delivery',
+//     pageLoadEnabled: true,
+//     viewsEnabled: true,
+//     analyticsLogging: 'server_side',
+//     serverState: {},
+//     decisioningMethod: 'server-side',
+//     legacyBrowserSupport: false,
+//     allowHighEntropyClientHints: false,
+//     aepSandboxId: null,
+//     aepSandboxName: null,
+//   });
+// }
+// else {
+//   console.error('Adobe Target is not available on this page.');
+// }
