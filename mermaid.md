@@ -1,6 +1,8 @@
 [^1]: This is the first footnote.
 [^note]: This is a named footnote with **Markdown** inside.
 
+
+
 ```mermaid
 
 ---
@@ -19,3 +21,8 @@ xychart-beta
     line [45, 52, 38, 60, 72, 55, 80, 70, 62, 68, 75, 85]
 
 ```
+
+
+
+[^1]: This is the first footnote.
+[^note]: This is a named footnote with **Markdown** inside.
